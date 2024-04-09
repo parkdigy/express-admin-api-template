@@ -12,6 +12,12 @@ import { RequestHandler } from 'express';
 import { MulterRemover } from './Multer';
 import ApiController from './ApiController';
 
-export default function (multer: RequestHandler, controller: MyController, logging = true, loggingData = false) {
-  return ApiController(controller, logging, loggingData, [multer], [MulterRemover]);
+export default function (
+  multer: RequestHandler,
+  controller: MyController,
+  callPermissionCheck = false,
+  logging = true,
+  loggingData = false
+) {
+  return ApiController(controller, callPermissionCheck, logging, loggingData, [multer], [MulterRemover]);
 }

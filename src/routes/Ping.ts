@@ -7,6 +7,7 @@ import { MyRequest, MyResponse } from '@types';
 
 const router = express.Router();
 
+// pong
 router.get(
   '/',
   ApiController((req: MyRequest, res: MyResponse) => res.send('pong'))

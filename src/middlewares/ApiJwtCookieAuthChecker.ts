@@ -17,7 +17,7 @@ export default async function (req: MyRequest, res: MyResponse, next: NextFuncti
   try {
     const { userId } = jwt.verifyAccessToken(req);
     if (userId) {
-      req.$$user = await db.User.infoForSession(req, userId);
+      req.$$user = await db.AdminUser.infoForSession(req, userId);
       if (req.$$user == null) {
         handleUnauthorized();
       } else {

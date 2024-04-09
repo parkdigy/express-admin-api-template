@@ -13,7 +13,7 @@ export default async function (req: MyRequest, res: MyResponse, next: NextFuncti
   try {
     const { userId, expireDays } = jwt.verifyAccessToken(req);
     if (userId != null) {
-      const user = await db.User.infoForSession(req, userId);
+      const user = await db.AdminUser.infoForSession(req, userId);
       if (user) {
         req.$$user = user;
         jwt.saveAccessToken(req, res, userId, expireDays);

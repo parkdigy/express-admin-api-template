@@ -10,23 +10,19 @@
 import Starter from './Starter';
 import Finisher from './Finisher';
 import Logger from './Logger';
+import ApiCallPermissionChecker from './ApiCallPermissionChecker';
 import { MyController, MyRequest, MyResponse } from '@types';
 import { NextFunction, RequestHandler } from 'express';
 
 export default function (
   controller: MyController,
+  callPermissionCheck = false,
   logging = true,
   loggingData = false,
   afterStartMiddlewares: RequestHandler[] = [],
   beforeFinishMiddlewares: RequestHandler[] = []
 ) {
-  const handlers = [];
-
-  if (logging) {
-    handlers.push(Logger(loggingData));
-  }
-
-  handlers.push(
+  const handlers: any[] = [
     Starter,
     ...afterStartMiddlewares,
     async (req: MyRequest, res: MyResponse, next: NextFunction) => {
@@ -60,8 +56,16 @@ export default function (
       next();
     },
     ...beforeFinishMiddlewares,
-    Finisher
-  );
+    Finisher,
+  ];
+
+  if (logging) {
+    handlers.unshift(Logger(loggingData));
+  }
+
+  if (callPermissionCheck) {
+    handlers.unshift(ApiCallPermissionChecker);
+  }
 
   return handlers;
 }

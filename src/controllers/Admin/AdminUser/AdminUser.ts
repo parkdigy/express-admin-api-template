@@ -1,0 +1,214 @@
+/********************************************************************************************************************
+ * 어드민 사용자 Controller
+ * ******************************************************************************************************************/
+
+import { MyRequest, MyResponse } from '@types';
+import { AdminUserListParam } from './AdminUser.types';
+import { Knex } from 'knex';
+import {
+  Param_Email_Required,
+  Param_Id_Integer_Required,
+  Param_Integer_Required,
+  Param_Mobile_Required,
+  Param_Page_Limit,
+  Param_String_Required,
+} from '@common_param';
+import { telNoAutoDash } from '@pdg/util';
+
+export default {
+  /********************************************************************************************************************
+   * 목록
+   * ******************************************************************************************************************/
+  async list(req: MyRequest, res: MyResponse) {
+    const { page, limit } = param(req, Param_Page_Limit());
+    const { type, keyword_option, keyword, is_lock, admin_group_id } = param(req, AdminUserListParam);
+
+    if (type === 'all') {
+      // 전체 관리자 목록
+      api.success(res, await db.AdminUser.allList(req, is_lock));
+    } else {
+      // 관리자 목록
+      const { data, paging } = await db.AdminUser.list(req, {
+        keyword_option,
+        keyword,
+        is_lock,
+        admin_group_id,
+      }).paginate(page, limit);
+
+      api.success(res, data, paging);
+    }
+  },
+
+  /********************************************************************************************************************
+   * 목록 엑셀 다운로드
+   * ******************************************************************************************************************/
+  async exportList(req: MyRequest, res: MyResponse) {
+    const { keyword_option, keyword, is_lock, admin_group_id } = param(req, AdminUserListParam);
+
+    const list = await db.AdminUser.list(req, { keyword_option, keyword, is_lock, admin_group_id });
+
+    excel.export(res, `사용자_${dayjs().format('YYYYMMDD')}.xlsx`, list, [
+      excel.newColumn('ID', 'id', 10, 'c'),
+      excel.newColumn('이메일', 'email', 30, 'l'),
+      excel.newColumn('이름', 'name', 20, 'c'),
+      excel.newColumn('전화번호', 'tel', 20, 'c', (v) => telNoAutoDash(v)),
+      excel.newColumn('그룹분류', 'group_name', 20, 'c'),
+      excel.newColumn('계정상태', 'is_lock', 10, 'c', (v) => (v ? '제한' : '정상')),
+      excel.newColumn('생성일', 'create_date', 20, 'c', (v) => dayjs(v).format('YYYY-MM-DD HH:mm:ss')),
+    ]);
+  },
+
+  /********************************************************************************************************************
+   * 정보
+   * ******************************************************************************************************************/
+  async info(req: MyRequest, res: MyResponse) {
+    const { id } = param(req, Param_Id_Integer_Required());
+
+    api.success(res, await db.AdminUser.info(req, id));
+  },
+
+  /********************************************************************************************************************
+   * 등록
+   * ******************************************************************************************************************/
+  async add(req: MyRequest, res: MyResponse) {
+    const { email, name, tel, admin_group_id } = param(req, {
+      email: Param_Email_Required(),
+      name: Param_String_Required(),
+      tel: Param_Mobile_Required(),
+      admin_group_id: Param_Integer_Required(),
+    });
+
+    // 존재하는 그룹인지 검사
+    if (await db.AdminGroup.notExists(req, { id: admin_group_id })) {
+      throw api.Error.Parameter;
+    }
+
+    // 이메일 중복 검사
+    if (await db.AdminUser.exists(req, { email })) {
+      throw api.newExceptionError('이미 등록된 이메일입니다.');
+    }
+
+    await db.trans.begin(req);
+
+    // 사용자 등록
+    const password = util.password.hash(tel.replace(/-/g, ''));
+    const userId = (
+      await db.AdminUser.add(req, { email, password, name, tel, create_date: now(), update_date: now() })
+    )[0];
+    if (!userId) {
+      throw api.newExceptionError('사용자 등록 중 오류가 발생했습니다.');
+    }
+
+    // 그룹/사용자 등록
+    await db.AdminGroupUser.add(req, { admin_group_id, admin_user_id: userId });
+
+    await db.trans.commit(req);
+
+    api.successMsg(res, '사용자가 등록되었습니다.');
+  },
+
+  /********************************************************************************************************************
+   * 수정
+   * ******************************************************************************************************************/
+  async edit(req: MyRequest, res: MyResponse) {
+    const { id } = param(req, Param_Id_Integer_Required());
+    const { name, tel, admin_group_id } = param(req, {
+      name: Param_String_Required(),
+      tel: Param_Mobile_Required(),
+      admin_group_id: Param_Integer_Required(),
+    });
+
+    // 존재하는 사용자인 검사
+    const userInfo = await db.AdminUser.info(req, id);
+    if (!userInfo) throw api.Error.Parameter;
+
+    // 존재하는 그룹인지 검사
+    const groupInfo = await db.AdminGroup.find(req, { id: admin_group_id });
+    if (!groupInfo) throw api.Error.Parameter;
+
+    await db.trans.begin(req);
+
+    // 사용자 정보 수정
+    const updateData: Knex.ResolveTableType<Knex.TableType<'admin_user'>, 'update'> = { update_date: now() };
+    if (name !== userInfo.name) updateData.name = name;
+    if (tel !== userInfo.tel) updateData.tel = tel;
+    if (userInfo.must_password_change && tel !== userInfo.tel) {
+      updateData.password = util.password.hash(tel.replace(/-/g, ''));
+    }
+    if (!(await db.AdminUser.edit(req, updateData, { id }))) {
+      throw api.newExceptionError('사용자 정보 수정 중 오류가 발생했습니다.');
+    }
+
+    // 그룹/사용자 등록/수정
+    const groupUserInfo = await db.AdminGroupUser.find(req, { admin_user_id: id });
+    if (groupUserInfo) {
+      if (groupUserInfo.admin_group_id !== admin_group_id) {
+        // 그룹/사용자 수정
+        if (!(await db.AdminGroupUser.editAdminGroupId(req, id, admin_group_id))) {
+          throw api.newExceptionError('그룹/사용자 정보 수정 중 오류가 발생했습니다.');
+        }
+      }
+    } else {
+      // 그룹/사용자 등록
+      if (!(await db.AdminGroupUser.add(req, { admin_group_id, admin_user_id: id }))) {
+        throw api.newExceptionError('그룹/사용자 등록 중 오류가 발생했습니다.');
+      }
+    }
+
+    await db.trans.commit(req);
+
+    api.successMsg(res, '사용자 정보가 수정되었습니다.');
+  },
+
+  /********************************************************************************************************************
+   * 비밀번호 초기화
+   * ******************************************************************************************************************/
+  async passwordReset(req: MyRequest, res: MyResponse) {
+    const { id } = param(req, Param_Id_Integer_Required());
+
+    const userInfo = await db.AdminUser.find(req, { id }, ['tel']);
+    if (!userInfo) throw api.Error.Parameter;
+
+    const password = util.password.hash(userInfo.tel.replace(/-/g, ''));
+
+    if (!(await db.AdminUser.passwordChange(req, id, password, true))) {
+      throw api.newExceptionError('사용자 비밀번호 초기화 중 오류가 발생했습니다.');
+    }
+
+    api.successMsg(res, '사용자의 비밀번호가 전화번호로 초기화되었습니다.');
+  },
+
+  /********************************************************************************************************************
+   * 사용 제한
+   * ******************************************************************************************************************/
+  async lock(req: MyRequest, res: MyResponse) {
+    const { id } = param(req, Param_Id_Integer_Required());
+
+    if (await db.AdminUser.notExists(req, { id })) {
+      throw api.Error.Parameter;
+    }
+
+    if (!(await db.AdminUser.lock(req, id))) {
+      throw api.newExceptionError('사용 제한 중 오류가 발생했습니다.');
+    }
+
+    return api.successMsg(res, '사용이 제한되었습니다.');
+  },
+
+  /********************************************************************************************************************
+   * 사용 제한 해제
+   * ******************************************************************************************************************/
+  async unlock(req: MyRequest, res: MyResponse) {
+    const { id } = param(req, Param_Id_Integer_Required());
+
+    if (await db.AdminUser.notExists(req, { id })) {
+      throw api.Error.Parameter;
+    }
+
+    if (!(await db.AdminUser.unlock(req, id))) {
+      throw api.newExceptionError('사용제한 해제 중 오류가 발생했습니다.');
+    }
+
+    return api.successMsg(res, '사용제한이 해제되었습니다.');
+  },
+};

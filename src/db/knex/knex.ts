@@ -16,29 +16,29 @@ const knex = Knex({
     },
 
     // MYSQL
-    // typeCast: function (field: { type: string; length: number }, next: () => string) {
-    //   let value: unknown = next();
-    //
-    //   switch (field.type) {
-    //     case 'DATE': // DATE 형을 'YYYY-MM-DD' 형식으로 변환
-    //       if (value) {
-    //         value = dayjs(value as Date).format('YYYY-MM-DD');
-    //       }
-    //       break;
-    //     case 'TIMESTAMP': // TIMESTAMP, DATETIME 형을 'YYYY-MM-DD HH:mm:ss' 형식으로 변환
-    //     case 'DATETIME':
-    //       if (value) {
-    //         value = dayjs(value as Date).format('YYYY-MM-DD HH:mm:ss');
-    //       }
-    //       break;
-    //     case 'TINY': // TINYINT(1) 형을 boolean 형식으로 변환
-    //       if (field.length === 1) {
-    //         value = !!value;
-    //       }
-    //       break;
-    //   }
-    //   return value;
-    // },
+    typeCast: function (field: { type: string; length: number }, next: () => string) {
+      let value: unknown = next();
+
+      switch (field.type) {
+        // case 'DATE': // DATE 형을 'YYYY-MM-DD' 형식으로 변환
+        //   if (value) {
+        //     value = dayjs(value as Date).format('YYYY-MM-DD');
+        //   }
+        //   break;
+        // case 'TIMESTAMP': // TIMESTAMP, DATETIME 형을 'YYYY-MM-DD HH:mm:ss' 형식으로 변환
+        // case 'DATETIME':
+        //   if (value) {
+        //     value = dayjs(value as Date).format('YYYY-MM-DD HH:mm:ss');
+        //   }
+        //   break;
+        case 'TINY': // TINYINT(1) 형을 boolean 형식으로 변환
+          if (field.length === 1) {
+            value = !!value;
+          }
+          break;
+      }
+      return value;
+    },
   },
   pool: { min: 0, max: 7 },
 });
