@@ -36,7 +36,13 @@ export default {
    * 목록 엑셀 다운로드
    * ******************************************************************************************************************/
   async exportList(req: MyRequest, res: MyResponse) {
+    if (!req.$$user) throw api.Error.Permission;
+
     const options = param(req, AdminPrivacyAccessLogListParams);
+
+    if (!req.$$user.is_super_admin) {
+      options.admin_user_id = req.$$user.id;
+    }
 
     const list = await db.AdminPrivacyAccessLog.list(req, options);
 

@@ -12,7 +12,7 @@ export default {
   async passwordChange(req: MyRequest, res: MyResponse) {
     if (!req.$$user) throw api.Error.Permission;
 
-    const { id: userId } = req.$$user;
+    const { id: userId, must_password_change: mustPasswordChange } = req.$$user;
 
     const { new_password } = param(req, { new_password: Param_Password_Required() });
 
@@ -26,7 +26,7 @@ export default {
       { id: userId }
     );
 
-    api.successMsg(res, '비밀번호가 변경되었습니다.');
+    api.successMsg(res, '비밀번호가 변경되었습니다.', undefined, mustPasswordChange ? '/' : undefined);
   },
 
   /********************************************************************************************************************

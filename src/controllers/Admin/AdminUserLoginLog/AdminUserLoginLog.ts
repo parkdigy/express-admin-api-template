@@ -20,7 +20,7 @@ export default {
     const { data, paging } = await db.AdminUserLoginLog.list(
       req,
       req.$$user.id,
-      true,
+      req.$$user.is_super_admin,
       login_date_from,
       login_date_to,
       keyword_option,
@@ -34,14 +34,14 @@ export default {
    * 목록 엑셀 다운로드
    * ******************************************************************************************************************/
   async exportList(req: MyRequest, res: MyResponse) {
-    if (!req.$$user) throw api.newExceptionError();
+    if (!req.$$user) throw api.Error.Permission;
 
     const { keyword_option, keyword, login_date_from, login_date_to } = param(req, AdminUserLoginLogListParam);
 
     const list = await db.AdminUserLoginLog.list(
       req,
       req.$$user.id,
-      true,
+      req.$$user.is_super_admin,
       login_date_from,
       login_date_to,
       keyword_option,
