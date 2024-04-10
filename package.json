@@ -1,5 +1,5 @@
 {
-  "name": "ts-express-api-template",
+  "name": "express-api-template",
   "version": "1.0.0",
   "description": "",
   "main": "src/app.ts",
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NextAppsDeveloperTeam/ts-express-template.git"
+    "url": "git+https://github.com/parkdigy/express-api-template.git"
   },
   "eslintConfig": {},
   "dependencies": {

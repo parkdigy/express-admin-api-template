@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'ts-express-template',
+      name: 'express-api-template',
       script: './dist/app.js',
       instances: 1,
       exec_mode: 'cluster',
