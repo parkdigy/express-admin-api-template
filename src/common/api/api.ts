@@ -105,7 +105,7 @@ const api = {
   /**
    * 성공 전송 (메시지 포함)
    */
-  successMsg(res: MyResponse, msg: ApiMsg, data?: ApiData) {
+  successMsg(res: MyResponse, msg: ApiMsg, data?: ApiData, redirect?: string, redirectOpenInNewWindow = false) {
     const sendData: ApiResponse = {
       result: { c: 0 },
       data,
@@ -114,6 +114,10 @@ const api = {
     if (replacedMsg) {
       if (replacedMsg?.text) sendData.result.m = replacedMsg.text;
       if (replacedMsg?.html) sendData.result.hm = replacedMsg.html;
+    }
+    if (redirect) {
+      sendData.result.r = redirect;
+      sendData.result.ro = redirectOpenInNewWindow;
     }
     res.send(sendData);
   },
