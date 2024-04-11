@@ -10,3 +10,5 @@ import './global.dayjs';
 import './global.string';
 import './global.error';
 import './global.common';
+
+import './global.admin';

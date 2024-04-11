@@ -8,8 +8,8 @@ import { ApiControllerExportRole } from '@middlewares';
 
 const router = express.Router();
 
-// 어드민 사용자 접근 로그 다운로드
-router.get('/user_access_log', ApiControllerExportRole(menu.admin.accessStat, AdminUserAccessLog.exportList));
+// 어드민 사용자 사용 로그 다운로드
+router.get('/user_access_log', ApiControllerExportRole(menu.admin.accessLog, AdminUserAccessLog.exportList));
 
 // 어드민 사용자 목록 다운로드
 router.get('/user', ApiControllerExportRole(menu.admin.user, AdminUser.exportList));

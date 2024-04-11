@@ -13,7 +13,16 @@ export default {
   async list(req: MyRequest, res: MyResponse) {
     const { is_lock } = param(req, { is_lock: Param_Boolean() });
 
-    api.success(res, await db.AdminGroup.list(req, is_lock, true));
+    let list = await db.AdminGroup.list(req, is_lock, true);
+
+    if (!req.$$user?.is_super_admin) {
+      list = list.filter((info) => info.id !== SUPER_ADMIN_GROUP_ID);
+    }
+
+    api.success(
+      res,
+      list.map((info) => ({ ...info, editable: info.id !== SUPER_ADMIN_GROUP_ID || !!req.$$user?.is_super_admin }))
+    );
   },
 
   /********************************************************************************************************************
@@ -24,11 +33,15 @@ export default {
 
     // 그룹 정보
     const info = await db.AdminGroup.find(req, { id });
+    if (!info) throw paramError();
 
     // 그룹에 포함된 사용자 목록
     const users = (await db.AdminGroupUser.listOfGroup(req, id)).map((item) => item.admin_user_id);
 
-    api.success(res, { info, users });
+    api.success(res, {
+      info: { ...info, editable: info.id !== SUPER_ADMIN_GROUP_ID || !!req.$$user?.is_super_admin },
+      users,
+    });
   },
 
   /********************************************************************************************************************
@@ -36,6 +49,13 @@ export default {
    * ******************************************************************************************************************/
   async add(req: MyRequest, res: MyResponse) {
     const { name, is_privacy_access, users, menu } = param(req, AdminGroupAddParam);
+
+    // Super Admin 이 아닌 경우, Super Admin 그룹 소속 사용자 등록 시 에러
+    if (users && !req.$$user?.is_super_admin) {
+      if (await db.AdminGroupUser.exists(req, { admin_user_id: users, admin_group_id: SUPER_ADMIN_GROUP_ID })) {
+        throw api.newExceptionError('Super Admin 그룹에 소속된 사용자는 등록할 수 없습니다.');
+      }
+    }
 
     // 그룹명 중복 검사
     if (await db.AdminGroup.exists(req, { name })) {
@@ -71,6 +91,17 @@ export default {
     const { id } = param(req, Param_Id_Integer_Required());
     const { name, is_privacy_access, users, menu } = param(req, AdminGroupEditParam);
 
+    if (id === SUPER_ADMIN_GROUP_ID && !req.$$user?.is_super_admin) {
+      throw api.newExceptionError('Super Admin 그룹은 수정할 수 없습니다.');
+    }
+
+    // Super Admin 이 아닌 경우, Super Admin 그룹 소속 사용자 등록 시 에러
+    if (users && !req.$$user?.is_super_admin) {
+      if (await db.AdminGroupUser.exists(req, { admin_user_id: users, admin_group_id: SUPER_ADMIN_GROUP_ID })) {
+        throw api.newExceptionError('Super Admin 그룹에 소속된 사용자는 수정할 수 없습니다.');
+      }
+    }
+
     // 그룹 정보
     const groupInfo = await db.AdminGroup.find(req, { id });
     if (!groupInfo) throw paramError('id');
@@ -83,7 +114,7 @@ export default {
     const updateData: { name?: string; is_privacy_access?: boolean } = {};
 
     if (groupInfo.name !== name) {
-      if (groupInfo.id === 1) throw api.newExceptionError('Super Admin 그룹은 수정할 수 없습니다.');
+      if (id === SUPER_ADMIN_GROUP_ID) throw api.newExceptionError('Super Admin 그룹명은 수정할 수 없습니다.');
 
       // 그룹명 중복 검사
       if (await db.AdminGroup.exists(req, { name })) {

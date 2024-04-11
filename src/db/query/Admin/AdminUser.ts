@@ -45,7 +45,7 @@ export default class AdminUser extends MySqlQuery<tableName> {
       .select('agu.admin_group_id')
       // admin_group
       .leftJoin(db.AdminGroup.getTableName('ag'), 'ag.id', 'agu.admin_group_id')
-      .select('ag.name as group_name')
+      .select('ag.name as admin_group_name')
       //
       .where('au.id', '>', 100)
       .orderBy('au.is_lock')
@@ -103,12 +103,15 @@ export default class AdminUser extends MySqlQuery<tableName> {
   info(req: MyRequest, id: number) {
     return (
       this.getBuilder(req, 'au')
-        .select('au.id', 'au.email', 'au.name', 'au.tel', 'au.must_password_change')
+        .select('au.id', 'au.email', 'au.name', 'au.tel', 'au.must_password_change', 'au.is_lock', 'au.create_date')
         // admin_group_user
         .leftJoin(db.AdminGroupUser.getTableName('agu'), 'agu.admin_user_id', 'au.id')
         .select('agu.admin_group_id')
+        // admin_group
+        .leftJoin(db.AdminGroup.getTableName('ag'), 'ag.id', 'agu.admin_group_id')
+        .select('ag.name as admin_group_name')
         //
-        .where('id', id)
+        .where('au.id', id)
         .first()
     );
   }
@@ -126,35 +129,40 @@ export default class AdminUser extends MySqlQuery<tableName> {
   /********************************************************************************************************************
    * 로그인 정보
    ********************************************************************************************************************/
-  infoForSession(req: MyRequest, id: number) {
-    return (
-      this.getBuilder(req, 'au')
-        .select('au.id', 'au.email', 'au.must_password_change')
-        // admin_group_user
-        .leftJoin(db.AdminGroupUser.getTableName('agu'), 'agu.admin_user_id', 'au.id')
-        .select(
-          db.raw<{ admin_group_id: number; is_super_admin: boolean }>(`
+  async infoForSession(req: MyRequest, id: number) {
+    const info = await this.getBuilder(req, 'au')
+      .select('au.id', 'au.email', 'au.must_password_change')
+      // admin_group_user
+      .leftJoin(db.AdminGroupUser.getTableName('agu'), 'agu.admin_user_id', 'au.id')
+      .select(
+        db.raw<{ admin_group_id: number; is_super_admin: boolean }>(`
             case
               when agu.admin_group_id is null then 0
               else agu.admin_group_id
             end as admin_group_id,
             agu.admin_group_id = 1 as is_super_admin
           `)
-        )
-        // admin_group
-        .leftJoin(db.AdminGroup.getTableName('ag'), 'ag.id', 'agu.admin_group_id')
-        .select(
-          db.raw<{ is_privacy_access: boolean }>(`
+      )
+      // admin_group
+      .leftJoin(db.AdminGroup.getTableName('ag'), 'ag.id', 'agu.admin_group_id')
+      .select(
+        db.raw<{ is_privacy_access: boolean }>(`
             case
               when agu.admin_group_id = 1 then true
               else ag.is_privacy_access
             end as is_privacy_access
           `)
-        )
-        //
-        .where('au.id', id)
-        .first()
-    );
+      )
+      //
+      .where('au.id', id)
+      .first();
+
+    if (info) {
+      info.is_super_admin = Boolean(info.is_super_admin);
+      info.is_privacy_access = Boolean(info.is_privacy_access);
+    }
+
+    return info;
   }
 
   /********************************************************************************************************************

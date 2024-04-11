@@ -5,6 +5,7 @@
 import { MyRequest, MyResponse } from '@types';
 import { AdminMenuListItem } from './AdminMenu.types';
 import { Param_Boolean_Required, Param_String, Param_String_Required } from '@common_param';
+import { TAdminMenu$UpdateData } from '@db_models';
 
 // 다음 메뉴들은 수정/삭제할 수 없음
 // '어드민 관리', '어드민 관리 > 메뉴 관리', '어드민 관리 > 사용자 관리', '어드민 관리 > 그룹 관리'
@@ -16,7 +17,7 @@ const NOT_EDITABLE_MENU_IDS = [
   'admin/group',
   'admin/login_log',
   'admin/password',
-  'admin/access_stat',
+  'admin/access_log',
   'admin/privacy_access_log',
 ];
 
@@ -231,7 +232,11 @@ export default {
 
     if (info.is_super_admin_menu !== is_super_admin_menu) {
       // 기존 SUPER 권한과 다를 경우에만 수정
-      await db.AdminMenu.edit(req, { is_super_admin_menu }, { id });
+      const editData: TAdminMenu$UpdateData = { is_super_admin_menu };
+      if (is_super_admin_menu) {
+        editData.is_all_user_menu = false;
+      }
+      await db.AdminMenu.edit(req, editData, { id });
     }
 
     api.successMsg(res, '수정되었습니다.');
@@ -254,7 +259,11 @@ export default {
 
     if (info.is_all_user_menu !== is_all_user_menu) {
       // 기존 ALL 권한과 다를 경우에만 수정
-      await db.AdminMenu.edit(req, { is_all_user_menu }, { id });
+      const editData: TAdminMenu$UpdateData = { is_all_user_menu };
+      if (is_all_user_menu) {
+        editData.is_super_admin_menu = false;
+      }
+      await db.AdminMenu.edit(req, editData, { id });
     }
 
     api.successMsg(res, '수정되었습니다.');

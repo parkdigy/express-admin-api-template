@@ -16,7 +16,7 @@ CREATE TABLE `admin_group` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(50) NOT NULL COMMENT '이름',
   `is_lock` tinyint(1) NOT NULL DEFAULT '0' COMMENT '제한 여부',
-  `is_privacy_access` tinyint(1) NOT NULL DEFAULT '0' COMMENT '개인정보 접근 여부',
+  `is_privacy_access` tinyint(1) NOT NULL DEFAULT '0' COMMENT '개인정보 조회 여부',
   PRIMARY KEY (`id`),
   UNIQUE KEY `group_name_unique` (`name`)
 ) ENGINE=InnoDB COMMENT='그룹';
@@ -63,12 +63,12 @@ CREATE TABLE `admin_user_access_key` (
   `title` varchar(100) NOT NULL COMMENT '이름',
   PRIMARY KEY (`id`),
   KEY `idx_type_id` (`type`,`id`)
-) ENGINE=InnoDB COMMENT='관리자 접근 로그 키';
+) ENGINE=InnoDB COMMENT='관리자 조회 로그 키';
 
 CREATE TABLE `admin_user_access_log` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `admin_user_id` int unsigned NOT NULL COMMENT '관리자 ID',
-  `admin_user_access_key_id` varchar(200) NOT NULL COMMENT '관리자 접근 로그 키 ID',
+  `admin_user_access_key_id` varchar(200) NOT NULL COMMENT '관리자 사용 로그 키 ID',
   `url` varchar(255) NOT NULL COMMENT 'URL',
   `create_date` datetime NOT NULL COMMENT '등록 일자',
   PRIMARY KEY (`id`),
@@ -117,7 +117,7 @@ CREATE TABLE `admin_user_login_log` (
 ) ENGINE=InnoDB COMMENT='관리자 로그인 로그';
 
 CREATE TABLE `admin_privacy_access_log` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '개인정보 접근 로그 ID',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '개인정보 조회 로그 ID',
   `admin_user_id` int unsigned NOT NULL COMMENT '관리자 ID (admin_user 테이블)',
   `type` varchar(50) NOT NULL COMMENT '구분',
   `reason` varchar(100) NOT NULL COMMENT '조회사유',
@@ -131,7 +131,7 @@ CREATE TABLE `admin_privacy_access_log` (
   KEY `idx_auid_id` (`admin_user_id`,`id`),
   KEY `idx_t_id` (`type`,`id`),
   KEY `idx_t_auid_id` (`type`,`admin_user_id`,`id`)
-) ENGINE=InnoDB COMMENT='개인정보 접근 로그';
+) ENGINE=InnoDB COMMENT='개인정보 조회 로그';
 
 INSERT INTO `admin_group` (`id`, `name`, `is_lock`, `is_privacy_access`)
 VALUES
@@ -149,19 +149,19 @@ INSERT INTO `admin_menu` (`id`, `name`, `depth`, `parent_id`, `uri`, `is_super_a
 VALUES
 	('admin', '어드민 관리', 1, NULL, NULL, 0, 0, 'gear', 100),
 	('admin/menu', '메뉴 관리', 2, 'admin', '/admin/menu', 1, 0, NULL, 1),
-	('admin/user', '사용자 관리', 2, 'admin', '/admin/user', 1, 0, NULL, 20),
-	('admin/group', '그룹 관리', 2, 'admin', '/admin/group', 1, 0, NULL, 30),
-	('admin/login_log', '로그인 로그', 2, 'admin', '/admin/login_log', 0, 1, NULL, 40),
-	('admin/password', '비밀번호 수정', 2, 'admin', '/admin/password', 0, 1, NULL, 50),
-	('admin/access_stat', '접근 통계', 2, 'admin', '/admin/access_stat', 1, 0, NULL, 60);
-	('admin/privacy_access_log', '개인정보 조회 로그', 2, 'admin', '/admin/privacy_access_log', 1, 0, NULL, 70);
+	('admin/user', '사용자 관리', 2, 'admin', '/admin/user', 0, 0, NULL, 10),
+	('admin/group', '그룹 관리', 2, 'admin', '/admin/group', 0, 0, NULL, 20),
+	('admin/login_log', '로그인 로그', 2, 'admin', '/admin/login_log', 0, 1, NULL, 30),
+	('admin/access_log', '사용 로그', 2, 'admin', '/admin/access_log', 0, 1, NULL, 40);
+	('admin/privacy_access_log', '개인정보 조회 로그', 2, 'admin', '/admin/privacy_access_log', 0, 1, NULL, 50);
+	('admin/password', '비밀번호 수정', 2, 'admin', '/admin/password', 0, 1, NULL, 60),
 
 INSERT INTO `admin_user_access_key` (`id`, `type`, `title`)
 VALUES
 	('dashboard', 'VIEW', '대시보드'),
 	('admin/menu', 'VIEW', '어드민 관리 > 메뉴 관리'),
-	('admin/access_stat', 'VIEW', '어드민 관리 > 접근 통계'),
-	('admin/privacy_access_log', 'VIEW', '어드민 관리 > 개인정보 접근 로그'),
+	('admin/access_log', 'VIEW', '어드민 관리 > 사용 로그'),
+	('admin/privacy_access_log', 'VIEW', '어드민 관리 > 개인정보 조회 로그'),
 	('admin/group', 'VIEW', '어드민 관리 > 그룹 관리'),
 	('admin/group/:id', 'VIEW', '어드민 관리 > 그룹 관리 > 상세'),
 	('admin/login_log', 'VIEW', '어드민 관리 > 로그인 로그'),

@@ -24,9 +24,8 @@ export default class AdminGroupUser extends MySqlQuery<tableName> {
   /********************************************************************************************************************
    * 사용자 등록
    ********************************************************************************************************************/
-  async addUsers(req: MyRequest, adminGroupId: number, adminUserIds: number | number[]) {
-    const list = Array.isArray(adminUserIds) ? adminUserIds : [adminUserIds];
-    for (const adminUserId of list) {
+  async addUsers(req: MyRequest, adminGroupId: number, adminUserIds: number[]) {
+    for (const adminUserId of adminUserIds) {
       await this.removeUser(req, adminUserId);
       await this.add(req, { admin_group_id: adminGroupId, admin_user_id: adminUserId });
     }

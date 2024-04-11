@@ -12,7 +12,7 @@ const menu = {
     group: 'admin/group',
     loginLog: 'admin/login_log',
     password: 'admin/password',
-    accessStat: 'admin/access_stat',
+    accessLog: 'admin/access_log',
     privacyAccessLog: 'admin/privacy_access_log',
   },
   test: {

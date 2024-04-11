@@ -8,7 +8,7 @@ import { Knex } from 'knex';
 import {
   Param_Email_Required,
   Param_Id_Integer_Required,
-  Param_Integer_Required,
+  Param_Integer,
   Param_Mobile_Required,
   Param_Page_Limit,
   Param_String_Required,
@@ -20,12 +20,20 @@ export default {
    * 목록
    * ******************************************************************************************************************/
   async list(req: MyRequest, res: MyResponse) {
+    if (!req.$$user) throw api.Error.Permission;
+
+    const isSuperAdmin = req.$$user.is_super_admin;
+
     const { page, limit } = param(req, Param_Page_Limit());
     const { type, keyword_option, keyword, is_lock, admin_group_id } = param(req, AdminUserListParam);
 
     if (type === 'all') {
       // 전체 관리자 목록
-      api.success(res, await db.AdminUser.allList(req, is_lock));
+      let list = await db.AdminUser.allList(req, is_lock);
+      if (!req.$$user.is_super_admin) {
+        list = list.filter((info) => info.admin_group_id !== SUPER_ADMIN_GROUP_ID);
+      }
+      api.success(res, list);
     } else {
       // 관리자 목록
       const { data, paging } = await db.AdminUser.list(req, {
@@ -35,7 +43,15 @@ export default {
         admin_group_id,
       }).paginate(page, limit);
 
-      api.success(res, data, paging);
+      const finalData = !req.$$user.is_super_admin
+        ? data.filter((info) => info.admin_group_id !== SUPER_ADMIN_GROUP_ID)
+        : data;
+
+      api.success(
+        res,
+        finalData.map((info) => ({ ...info, editable: info.admin_group_id !== SUPER_ADMIN_GROUP_ID || isSuperAdmin })),
+        paging
+      );
     }
   },
 
@@ -52,7 +68,7 @@ export default {
       excel.newColumn('이메일', 'email', 30, 'l'),
       excel.newColumn('이름', 'name', 20, 'c'),
       excel.newColumn('전화번호', 'tel', 20, 'c', (v) => telNoAutoDash(v)),
-      excel.newColumn('그룹분류', 'group_name', 20, 'c'),
+      excel.newColumn('그룹분류', 'admin_group_name', 20, 'c'),
       excel.newColumn('계정상태', 'is_lock', 10, 'c', (v) => (v ? '제한' : '정상')),
       excel.newColumn('생성일', 'create_date', 20, 'c', (v) => dayjs(v).format('YYYY-MM-DD HH:mm:ss')),
     ]);
@@ -64,7 +80,10 @@ export default {
   async info(req: MyRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
 
-    api.success(res, await db.AdminUser.info(req, id));
+    const info = await db.AdminUser.info(req, id);
+    if (!info) throw paramError();
+
+    api.success(res, { ...info, editable: info.admin_group_id !== SUPER_ADMIN_GROUP_ID || req.$$user?.is_super_admin });
   },
 
   /********************************************************************************************************************
@@ -75,12 +94,14 @@ export default {
       email: Param_Email_Required(),
       name: Param_String_Required(),
       tel: Param_Mobile_Required(),
-      admin_group_id: Param_Integer_Required(),
+      admin_group_id: Param_Integer(),
     });
 
     // 존재하는 그룹인지 검사
-    if (await db.AdminGroup.notExists(req, { id: admin_group_id })) {
-      throw api.Error.Parameter;
+    if (admin_group_id) {
+      if (await db.AdminGroup.notExists(req, { id: admin_group_id })) {
+        throw api.Error.Parameter;
+      }
     }
 
     // 이메일 중복 검사
@@ -100,7 +121,9 @@ export default {
     }
 
     // 그룹/사용자 등록
-    await db.AdminGroupUser.add(req, { admin_group_id, admin_user_id: userId });
+    if (admin_group_id) {
+      await db.AdminGroupUser.add(req, { admin_group_id, admin_user_id: userId });
+    }
 
     await db.trans.commit(req);
 
@@ -115,16 +138,19 @@ export default {
     const { name, tel, admin_group_id } = param(req, {
       name: Param_String_Required(),
       tel: Param_Mobile_Required(),
-      admin_group_id: Param_Integer_Required(),
+      admin_group_id: Param_Integer(),
     });
 
     // 존재하는 사용자인 검사
     const userInfo = await db.AdminUser.info(req, id);
     if (!userInfo) throw api.Error.Parameter;
 
-    // 존재하는 그룹인지 검사
-    const groupInfo = await db.AdminGroup.find(req, { id: admin_group_id });
-    if (!groupInfo) throw api.Error.Parameter;
+    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user?.is_super_admin) {
+      throw api.newExceptionError('Super Admin 그룹에 속한 사용자는 수정할 수 없습니다.');
+    }
+    if (!req.$$user?.is_super_admin && admin_group_id === SUPER_ADMIN_GROUP_ID) {
+      throw api.newExceptionError('Super Admin 그룹으로 변경할 수 없습니다.');
+    }
 
     await db.trans.begin(req);
 
@@ -140,18 +166,27 @@ export default {
     }
 
     // 그룹/사용자 등록/수정
-    const groupUserInfo = await db.AdminGroupUser.find(req, { admin_user_id: id });
-    if (groupUserInfo) {
-      if (groupUserInfo.admin_group_id !== admin_group_id) {
-        // 그룹/사용자 수정
-        if (!(await db.AdminGroupUser.editAdminGroupId(req, id, admin_group_id))) {
-          throw api.newExceptionError('그룹/사용자 정보 수정 중 오류가 발생했습니다.');
+    if (admin_group_id) {
+      const groupInfo = await db.AdminGroup.find(req, { id: admin_group_id });
+      if (!groupInfo) throw api.Error.Parameter;
+
+      const groupUserInfo = await db.AdminGroupUser.find(req, { admin_user_id: id });
+      if (groupUserInfo) {
+        if (groupUserInfo.admin_group_id !== admin_group_id) {
+          // 그룹/사용자 수정
+          if (!(await db.AdminGroupUser.editAdminGroupId(req, id, admin_group_id))) {
+            throw api.newExceptionError('그룹/사용자 정보 수정 중 오류가 발생했습니다.');
+          }
+        }
+      } else {
+        // 그룹/사용자 등록
+        if (!(await db.AdminGroupUser.add(req, { admin_group_id, admin_user_id: id }))) {
+          throw api.newExceptionError('그룹/사용자 등록 중 오류가 발생했습니다.');
         }
       }
     } else {
-      // 그룹/사용자 등록
-      if (!(await db.AdminGroupUser.add(req, { admin_group_id, admin_user_id: id }))) {
-        throw api.newExceptionError('그룹/사용자 등록 중 오류가 발생했습니다.');
+      if (await db.AdminGroupUser.exists(req, { admin_user_id: id })) {
+        await db.AdminGroupUser.remove(req, { admin_user_id: id });
       }
     }
 
@@ -166,8 +201,12 @@ export default {
   async passwordReset(req: MyRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
 
-    const userInfo = await db.AdminUser.find(req, { id }, ['tel']);
+    const userInfo = await db.AdminUser.info(req, id);
     if (!userInfo) throw api.Error.Parameter;
+
+    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user?.is_super_admin) {
+      throw api.newExceptionError('Super Admin 그룹에 속한 사용자는 수정할 수 없습니다.');
+    }
 
     const password = util.password.hash(userInfo.tel.replace(/-/g, ''));
 
@@ -184,8 +223,11 @@ export default {
   async lock(req: MyRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
 
-    if (await db.AdminUser.notExists(req, { id })) {
-      throw api.Error.Parameter;
+    const userInfo = await db.AdminUser.info(req, id);
+    if (!userInfo) throw api.Error.Parameter;
+
+    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user?.is_super_admin) {
+      throw api.newExceptionError('Super Admin 그룹에 속한 사용자는 수정할 수 없습니다.');
     }
 
     if (!(await db.AdminUser.lock(req, id))) {
@@ -201,8 +243,11 @@ export default {
   async unlock(req: MyRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
 
-    if (await db.AdminUser.notExists(req, { id })) {
-      throw api.Error.Parameter;
+    const userInfo = await db.AdminUser.info(req, id);
+    if (!userInfo) throw api.Error.Parameter;
+
+    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user?.is_super_admin) {
+      throw api.newExceptionError('Super Admin 그룹에 속한 사용자는 수정할 수 없습니다.');
     }
 
     if (!(await db.AdminUser.unlock(req, id))) {
