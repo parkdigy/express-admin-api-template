@@ -19,6 +19,7 @@
     "pm2:stop": "pm2 stop ecosystem.config.js",
     "pm2:delete": "pm2 delete ecosystem.config.js",
     "install:prod": "npm install --only=prod",
+    "reset-gitignore": "git rm -r --cached . && git add .",
     "reinstall-module": "rm -rf node_modules && rm -f package-lock.json && npm i",
     "test": "jest",
     "git:merge-mirror": "git remote update && git merge mirror/main --no-edit"
