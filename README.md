@@ -74,3 +74,12 @@ npm run pm2:start
 # pm2 저장
 pm2 save
 ```
+
+## 배포
+```shell
+# 빌드
+npm run build
+
+# build 된 파일 저장 후 배포 실행
+npm run publish:[production/development/staging]
+```
