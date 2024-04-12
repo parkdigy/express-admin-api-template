@@ -12,6 +12,7 @@
 #PUB#.gitmodules
 #PUB#.prettierignore
 #PUB#.prettierrc.cjs
+#PUB#.publish.js
 #PUB#jest.config.ts
 #PUB#README.md
 #PUB#tsconfig.json
