@@ -1,8 +1,19 @@
-# production
+# production (배포 시 주석 처리)
 /dist
 
-# production deploy (이건 주석 처리하면 안됨)
-/deploy.dat
+# publish
+# 배포 시 publish/development, publish/staging, publish/production Branch 생성하고 모두 주석 해제
+#./src
+#./test
+#./.env.example
+#./.eslintignore
+#./.eslintrc.js
+#./.prettierignore
+#./.prettierrc.cjs
+#./jest.config.ts
+#./README.md
+#./tsconfig.json
+#./webpack.config.js
 
 # development
 /@dev
