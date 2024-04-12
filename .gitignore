@@ -3,6 +3,7 @@
 
 # publish
 # 배포 시 publish/development, publish/staging, publish/production Branch 생성하고 모두 주석 해제
+#./database
 #./src
 #./test
 #./.env.example
