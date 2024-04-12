@@ -21,8 +21,10 @@
     "install:prod": "npm install --only=prod",
     "reset-gitignore": "git rm -r --cached . && git add .",
     "reinstall-module": "rm -rf node_modules && rm -f package-lock.json && npm i",
-    "test": "jest",
-    "git:merge-mirror": "git remote update && git merge mirror/main --no-edit"
+    "make:publish:development": "git branch publish/development && git checkout publish/development && sed -i '' 's/#PUB#//g' .gitignore && npm run reset-gitignore && git add . && git commit -m 'publish/development' && git push origin publish/development",
+    "make:publish:staging": "git branch publish/staging && git checkout publish/staging && sed -i '' 's/#PUB#//g' .gitignore && npm run reset-gitignore && git add . && git commit -m 'publish/staging' && git push origin publish/staging",
+    "make:publish:production": "git branch publish/production && git checkout publish/production && sed -i '' 's/#PUB#//g' .gitignore && npm run reset-gitignore && git add . && git commit -m 'publish/production' && git push origin publish/production",
+    "test": "jest"
   },
   "repository": {
     "type": "git",

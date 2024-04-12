@@ -3,18 +3,18 @@
 
 # publish
 # 배포 시 publish/development, publish/staging, publish/production Branch 생성하고 모두 주석 해제
-#./database
-#./src
-#./test
-#./.env.example
-#./.eslintignore
-#./.eslintrc.js
-#./.prettierignore
-#./.prettierrc.cjs
-#./jest.config.ts
-#./README.md
-#./tsconfig.json
-#./webpack.config.js
+#PUB#/database
+#PUB#/src
+#PUB#/test
+#PUB#.env.example
+#PUB#.eslintignore
+#PUB#.eslintrc.js
+#PUB#.prettierignore
+#PUB#.prettierrc.cjs
+#PUB#jest.config.ts
+#PUB#README.md
+#PUB#tsconfig.json
+#PUB#webpack.config.js
 
 # development
 /@dev
