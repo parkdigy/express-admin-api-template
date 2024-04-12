@@ -9,6 +9,7 @@
 #PUB#.env.example
 #PUB#.eslintignore
 #PUB#.eslintrc.js
+#PUB#.gitmodules
 #PUB#.prettierignore
 #PUB#.prettierrc.cjs
 #PUB#jest.config.ts
