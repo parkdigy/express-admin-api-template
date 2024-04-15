@@ -29,6 +29,9 @@
     "publish:development": "cross-env NODE_ENV=development node .publish.js",
     "publish:staging": "cross-env NODE_ENV=staging node .publish.js",
     "publish:production": "cross-env NODE_ENV=production node .publish.js",
+    "pub:dev": "npm run publish:development",
+    "pub:staging": "npm run publish:staging",
+    "pub:prod": "npm run publish:production",
     "test": "jest"
   },
   "repository": {
