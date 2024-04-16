@@ -10,7 +10,7 @@
 import Starter from './Starter';
 import Finisher from './Finisher';
 import SessionAuthChecker from './JwtCookieAuthChecker';
-import { MyController, MyRequest, MyResponse } from '@types';
+import { MyController } from '@types';
 import { NextFunction, RequestHandler } from 'express';
 
 export default function (
