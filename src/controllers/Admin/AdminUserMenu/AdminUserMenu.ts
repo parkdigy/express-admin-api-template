@@ -2,7 +2,6 @@
  * 어드민 사용자 메뉴 Controller
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { Param_Integer } from '@common_param';
 
 export default {

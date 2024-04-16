@@ -5,7 +5,6 @@
  * - 모든 사용자 메뉴 체크
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { NextFunction } from 'express';
 
 export default function (menus: string | string[], role = menu.Role.Read) {

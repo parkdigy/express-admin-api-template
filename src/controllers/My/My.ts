@@ -2,7 +2,6 @@
  * 내 정보 Controller
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { Param_Password_Required } from '@common_param';
 
 export default {

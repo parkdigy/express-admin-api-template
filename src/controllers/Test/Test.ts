@@ -1,4 +1,3 @@
-import { MyRequest, MyResponse } from '@types';
 import { Param_Boolean, Param_Id_Integer_Required, Param_Page_Limit, Param_String } from '@common_param';
 import { TestDataAddEditParams, TestDataListParams } from '@controllers';
 import { companyNoAutoDash, personalNoAutoDash, telNoAutoDash } from '@pdg/util';

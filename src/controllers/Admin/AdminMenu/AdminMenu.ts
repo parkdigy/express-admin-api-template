@@ -2,7 +2,6 @@
  * 어드민 메뉴 Controller
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { AdminMenuListItem } from './AdminMenu.types';
 import { Param_Boolean_Required, Param_String, Param_String_Required } from '@common_param';
 import { TAdminMenu$UpdateData } from '@db_models';

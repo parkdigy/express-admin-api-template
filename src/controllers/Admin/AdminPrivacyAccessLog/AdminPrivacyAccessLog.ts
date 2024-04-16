@@ -1,4 +1,3 @@
-import { MyRequest, MyResponse } from '@types';
 import { Param_Page_Limit } from '@common_param';
 import { AdminPrivacyAccessLogListParams } from './AdminPrivacyAccessLog.types';
 

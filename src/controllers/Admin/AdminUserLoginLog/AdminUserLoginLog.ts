@@ -2,7 +2,6 @@
  * 어드민 사용자 로그인 로그 Controller
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { AdminUserLoginLogListParam } from './AdminUserLoginLog.types';
 import { Param_Page_Limit } from '@common_param';
 

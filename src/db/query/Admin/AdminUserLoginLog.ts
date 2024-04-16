@@ -2,7 +2,6 @@
  * 어드민 사용자 로그인 로그 Query Class
  ********************************************************************************************************************/
 
-import { MyRequest } from '@types';
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
 

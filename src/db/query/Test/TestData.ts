@@ -2,7 +2,6 @@
  * 회원 Query Class
  * ******************************************************************************************************************/
 
-import { MyRequest } from '@types';
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
 import { TTestData$Status } from '@db_models';

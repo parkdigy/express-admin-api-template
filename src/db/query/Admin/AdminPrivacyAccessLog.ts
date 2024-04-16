@@ -5,7 +5,6 @@
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
 import { TAdminPrivacyAccessLog$Type } from '@db';
-import { MyRequest } from '@types';
 
 const tableName: Knex.TableNames = 'admin_privacy_access_log';
 type tableName = typeof tableName;

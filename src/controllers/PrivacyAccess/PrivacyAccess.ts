@@ -1,4 +1,3 @@
-import { MyRequest, MyResponse } from '@types';
 import { Param_Enum_Required, Param_Integer_Required, Param_String_Required } from '@common_param';
 
 export default {

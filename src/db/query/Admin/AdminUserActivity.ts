@@ -2,7 +2,6 @@
  * 어드민 사용자 활동 로그 Query Class
  ********************************************************************************************************************/
 
-import { MyRequest } from '@types';
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
 import { TAdminUser, TAdminUserActivity } from '@db_models';

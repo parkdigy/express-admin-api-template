@@ -2,7 +2,6 @@
  * 어드민 사용자 Controller
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { AdminUserListParam } from './AdminUser.types';
 import { Knex } from 'knex';
 import {

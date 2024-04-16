@@ -2,7 +2,6 @@
  * 어드민 그룹 Controller
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { AdminGroupAddParam, AdminGroupEditParam } from './AdminGroup.types';
 import { Param_Boolean, Param_Id_Integer_Required } from '@common_param';
 

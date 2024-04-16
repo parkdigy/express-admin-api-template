@@ -4,7 +4,6 @@
  * - /my//permission 통해서 등록 후 5초 동안 허용
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { NextFunction } from 'express';
 
 export default function (req: MyRequest, res: MyResponse, next: NextFunction) {

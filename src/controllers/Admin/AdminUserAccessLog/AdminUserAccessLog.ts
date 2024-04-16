@@ -2,7 +2,6 @@
  * 어드민 사용자 사용 로그 Controller
  * ******************************************************************************************************************/
 import { AdminUserAccessLogListParam } from './AdminUserAccessLog.types';
-import { MyRequest, MyResponse } from '@types';
 import { Param_Id_String_Required, Param_Page_Limit, Param_String_Required } from '@common_param';
 
 export default {

@@ -2,7 +2,6 @@
  * 어드민 그룹 사용자 Query Class
  ********************************************************************************************************************/
 
-import { MyRequest } from '@types';
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
 
