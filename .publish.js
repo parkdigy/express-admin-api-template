@@ -38,8 +38,8 @@ exec('git branch', (err, stdout, stderr) => {
       return;
     }
 
-    ll(`git merge ${currentBranch}`);
-    exec(`git merge ${currentBranch}`, (err, stdout, stderr) => {
+    ll(`git merge -X theirs ${currentBranch}`);
+    exec(`git merge -X theirs ${currentBranch}`, (err, stdout, stderr) => {
       ll('npm run reset-gitignore');
       exec('npm run reset-gitignore', (err, stdout, stderr) => {
         if (err) {
