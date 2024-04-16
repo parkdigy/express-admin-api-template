@@ -30,6 +30,7 @@
     "pub:dev": "npm run publish:development",
     "pub:staging": "npm run publish:staging",
     "pub:prod": "npm run publish:production",
+    "pub:all": "npm run pub:dev && npm run pub:staging && npm run pub:prod",
     "test": "jest"
   },
   "repository": {
