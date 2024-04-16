@@ -2,7 +2,7 @@
  * MS-SQL Query Class
  * ******************************************************************************************************************/
 
-import { MyRequest, TableRecord } from '@types';
+import { TableRecord } from '@types';
 import { DeferredKeySelection, Knex, StrKey, UnwrapArrayMember } from 'knex';
 import { MsSqlKnexUtil } from '../../knex';
 import ResolveTableType = Knex.ResolveTableType;

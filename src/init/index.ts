@@ -2,6 +2,7 @@ import 'dotenv/config';
 
 import '../@types';
 
+import './global.types';
 import './global.log';
 import './global.PdgUtil';
 import './global.array';

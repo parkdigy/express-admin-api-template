@@ -1,5 +1,5 @@
+import '../../src/init/global.types';
 import excel from '../../src/common/excel';
-import { MyResponse } from '@types';
 
 describe('excel', () => {
   let res: MyResponse;

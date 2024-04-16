@@ -1,5 +1,4 @@
 import { ApiData, ApiPaging, ApiResponse, ApiError } from './api.types';
-import { MyResponse } from '@types';
 
 type ApiMsg =
   | string

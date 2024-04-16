@@ -3,7 +3,6 @@
  * ******************************************************************************************************************/
 
 import xlsx from 'sheetjs-style';
-import { MyResponse } from '@types';
 import {
   ExcelBorder,
   ExcelBorderStyle,

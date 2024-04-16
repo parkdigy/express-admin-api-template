@@ -1,8 +1,8 @@
+import '../../src/init/global.types';
 import '../../src/init/global.PdgUtil';
 import '../../src/init/global.string';
 import '../../src/init/global.error';
 import param from '../../src/common/param';
-import { MyRequest } from '@types';
 import {
   Param_Array,
   Param_Array_Required,

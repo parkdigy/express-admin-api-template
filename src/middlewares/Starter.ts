@@ -4,7 +4,6 @@
  * - starter 로그 출력
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { NextFunction } from 'express';
 
 export default async function (req: MyRequest, res: MyResponse, next: NextFunction) {

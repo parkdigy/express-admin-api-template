@@ -1,5 +1,4 @@
 import { SignOptions, JwtPayload as _JwtPayload, VerifyOptions } from 'jsonwebtoken';
-import { MyRequest, MyResponse } from '@types';
 
 export interface JwtPayload extends _JwtPayload {
   key: string;

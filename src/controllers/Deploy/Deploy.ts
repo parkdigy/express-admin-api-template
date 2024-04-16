@@ -4,7 +4,6 @@
 
 import { exec } from 'child_process';
 import crypto from 'crypto';
-import { MyRequest, MyResponse } from '@types';
 
 export default {
   /********************************************************************************************************************

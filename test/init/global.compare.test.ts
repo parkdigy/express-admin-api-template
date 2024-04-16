@@ -1,3 +1,4 @@
+import '../../src/init/global.types';
 import '../../src/init/global.compare';
 
 describe('isClass', () => {

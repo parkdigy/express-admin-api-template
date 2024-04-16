@@ -2,7 +2,6 @@
  * 관리자 인증 Controller
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { Param_Email_Required, Param_Password_Required } from '@common_param';
 
 export default {

@@ -7,7 +7,6 @@
  * ******************************************************************************************************************/
 
 import { NextFunction } from 'express';
-import { MyRequest, MyResponse } from '@types';
 
 export default async function (req: MyRequest, res: MyResponse, next: NextFunction) {
   try {

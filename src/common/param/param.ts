@@ -3,7 +3,6 @@
  * - express request 객체에서 Parameter 를 추출하고 검증
  * ******************************************************************************************************************/
 
-import { MyRequest } from '@types';
 import { ParamOption, ParamOptionDataType } from './param.types';
 import dayjs from 'dayjs';
 import {

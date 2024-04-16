@@ -5,7 +5,6 @@
  * ******************************************************************************************************************/
 
 import { NextFunction } from 'express';
-import { MyRequest, MyResponse } from '@types';
 import logging from '@common_logging';
 
 const $logging = process.env.LOGGING === 'true';

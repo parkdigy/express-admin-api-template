@@ -2,7 +2,7 @@
  * MySql Query Class
  * ******************************************************************************************************************/
 
-import { MyRequest, TableRecord } from '@types';
+import { TableRecord } from '@types';
 import { DeferredKeySelection, Knex, StrKey, UnwrapArrayMember } from 'knex';
 import { MySqlKnexUtil } from '../../knex';
 import ResolveTableType = Knex.ResolveTableType;

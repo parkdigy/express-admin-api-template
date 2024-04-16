@@ -3,7 +3,6 @@
  * - req.$$remoteIpAddress 에 클라이언트 IP 주소 저장
  * ******************************************************************************************************************/
 
-import { MyRequest, MyResponse } from '@types';
 import { NextFunction } from 'express';
 
 export default function (req: MyRequest, res: MyResponse, next: NextFunction) {

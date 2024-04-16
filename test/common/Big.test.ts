@@ -1,3 +1,4 @@
+import '../../src/init/global.types';
 import Big from '../../src/common/Big';
 
 describe('Big', () => {
