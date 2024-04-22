@@ -152,9 +152,9 @@ VALUES
 	('admin/user', '사용자 관리', 2, 'admin', '/admin/user', 0, 0, NULL, 10),
 	('admin/group', '그룹 관리', 2, 'admin', '/admin/group', 0, 0, NULL, 20),
 	('admin/login_log', '로그인 로그', 2, 'admin', '/admin/login_log', 0, 1, NULL, 30),
-	('admin/access_log', '사용 로그', 2, 'admin', '/admin/access_log', 0, 1, NULL, 40);
-	('admin/privacy_access_log', '개인정보 조회 로그', 2, 'admin', '/admin/privacy_access_log', 0, 1, NULL, 50);
-	('admin/password', '비밀번호 수정', 2, 'admin', '/admin/password', 0, 1, NULL, 60),
+	('admin/access_log', '사용 로그', 2, 'admin', '/admin/access_log', 0, 1, NULL, 40),
+	('admin/privacy_access_log', '개인정보 조회 로그', 2, 'admin', '/admin/privacy_access_log', 0, 1, NULL, 50),
+	('admin/password', '비밀번호 수정', 2, 'admin', '/admin/password', 0, 1, NULL, 60);
 
 INSERT INTO `admin_user_access_key` (`id`, `type`, `title`)
 VALUES
@@ -169,5 +169,5 @@ VALUES
 	('admin/user', 'VIEW', '어드민 관리 > 사용자 관리'),
 	('export/admin/login_log', 'EXPORT', '어드민 관리 > 로그인 로그'),
 	('export/admin/user_access_log', 'EXPORT', '어드민 관리 > 접근 통계'),
-	('export/admin/user', 'EXPORT', '어드민 관리 > 사용자 관리');
+	('export/admin/user', 'EXPORT', '어드민 관리 > 사용자 관리'),
 	('export/admin/privacy_access_log', 'EXPORT', '어드민 관리 > 개인정보 조회 로그');
