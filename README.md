@@ -1,4 +1,4 @@
-# express-api-template
+# express-admin-api-template
 
 ## 배포 준비
 - .gitignore 파일에서 /dist 주석 처리
