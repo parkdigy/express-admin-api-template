@@ -2,7 +2,7 @@
  * AWS S3 모듈 (Public)
  * ******************************************************************************************************************/
 
-import { S3Client, HeadObjectCommand, PutObjectCommandInput, PutObjectCommand } from '@aws-sdk/client-s3';
+import {S3Client, HeadObjectCommand, PutObjectCommandInput, PutObjectCommand, NotFound} from '@aws-sdk/client-s3';
 import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
@@ -22,7 +22,7 @@ if (notEmpty(process.env.S3_KEY) && notEmpty(process.env.S3_SECRET) && notEmpty(
 
 const awsS3Public = {
   /********************************************************************************************************************
-   * 파일 존재 여부
+   * 파일 존재 여부 : IAM 의 s3:ListBucket 권한이 필요함
    * @param s3PathFileName S3 경로 및 파일명
    * @returns 파일 존재 여부
    * ******************************************************************************************************************/
@@ -38,17 +38,10 @@ const awsS3Public = {
           resolve(true);
         })
         .catch((err) => {
-          if (err) {
-            switch (err.code) {
-              case 'Forbidden':
-              case 'NotFound':
-                resolve(false);
-                break;
-              default:
-                reject(err);
-            }
-          } else {
-            resolve(true);
+          if (err && err instanceof NotFound) {
+            resolve(false);
+          } else if (err) {
+            reject(true);
           }
         });
     });

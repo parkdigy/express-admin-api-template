@@ -8,7 +8,7 @@ import {
   PutObjectCommandInput,
   GetObjectCommand,
   GetObjectCommandOutput,
-  PutObjectCommand,
+  PutObjectCommand, NotFound,
 } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import path from 'path';
@@ -33,7 +33,7 @@ if (
 
 export const awsS3Private = {
   /********************************************************************************************************************
-   * 파일 존재 여부
+   * 파일 존재 여부 : IAM 의 s3:ListBucket 권한이 필요함
    * @param s3PathFileName S3 경로 및 파일명
    * @returns 파일 존재 여부
    * ******************************************************************************************************************/
@@ -49,17 +49,10 @@ export const awsS3Private = {
           resolve(true);
         })
         .catch((err) => {
-          if (err) {
-            switch (err.code) {
-              case 'Forbidden':
-              case 'NotFound':
-                resolve(false);
-                break;
-              default:
-                reject(err);
-            }
-          } else {
-            resolve(true);
+          if (err && err instanceof NotFound) {
+            resolve(false);
+          } else if (err) {
+            reject(true);
           }
         });
     });
