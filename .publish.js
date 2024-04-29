@@ -38,35 +38,43 @@ exec('git branch', (err, stdout, stderr) => {
       return;
     }
 
-    ll(`git merge -X theirs ${currentBranch}`);
-    exec(`git merge -X theirs ${currentBranch}`, (err, stdout, stderr) => {
-      ll('npm run reset-gitignore');
-      exec('npm run reset-gitignore', (err, stdout, stderr) => {
-        if (err) {
-          ll(err);
-          return;
-        }
+    ll('git pull');
+    exec('git pull', (err, stdout, stderr) => {
+      if (err) {
+        ll(err);
+        return;
+      }
 
-        const command = isWin
-          ? 'cmd /V /C "set "GIT_EDITOR=true" && git merge --continue"'
-          : 'GIT_EDITOR=true git merge --continue';
-        ll(command);
-        exec(command, (err, stdout, stderr) => {
-          ll(`git push origin publish/${mode}`);
-          exec(`git push origin publish/${mode}`, (err, stdout, stderr) => {
-            if (err) {
-              ll(err);
-              return;
-            }
+      ll(`git merge -X theirs ${currentBranch}`);
+      exec(`git merge -X theirs ${currentBranch}`, (err, stdout, stderr) => {
+        ll('npm run reset-gitignore');
+        exec('npm run reset-gitignore', (err, stdout, stderr) => {
+          if (err) {
+            ll(err);
+            return;
+          }
 
-            ll(`git checkout ${currentBranch}`);
-            exec(`git checkout ${currentBranch}`, (err, stdout, stderr) => {
+          const command = isWin
+            ? 'cmd /V /C "set "GIT_EDITOR=true" && git merge --continue"'
+            : 'GIT_EDITOR=true git merge --continue';
+          ll(command);
+          exec(command, (err, stdout, stderr) => {
+            ll(`git push origin publish/${mode}`);
+            exec(`git push origin publish/${mode}`, (err, stdout, stderr) => {
               if (err) {
                 ll(err);
                 return;
               }
 
-              ll('success');
+              ll(`git checkout ${currentBranch}`);
+              exec(`git checkout ${currentBranch}`, (err, stdout, stderr) => {
+                if (err) {
+                  ll(err);
+                  return;
+                }
+
+                ll('success');
+              });
             });
           });
         });
