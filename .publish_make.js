@@ -11,15 +11,17 @@ if (!['development', 'staging', 'production'].includes(mode)) {
   return;
 }
 
-const publishBranch = (publishBranchName, mergeFromBranchName, callback) => {
+const makePublishBranch = (branchName, callback) => {
   const commands = [
-    `git checkout ${publishBranchName}`,
-    'git pull',
-    {command: `git merge -X theirs ${mergeFromBranchName}`, skipError: true},
+    'git checkout main',
+    `git branch ${branchName}`,
+    `git checkout ${branchName}`,
+    'sed -i \'\' \'s/#PUB#//g\' .gitignore',
     'npm run reset-gitignore',
-    {command: isWin ? 'cmd /V /C "set "GIT_EDITOR=true" && git merge --continue"' : 'GIT_EDITOR=true git merge --continue', skipError: true},
-    `git push origin ${publishBranchName}`,
-    `git checkout ${mergeFromBranchName}`
+    'git add .',
+    `git commit -m '${branchName}'`,
+    `git push --set-upstream origin ${branchName}`,
+    'git checkout main'
   ]
 
   const runCommand = (index) => {
@@ -54,33 +56,28 @@ const publishBranch = (publishBranchName, mergeFromBranchName, callback) => {
   runCommand(0);
 }
 
-ll('git branch');
 exec('git branch', (err, stdout, stderr) => {
   if (err) {
-    ll(err);
+    ll('ERROR!!!', err);
     return;
   }
 
-  let currentBranch = undefined;
   let commonBranchExists = false;
+  let modeBranchExists = false;
 
   stdout.split('\n').find((branch) => {
-    if (branch.indexOf('* ') === 0) {
-      currentBranch = branch.substr(2).trim();
-      return true;
+    let branchName = branch.trim();
+    if (branchName.indexOf('* ') === 0) {
+      branchName = branch.substr(2).trim();
+    }
+    if (branchName === modeBranchName) {
+      modeBranchExists = true;
     }
   });
 
-  if (!currentBranch) {
-    ll('Cannot find current branch');
-    return;
+  if (!modeBranchExists) {
+    makePublishBranch(modeBranchName);
+  } else {
+    ll(`${modeBranchName} branch already exists.`)
   }
-
-  publishBranch(modeBranchName, currentBranch, (success) => {
-    if (success) {
-      ll('Publish success');
-    } else {
-      ll('Publish failed!!!');
-    }
-  });
 });
