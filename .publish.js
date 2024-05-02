@@ -56,7 +56,6 @@ const publishBranch = (publishBranchName, mergeFromBranchName, callback) => {
   runCommand(0);
 }
 
-ll('git branch');
 exec('git branch', (err, stdout, stderr) => {
   if (err) {
     ll(err);
