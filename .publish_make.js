@@ -16,7 +16,7 @@ const makePublishBranch = (branchName, callback) => {
     'git checkout main',
     `git branch ${branchName}`,
     `git checkout ${branchName}`,
-    'sed -i \'\' \'s/#PUB#//g\' .gitignore',
+    isWin ? `(Get-Content .gitignore) -replace '#PUB#', '' | Set-Content .gitignore` : `sed -i '' 's/#PUB#//g' .gitignore`,
     'npm run reset-gitignore',
     'git add .',
     `git commit -m '${branchName}'`,

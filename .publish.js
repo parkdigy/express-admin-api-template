@@ -16,6 +16,7 @@ const publishBranch = (publishBranchName, mergeFromBranchName, callback) => {
     `git checkout ${publishBranchName}`,
     'git pull',
     {command: `git merge -X theirs ${mergeFromBranchName}`, skipError: true},
+    isWin ? `(Get-Content .gitignore) -replace '#PUB#', '' | Set-Content .gitignore` : `sed -i '' 's/#PUB#//g' .gitignore`,
     'npm run reset-gitignore',
     {command: isWin ? 'cmd /V /C "set "GIT_EDITOR=true" && git merge --continue"' : 'GIT_EDITOR=true git merge --continue', skipError: true},
     `git push origin ${publishBranchName}`,
