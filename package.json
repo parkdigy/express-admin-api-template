@@ -46,7 +46,7 @@
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.523.0",
     "@aws-sdk/signature-v4-crt": "^3.523.0",
-    "@pdg/util": "^1.0.20",
+    "@pdg/util": "^1.0.22",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.6",
     "@types/cors": "^2.8.17",
