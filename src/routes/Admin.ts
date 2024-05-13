@@ -60,10 +60,10 @@ router.post('/user_access_log', ApiController(AdminUserAccessLog.add));
 router.get('/group', ApiControllerReadRole([menu.admin.group, menu.admin.user], AdminGroup.list));
 // 어드민 그룹 - 등록
 router.post('/group', ApiControllerWriteRole(menu.admin.group, AdminGroup.add));
-// 어드민 그룹 - 수정
-router.patch('/group', ApiControllerWriteRole(menu.admin.group, AdminGroup.edit));
 // 어드민 그룹 - 정보
 router.get('/group/:id', ApiControllerReadRole(menu.admin.group, AdminGroup.info));
+// 어드민 그룹 - 수정
+router.patch('/group/:id', ApiControllerWriteRole(menu.admin.group, AdminGroup.edit));
 
 /********************************************************************************************************************
  * 어드민 사용자 활동
