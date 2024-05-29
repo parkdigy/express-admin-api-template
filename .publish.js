@@ -14,6 +14,7 @@ if (!['development', 'staging', 'production'].includes(mode)) {
 const publishBranch = (publishBranchName, mergeFromBranchName, callback) => {
   const commands = [
     `git checkout ${publishBranchName}`,
+    'git remote update',
     'git pull',
     {command: `git merge -X theirs ${mergeFromBranchName}`, skipError: true},
     isWin ? `(Get-Content .gitignore) -replace '#PUB#', '' | Set-Content .gitignore` : `sed -i '' 's/#PUB#//g' .gitignore`,

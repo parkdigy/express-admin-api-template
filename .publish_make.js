@@ -14,6 +14,7 @@ if (!['development', 'staging', 'production'].includes(mode)) {
 const makePublishBranch = (branchName, callback) => {
   const commands = [
     'git checkout main',
+    'git remote update',
     `git branch ${branchName}`,
     `git checkout ${branchName}`,
     isWin ? `(Get-Content .gitignore) -replace '#PUB#', '' | Set-Content .gitignore` : `sed -i '' 's/#PUB#//g' .gitignore`,
