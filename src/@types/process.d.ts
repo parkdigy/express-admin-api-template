@@ -26,8 +26,6 @@ declare namespace NodeJS {
     APP_SECURE_KEY_PATH: string;
     // HTTPS 인증서 cert.pem 파일 경로
     APP_SECURE_CERT_PATH: string;
-    // HTTPS 인증서 ca.pem 파일 경로
-    APP_SECURE_CA_PATH: string;
 
     // API 시작/종료 로그 표시 여부
     API_START_FINISH_LOG_SHOW: EnvBoolean;
