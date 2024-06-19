@@ -6,6 +6,7 @@ import mime from 'mime-types';
 import path from 'path';
 import dayjs from 'dayjs';
 import { uuid } from '@pdg/util';
+import fs from 'fs';
 
 export const file = {
   /********************************************************************************************************************
@@ -50,6 +51,32 @@ export const file = {
     const dt = dayjs().format('YYYYMMDDHHmmss');
     const rnd = Math.floor(Math.random() * 100000);
     return `${dt}_${uuid(true)}_${rnd}${isEmptyExt ? '' : ext}`;
+  },
+
+  /********************************************************************************************************************
+   * 폴더 삭제 (하위 파일/디렉토리 포함)
+   * @param directoryPath 디렉토리
+   * @returns Promise<void>
+   * ******************************************************************************************************************/
+  deleteDirectoryRecursive(directoryPath: string) {
+    try {
+      const files = fs.readdirSync(directoryPath);
+
+      for (const file of files) {
+        const currentPath = path.join(directoryPath, file);
+        const fileStat = fs.lstatSync(currentPath);
+
+        if (fileStat.isDirectory()) {
+          this.deleteDirectoryRecursive(currentPath);
+        } else {
+          fs.unlinkSync(currentPath);
+        }
+      }
+
+      fs.rmdirSync(directoryPath);
+    } catch (err) {
+      console.error(`Error while deleting ${directoryPath}.`, err);
+    }
   },
 };
 
