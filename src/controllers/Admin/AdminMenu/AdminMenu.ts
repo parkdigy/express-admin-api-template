@@ -143,6 +143,10 @@ export default {
       parent_id ? `${parentName} > ${name}` : name
     );
 
+    if (parent_id) {
+      await db.AdminMenu.edit(req, { uri: null }, { id: parent_id });
+    }
+
     // Commit Transaction
     await db.trans.commit(req);
 
@@ -188,17 +192,20 @@ export default {
     }
 
     let parentName: string | undefined = undefined;
+
     if (info.parent_id) {
       // 부모 메뉴 정보
       const parentInfo = await db.AdminMenu.find(req, { id: info.parent_id }).select('name');
       parentName = parentInfo?.name;
     }
 
+    const childMenuExists = await db.AdminMenu.exists(req, { parent_id: id });
+
     // Begin Transaction
     await db.trans.begin(req);
 
     // 메뉴 수정
-    await db.AdminMenu.edit(req, { id: newId, name, icon, uri: `/${newId}` }, { id });
+    await db.AdminMenu.edit(req, { id: newId, name, icon, uri: childMenuExists ? null : `/${newId}` }, { id });
 
     // 사용자 접근키 등록/수정
     await db.AdminUserAccessKey.addEdit(
@@ -316,10 +323,18 @@ export default {
     }
 
     // 서브 메뉴가 있는지 검사
-    if (await db.AdminMenu.exists(req, { parent_id: id }))
+    if (await db.AdminMenu.exists(req, { parent_id: id })) {
       throw api.newExceptionError('하위 메뉴가 있으면 삭제할 수 없습니다.');
+    }
 
-    await db.AdminMenu.remove(req, { id });
+    const info = await db.AdminMenu.find(req, { id }).select('parent_id');
+    if (info && info.parent_id) {
+      await db.AdminMenu.remove(req, { id });
+
+      if (await db.AdminMenu.notExists(req, { parent_id: info.parent_id })) {
+        await db.AdminMenu.edit(req, { uri: `/${info.parent_id}` }, { id: info.parent_id });
+      }
+    }
 
     api.successMsg(res, '삭제되었습니다.');
   },
