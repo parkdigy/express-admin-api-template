@@ -112,9 +112,7 @@ export default {
 
     // 사용자 등록
     const password = util.password.hash(tel.replace(/-/g, ''));
-    const userId = (
-      await db.AdminUser.add(req, { email, password, name, tel, create_date: now(), update_date: now() })
-    )[0];
+    const userId = (await db.AdminUser.addWithCreateUpdateDate(req, { email, password, name, tel }))[0];
     if (!userId) {
       throw api.newExceptionError('사용자 등록 중 오류가 발생했습니다.');
     }

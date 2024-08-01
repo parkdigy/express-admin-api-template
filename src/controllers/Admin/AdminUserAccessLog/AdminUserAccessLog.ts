@@ -62,11 +62,10 @@ export default {
       } else {
         if (await db.AdminUserAccessKey.exists(req, { id })) {
           if (process.env.APP_ENV !== 'local') {
-            await db.AdminUserAccessLog.add(req, {
+            await db.AdminUserAccessLog.addWithCreateDate(req, {
               admin_user_id: req.$$user.id,
               admin_user_access_key_id: id,
               url,
-              create_date: now(),
             });
           }
 
