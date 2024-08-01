@@ -213,6 +213,48 @@ export default class MsSqlQuery<
   }
 
   /********************************************************************************************************************
+   * addWithCreateDate
+   * ******************************************************************************************************************/
+  addWithCreateDate<TKey extends StrKey<ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
+    req: MyRequest,
+    data: Omit<TInsertRecord, 'create_date'> | readonly Omit<TInsertRecord, 'create_date'>[],
+    returning?: Returning
+  ) {
+    const finalData = Array.isArray(data)
+      ? data.map((d) => ({ ...d, create_date: now() }))
+      : { ...data, create_date: now() };
+    if (Array.isArray(returning)) {
+      return this._getBuilder(req).insert(finalData as any, returning);
+    } else if (returning) {
+      return this._getBuilder(req).insert(finalData as any, returning);
+    } else {
+      return this._getBuilder(req).insert(finalData as any);
+    }
+  }
+
+  /********************************************************************************************************************
+   * addWithCreateUpdateDate
+   * ******************************************************************************************************************/
+  addWithCreateUpdateDate<TKey extends StrKey<ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
+    req: MyRequest,
+    data:
+      | Omit<TInsertRecord, 'create_date' | 'update_date'>
+      | readonly Omit<TInsertRecord, 'create_date' | 'update_date'>[],
+    returning?: Returning
+  ) {
+    const finalData = Array.isArray(data)
+      ? data.map((d) => ({ ...d, create_date: now(), update_date: now() }))
+      : { ...data, create_date: now() };
+    if (Array.isArray(returning)) {
+      return this._getBuilder(req).insert(finalData as any, returning);
+    } else if (returning) {
+      return this._getBuilder(req).insert(finalData as any, returning);
+    } else {
+      return this._getBuilder(req).insert(finalData as any);
+    }
+  }
+
+  /********************************************************************************************************************
    * edit
    * ******************************************************************************************************************/
   edit(
@@ -225,6 +267,26 @@ export default class MsSqlQuery<
     if (empty(whereColumnValues) && empty(negativeWhereColumnValues)) return null;
 
     const builder = this._getBuilder(req).update(data as any);
+
+    if (whereColumnValues) this.applyWhere(builder, whereColumnValues);
+    if (negativeWhereColumnValues) this.applyWhere(builder, negativeWhereColumnValues, true);
+
+    return builder;
+  }
+
+  /********************************************************************************************************************
+   * edit
+   * ******************************************************************************************************************/
+  editWithUpdateDate(
+    req: MyRequest,
+    data: Omit<TUpdateRecord, 'update_date'>,
+    whereColumnValues: TWhereColumnNameValues,
+    negativeWhereColumnValues?: TWhereColumnNameValues
+  ) {
+    if (empty(data)) return null;
+    if (empty(whereColumnValues) && empty(negativeWhereColumnValues)) return null;
+
+    const builder = this._getBuilder(req).update({ ...data, update_date: now() } as any);
 
     if (whereColumnValues) this.applyWhere(builder, whereColumnValues);
     if (negativeWhereColumnValues) this.applyWhere(builder, negativeWhereColumnValues, true);
