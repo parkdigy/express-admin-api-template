@@ -33,7 +33,7 @@ const knex = Knex({
         //   break;
         case 'TINY': // TINYINT(1) 형을 boolean 형식으로 변환
           if (field.length === 1) {
-            value = !!value;
+            value = value === null ? null : !!value;
           }
           break;
       }
