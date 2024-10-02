@@ -47,6 +47,7 @@ yum install -y git
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && source /root/.bashrc && nvm install 16.20.2 
 
 # REDIS 설치 (선택)
+# AWS EC2 에 설치시에는 https://dangdangee.tistory.com/entry/Redis-ec2%EC%97%90-%EB%A0%88%EB%94%94%EC%8A%A4-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0 참고
 yum install -y epel-release && yum install -y redis && systemctl start redis && systemctl enable redis 
 
 # PM2 설치
