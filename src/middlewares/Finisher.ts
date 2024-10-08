@@ -9,6 +9,9 @@ export default async function (req: MyRequest) {
   env.$$routerCount = (env.$$routerCount || 0) - 1;
 
   if (process.env.API_START_FINISH_LOG_SHOW === 'true') {
-    ll('finisher', req.method, `${req.baseUrl}${req.path}`, env.$$routerCount);
+    const url = `${req.baseUrl}${req.path}`;
+    if (url !== '/ping/') {
+      ll('finisher', req.method, url, env.$$routerCount);
+    }
   }
 }
