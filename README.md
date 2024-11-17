@@ -53,6 +53,16 @@ yum install -y epel-release && yum install -y redis && systemctl start redis && 
 # PM2 설치
 npm i -g pm2 && pm2 startup && systemctl start pm2-root && systemctl enable pm2-root
 
+# AWS EC2 프리티어 사용 시 swap 메모리 설정 (선택)
+fallocate -l 2G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+# 재부팅시에도 실행되도록 설정
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+# swap 메모리 확인
+free -h
+
 # github 에 등록 할 SSH-KEY 생성 (생성 후 github 에 등록)
 ssh-keygen -t ecdsa -b 521 && cat /root/.ssh/id_ecdsa.pub
 
