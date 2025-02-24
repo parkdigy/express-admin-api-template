@@ -69,7 +69,7 @@
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "aes256": "^1.1.0",
-    "axios": "^1.7.7",
+    "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
     "concurrently": "^8.2.2",
     "connect-redis": "^7.1.1",
