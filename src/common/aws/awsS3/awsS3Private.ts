@@ -8,7 +8,8 @@ import {
   PutObjectCommandInput,
   GetObjectCommand,
   GetObjectCommandOutput,
-  PutObjectCommand, NotFound,
+  PutObjectCommand,
+  NotFound,
 } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import path from 'path';
@@ -72,23 +73,12 @@ export const awsS3Private = {
     return new Promise<{ pathName: string; fileName: string }>((resolve, reject) => {
       const { originalname: originalName, mimetype: mimeType, path: localFilePath } = file;
 
-      const removeLocalFile = () => {
-        if (localFilePath) {
-          fs.unlink(localFilePath, (err) => {
-            if (err) {
-              ll('fs.unlink', err);
-            }
-          });
-        }
-      };
-
       let ext: string | false = path.extname(originalName);
       if (empty(ext)) {
         ext = util.file.mimeTypeExtension(mimeType, true);
       }
 
       if (!ext || empty(ext)) {
-        removeLocalFile();
         reject(new Error('s3Upload.uploadMulterFile : 확장자명 없음'));
       } else {
         try {
@@ -108,7 +98,6 @@ export const awsS3Private = {
 
           s3.send(command)
             .then((data) => {
-              removeLocalFile();
               if (data.$metadata.httpStatusCode === 200) {
                 resolve({ pathName: s3PathName, fileName: s3FileName as string });
               } else {
@@ -116,11 +105,9 @@ export const awsS3Private = {
               }
             })
             .catch((err) => {
-              removeLocalFile();
               reject(err);
             });
         } catch (err) {
-          removeLocalFile();
           reject(err);
         }
       }
