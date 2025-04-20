@@ -121,6 +121,23 @@ export default class Big {
   };
 
   /********************************************************************************************************************
+   * 나머지 (mod)
+   * @param number 나눌 숫자
+   * @returns 나머지 값
+   * ******************************************************************************************************************/
+  mod = (number: number): Big => {
+    const a = new bigDecimal(this.value);
+    const b = new bigDecimal(number);
+
+    const div = bigDecimal.divide(a.getValue(), b.getValue(), 20);
+    const flooredDiv = bigDecimal.floor(div);
+    const mul = bigDecimal.multiply(b.getValue(), flooredDiv);
+
+    this.value = bigDecimal.subtract(a.getValue(), mul);
+    return this;
+  };
+
+  /********************************************************************************************************************
    * 부호 변경
    * ******************************************************************************************************************/
   negate = (): Big => {
