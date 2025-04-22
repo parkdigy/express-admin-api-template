@@ -42,6 +42,30 @@ declare module 'knex' {
         columnWithAlias2: TKey1
       ): QueryBuilder<TRecord2, TResult, TAliasRecord>;
 
+      <
+        TTable2 extends TableNames,
+        TKey2 extends StrKey<ResolveTableType<AliasTableType<TTable2, Alias2>>>,
+        Alias2 extends TableNames | string | undefined = TTable2,
+        TRecord1 = ResolveTableType<TRecord>,
+        TRecord2 extends {} = TRecord1 & ResolveTableType<AliasTableType<TTable2, Alias2>>,
+      >(
+        tableNameWithAlias: `${TTable2} ${Lowercase<'as'>} ${Alias2}` | TTable2,
+        columnWithAlias1: TKey2,
+        columnWithAlias2: Raw
+      ): QueryBuilder<TRecord2, TResult, TAliasRecord>;
+
+      <
+        TTable2 extends TableNames,
+        TKey2 extends StrKey<ResolveTableType<AliasTableType<TTable2, Alias2>>>,
+        Alias2 extends TableNames | string | undefined = TTable2,
+        TRecord1 = ResolveTableType<TRecord>,
+        TRecord2 extends {} = TRecord1 & ResolveTableType<AliasTableType<TTable2, Alias2>>,
+      >(
+        tableNameWithAlias: `${TTable2} ${Lowercase<'as'>} ${Alias2}` | TTable2,
+        columnWithAlias1: TKey2,
+        columnWithAlias2: QueryBuilder
+      ): QueryBuilder<TRecord2, TResult, TAliasRecord>;
+
       /********************************************************************************************************************
        * (table, column1, operator, column2)
        * ******************************************************************************************************************/
@@ -152,141 +176,6 @@ declare module 'knex' {
         column1: TKey2,
         column2: TKey1
       ): QueryBuilder<TRecord3, TResult, TAliasRecord>;
-
-      /****************************************************************************************************************/
-
-      // <
-      //   TJoinTargetRecord extends {} = any,
-      //   TRecord2 extends {} = TRecord & TJoinTargetRecord,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   raw: Raw
-      // ): QueryBuilder<TRecord2, TResult2>;
-
-      // <
-      //   TTable extends TableNames,
-      //   TRecord2 extends {} = ResolveTableType<TRecord> & ResolveTableType<TableType<TTable>>,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TTable,
-      //   clause: JoinCallback
-      // ): QueryBuilder<TRecord2, TResult2>;
-
-      // <
-      //   TJoinTargetRecord extends {} = any,
-      //   TRecord2 extends {} = TRecord & TJoinTargetRecord,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TableDescriptor | AliasDict | QueryCallback,
-      //   clause: JoinCallback
-      // ): QueryBuilder<TRecord2, TResult2>;
-
-      // <
-      //   TJoinTargetRecord extends {} = any,
-      //   TRecord2 extends {} = TRecord & TJoinTargetRecord,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TableDescriptor | AliasDict | QueryCallback,
-      //   columns: { [key: string]: string | number | boolean | Raw }
-      // ): QueryBuilder<TRecord2, TResult2>;
-
-      // <
-      //   TJoinTargetRecord extends {} = any,
-      //   TRecord2 extends {} = TRecord & TJoinTargetRecord,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TableDescriptor | AliasDict | QueryCallback,
-      //   raw: Raw
-      // ): QueryBuilder<TRecord2, TResult2>;
-
-      // <
-      //   TTable1 extends TableNames,
-      //   TTable2 extends TableNames,
-      //   TKey1 extends StrKey<ResolveTableType<TableType<TTable1>>> & StrKey<TRecord1>,
-      //   TKey2 extends StrKey<ResolveTableType<TableType<TTable2>>>,
-      //   TRecord1 = ResolveTableType<TRecord>,
-      //   TRecord2 extends {} = TRecord1 & ResolveTableType<TableType<TTable2>>,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TTable2,
-      //   column1: `${TTable1}.${TKey1}`,
-      //   column2: `${TTable2}.${TKey2}`
-      // ): QueryBuilder<TRecord2, TResult2>;
-
-      // <
-      //   TTable1 extends TableNames,
-      //   TTable2 extends TableNames,
-      //   TKey1 extends StrKey<ResolveTableType<TableType<TTable1>>> & StrKey<TRecord1>,
-      //   TKey2 extends StrKey<ResolveTableType<TableType<TTable2>>>,
-      //   TRecord1 = ResolveTableType<TRecord>,
-      //   TRecord2 extends {} = TRecord1 & ResolveTableType<TableType<TTable2>>,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TTable2,
-      //   column1: `${TTable2}.${TKey2}`,
-      //   column2: `${TTable1}.${TKey1}`
-      // ): QueryBuilder<TRecord2, TResult2>;
-      //
-      // <
-      //   TJoinTargetRecord extends {} = any,
-      //   TRecord2 extends {} = TRecord & TJoinTargetRecord,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TableDescriptor | AliasDict | QueryCallback,
-      //   column1: string,
-      //   column2: string
-      // ): QueryBuilder<TRecord2, TResult2>;
-      //
-      // <
-      //   TJoinTargetRecord extends {} = any,
-      //   TRecord2 extends {} = TRecord & TJoinTargetRecord,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TableDescriptor | AliasDict | QueryCallback,
-      //   column1: string,
-      //   raw: Raw
-      // ): QueryBuilder<TRecord2, TResult2>;
-      //
-      // <
-      //   TTable1 extends TableNames,
-      //   TTable2 extends TableNames,
-      //   TKey1 extends StrKey<ResolveTableType<TableType<TTable1>>> & StrKey<TRecord1>,
-      //   TKey2 extends StrKey<ResolveTableType<TableType<TTable2>>>,
-      //   TRecord1 = ResolveTableType<TRecord>,
-      //   TRecord2 extends {} = TRecord1 & ResolveTableType<TableType<TTable2>>,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TTable2,
-      //   column1: `${TTable1}.${TKey1}`,
-      //   operator: string,
-      //   column2: `${TTable2}.${TKey2}`
-      // ): QueryBuilder<TRecord2, TResult2>;
-      //
-      // <
-      //   TTable1 extends TableNames,
-      //   TTable2 extends TableNames,
-      //   TKey1 extends StrKey<ResolveTableType<TableType<TTable1>>> & StrKey<TRecord1>,
-      //   TKey2 extends StrKey<ResolveTableType<TableType<TTable2>>>,
-      //   TRecord1 = ResolveTableType<TRecord>,
-      //   TRecord2 extends {} = TRecord1 & ResolveTableType<TableType<TTable2>>,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TTable2,
-      //   column1: `${TTable2}.${TKey2}`,
-      //   operator: string,
-      //   column2: `${TTable1}.${TKey1}`
-      // ): QueryBuilder<TRecord2, TResult2>;
-      //
-      // <
-      //   TJoinTargetRecord extends {} = any,
-      //   TRecord2 extends {} = TRecord & TJoinTargetRecord,
-      //   TResult2 = DeferredKeySelection.ReplaceBase<TResult, TRecord2>
-      // >(
-      //   tableName: TableDescriptor | AliasDict | QueryCallback,
-      //   column1: string,
-      //   operator: string,
-      //   column2: string
-      // ): QueryBuilder<TRecord2, TResult2>;
     }
   }
 }
