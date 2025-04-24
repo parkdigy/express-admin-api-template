@@ -13,6 +13,9 @@ import {
   ExcelFont,
   ExcelColumnOptionAlign,
   ExcelColumnOnValueReturn,
+  ExcelColumnParamOption,
+  ExcelColumnCellOption,
+  ExcelAlignment,
 } from './excel.types';
 
 /** 기본 Border 스타일 */
@@ -64,30 +67,16 @@ function newColumn<T, Name extends keyof T>(
   width?: number,
   align?: ExcelColumnOptionAlign,
   onValue?: (value: T[Name], info: T) => ExcelColumnOnValueReturn,
-  options?: Omit<ExcelColumnOption<T, Name>, 'title' | 'name' | 'width' | 'align' | 'onValue'>,
-  onCellOptions?: (
-    info: T
-  ) => Omit<ExcelColumnOption<T, Name>, 'title' | 'name' | 'width' | 'align' | 'onValue'> | void | undefined | false
+  options?: ExcelColumnParamOption<T, Name>,
+  onCellOptions?: (info: T) => ExcelColumnCellOption<T, Name> | void | undefined | false
 ): Column<T, Name>;
 function newColumn<T>(
   title: string,
   width?: number,
   align?: ExcelColumnOptionAlign,
   onValue?: (info: T) => ExcelColumnOnValueReturn,
-  options?: Omit<
-    ExcelColumnOption<T, undefined>,
-    'title' | 'name' | 'width' | 'align' | 'headerStyle' | 'sum' | 'sumStyle' | 'onValue' | 'onOptions'
-  >,
-  onCellOptions?: (
-    info: T
-  ) =>
-    | Omit<
-        ExcelColumnOption<T, undefined>,
-        'title' | 'name' | 'width' | 'align' | 'headerStyle' | 'sum' | 'sumStyle' | 'onValue' | 'onOptions'
-      >
-    | void
-    | undefined
-    | false
+  options?: ExcelColumnParamOption<T, undefined>,
+  onCellOptions?: (info: T) => ExcelColumnCellOption<T, undefined> | void | undefined | false
 ): Column<T, undefined>;
 function newColumn<T, Name extends keyof T | undefined>(option: ExcelColumnOption<T, Name>): Column<T, Name>;
 function newColumn<T, Name extends keyof T | undefined>(
@@ -97,16 +86,7 @@ function newColumn<T, Name extends keyof T | undefined>(
   alignOrOnValue?: any,
   onValueOrOptions?: any,
   optionsOrOnCellOptions?: any,
-  onCellOptions?: (
-    info: T
-  ) =>
-    | Omit<
-        ExcelColumnOption<T, Name>,
-        'title' | 'name' | 'width' | 'align' | 'headerStyle' | 'sum' | 'sumStyle' | 'onValue' | 'onOptions'
-      >
-    | void
-    | undefined
-    | false
+  onCellOptions?: (info: T) => ExcelColumnCellOption<T, Name> | void | undefined | false
 ) {
   if (typeof titleOrOption === 'string') {
     if (typeof nameOrWidth === 'string') {
@@ -399,10 +379,11 @@ const excel = {
 
           let style: ExcelStyle = {};
 
+          let horizontalAlignment: ExcelAlignment['horizontal'] | undefined;
           if (align) {
             const al = align[col];
             if (al) {
-              style.alignment = { horizontal: this.getAlign(al) };
+              horizontalAlignment = this.getAlign(al);
             }
           }
 
@@ -430,6 +411,14 @@ const excel = {
                     ? { numFmt: format[col] }
                     : undefined;
               style = { ...style, ...defaultBorderStyle, ...colStyle, ...formatStyle };
+            }
+          }
+
+          if (horizontalAlignment) {
+            if (style.alignment) {
+              style.alignment.horizontal = horizontalAlignment;
+            } else {
+              style.alignment = { horizontal: horizontalAlignment };
             }
           }
 
