@@ -91,4 +91,7 @@ export interface ExcelColumnOption<T, Name extends keyof T | undefined> {
   onValue?: Name extends keyof T
     ? (value: T[Name], info: T) => ExcelColumnOnValueReturn
     : (info: T) => ExcelColumnOnValueReturn;
+  onCellOptions?: (
+    info: T
+  ) => Omit<ExcelColumnOption<T, Name>, 'title' | 'name' | 'width' | 'align' | 'onValue'> | void | undefined | false;
 }

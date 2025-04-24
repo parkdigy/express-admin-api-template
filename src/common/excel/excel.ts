@@ -64,14 +64,30 @@ function newColumn<T, Name extends keyof T>(
   width?: number,
   align?: ExcelColumnOptionAlign,
   onValue?: (value: T[Name], info: T) => ExcelColumnOnValueReturn,
-  options?: Omit<ExcelColumnOption<T, Name>, 'title' | 'name' | 'width' | 'align' | 'onValue'>
+  options?: Omit<ExcelColumnOption<T, Name>, 'title' | 'name' | 'width' | 'align' | 'onValue'>,
+  onCellOptions?: (
+    info: T
+  ) => Omit<ExcelColumnOption<T, Name>, 'title' | 'name' | 'width' | 'align' | 'onValue'> | void | undefined | false
 ): Column<T, Name>;
 function newColumn<T>(
   title: string,
   width?: number,
   align?: ExcelColumnOptionAlign,
   onValue?: (info: T) => ExcelColumnOnValueReturn,
-  options?: Omit<ExcelColumnOption<T, undefined>, 'title' | 'name' | 'width' | 'align' | 'onValue'>
+  options?: Omit<
+    ExcelColumnOption<T, undefined>,
+    'title' | 'name' | 'width' | 'align' | 'headerStyle' | 'sum' | 'sumStyle' | 'onValue' | 'onOptions'
+  >,
+  onCellOptions?: (
+    info: T
+  ) =>
+    | Omit<
+        ExcelColumnOption<T, undefined>,
+        'title' | 'name' | 'width' | 'align' | 'headerStyle' | 'sum' | 'sumStyle' | 'onValue' | 'onOptions'
+      >
+    | void
+    | undefined
+    | false
 ): Column<T, undefined>;
 function newColumn<T, Name extends keyof T | undefined>(option: ExcelColumnOption<T, Name>): Column<T, Name>;
 function newColumn<T, Name extends keyof T | undefined>(
@@ -80,26 +96,59 @@ function newColumn<T, Name extends keyof T | undefined>(
   widthOrAlign?: any,
   alignOrOnValue?: any,
   onValueOrOptions?: any,
-  options?: Omit<ExcelColumnOption<T, Name>, 'title' | 'name' | 'width' | 'align' | 'onValue'>
+  optionsOrOnCellOptions?: any,
+  onCellOptions?: (
+    info: T
+  ) =>
+    | Omit<
+        ExcelColumnOption<T, Name>,
+        'title' | 'name' | 'width' | 'align' | 'headerStyle' | 'sum' | 'sumStyle' | 'onValue' | 'onOptions'
+      >
+    | void
+    | undefined
+    | false
 ) {
   if (typeof titleOrOption === 'string') {
     if (typeof nameOrWidth === 'string') {
-      return new Column<T, Name>({
-        title: titleOrOption,
-        name: nameOrWidth as Name,
-        width: widthOrAlign,
-        align: alignOrOnValue,
-        onValue: onValueOrOptions,
-        ...options,
-      });
+      if (typeof optionsOrOnCellOptions === 'function') {
+        return new Column<T, Name>({
+          title: titleOrOption,
+          name: nameOrWidth as Name,
+          width: widthOrAlign,
+          align: alignOrOnValue,
+          onValue: onValueOrOptions,
+          onCellOptions: optionsOrOnCellOptions,
+        });
+      } else {
+        return new Column<T, Name>({
+          title: titleOrOption,
+          name: nameOrWidth as Name,
+          width: widthOrAlign,
+          align: alignOrOnValue,
+          onValue: onValueOrOptions,
+          onCellOptions,
+          ...optionsOrOnCellOptions,
+        });
+      }
     } else {
-      return new Column<T, Name>({
-        title: titleOrOption,
-        width: nameOrWidth,
-        align: widthOrAlign,
-        onValue: alignOrOnValue,
-        ...onValueOrOptions,
-      });
+      if (typeof onValueOrOptions === 'function') {
+        return new Column<T, Name>({
+          title: titleOrOption,
+          width: nameOrWidth,
+          align: widthOrAlign,
+          onValue: alignOrOnValue,
+          onCellOptions: onValueOrOptions,
+        });
+      } else {
+        return new Column<T, Name>({
+          title: titleOrOption,
+          width: nameOrWidth,
+          align: widthOrAlign,
+          onValue: alignOrOnValue,
+          onCellOptions,
+          ...onValueOrOptions,
+        });
+      }
     }
   } else {
     return new Column<T, Name>(titleOrOption);
@@ -218,10 +267,23 @@ const excel = {
     }
 
     const names = finalColumns.map((c) => c.getOptions().name);
-    rawData.forEach((d) => {
+    const dataOptions: Record<
+      string,
+      Omit<ExcelColumnOption<T, Name>, 'title' | 'name' | 'width' | 'align' | 'onValue'>
+    >[] = [];
+
+    rawData.forEach((d, dataIndex) => {
+      dataOptions.push({});
       data.push(
         names.map((name, idx) => {
           if (name === undefined) {
+            const onOptions = finalColumns[idx]?.getOptions()?.onCellOptions as (
+              info: T
+            ) => ExcelColumnOption<T, undefined>;
+            if (onOptions) {
+              dataOptions[dataIndex][idx.toString()] = onOptions(d);
+            }
+
             const onValue = finalColumns[idx]?.getOptions()?.onValue as (info: T) => ExcelColumnOnValueReturn;
             if (onValue) {
               return onValue(d);
@@ -229,6 +291,11 @@ const excel = {
               return undefined;
             }
           } else {
+            const onOptions = finalColumns[idx]?.getOptions()?.onCellOptions as (info: T) => ExcelColumnOption<T, Name>;
+            if (onOptions) {
+              dataOptions[dataIndex][idx.toString()] = onOptions(d);
+            }
+
             const onValue = finalColumns[idx]?.getOptions()?.onValue as (
               value: any,
               info: T
@@ -343,13 +410,25 @@ const excel = {
             const colStyle = colHeaderStyle ? colHeaderStyle[col] : undefined;
             style = { ...style, ...defaultHeaderStyle, ...colStyle };
           } else {
+            const cellOptions = dataOptions[row - headerRows][col];
+
             if (sumRow > -1 && row === sumRow - 1) {
               const colStyle = colSumStyle ? colSumStyle[col] : undefined;
               const formatStyle = format ? { numFmt: format[col] } : undefined;
               style = { ...style, ...defaultSumStyle, ...colStyle, ...formatStyle };
             } else {
-              const colStyle = colDataStyle ? colDataStyle[col] : undefined;
-              const formatStyle = format ? { numFmt: format[col] } : undefined;
+              const colStyle =
+                colDataStyle && cellOptions
+                  ? { ...colDataStyle[col], ...cellOptions?.dataStyle }
+                  : colDataStyle
+                    ? colDataStyle[col]
+                    : undefined;
+              const formatStyle =
+                cellOptions && cellOptions.format
+                  ? { numFmt: cellOptions.format }
+                  : format
+                    ? { numFmt: format[col] }
+                    : undefined;
               style = { ...style, ...defaultBorderStyle, ...colStyle, ...formatStyle };
             }
           }
