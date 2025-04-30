@@ -414,11 +414,17 @@ const excel = {
             }
           }
 
-          if (horizontalAlignment) {
+          if (row >= headerRows && horizontalAlignment) {
             if (style.alignment) {
-              style.alignment.horizontal = horizontalAlignment;
+              style = {
+                ...style,
+                alignment: { ...style.alignment, horizontal: horizontalAlignment },
+              };
             } else {
-              style.alignment = { horizontal: horizontalAlignment };
+              style = {
+                ...style,
+                alignment: { horizontal: horizontalAlignment },
+              };
             }
           }
 
