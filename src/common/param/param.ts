@@ -113,7 +113,7 @@ export default function param<
           if (!isValueEmpty(value)) {
             try {
               value = dayjs(value, dateFormat ? { format: dateFormat } : undefined).toDate();
-            } catch (err) {
+            } catch {
               throw paramError(name);
             }
           } else {

@@ -102,7 +102,7 @@ export default {
           });
         }
       });
-    } catch (err) {
+    } catch {
       sendFail(-99, '예상치 못한 오류가 발생했습니다.');
     }
   },

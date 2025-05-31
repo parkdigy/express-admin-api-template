@@ -25,7 +25,7 @@ export default async function (req: MyRequest, res: MyResponse, next: NextFuncti
     } else {
       handleUnauthorized();
     }
-  } catch (err) {
+  } catch {
     handleUnauthorized();
   }
 }

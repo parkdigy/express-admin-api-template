@@ -15,7 +15,7 @@ class JobBase implements IJobBase {
     try {
       await this.handler();
       JobBase.$$running[id] = false;
-    } catch (err) {
+    } catch {
       JobBase.$$running[id] = false;
     }
   }

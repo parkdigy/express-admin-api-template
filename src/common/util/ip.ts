@@ -33,7 +33,7 @@ export const ip = {
       try {
         const res = await axios.get(`http://ip-api.com/json/${ip}`);
         return res.data;
-      } catch (err) {
+      } catch {
         //
       }
     }

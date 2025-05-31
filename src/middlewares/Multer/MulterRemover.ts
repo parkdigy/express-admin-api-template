@@ -13,7 +13,7 @@ export default function (req: MyRequest, res: MyResponse, next: NextFunction) {
         if (err) ll('fs.unlink', err);
       });
     }
-  } catch (err) {
+  } catch {
     //
   }
 
@@ -38,7 +38,7 @@ export default function (req: MyRequest, res: MyResponse, next: NextFunction) {
         }
       }
     }
-  } catch (err) {
+  } catch {
     //
   }
 

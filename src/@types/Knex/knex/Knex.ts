@@ -1,7 +1,7 @@
 declare module 'knex' {
-  import tarn = require('tarn');
-  import events = require('events');
-  import stream = require('stream');
+  import tarn from 'tarn';
+  import events from 'events';
+  import stream from 'stream';
 
   import * as ResultTypes from 'knex/types/result';
 
@@ -1992,11 +1992,7 @@ declare module 'knex' {
       wrapIdentifierImpl(value: any): string;
       initializeDriver(): void;
       driver: any;
-      poolDefaults(): {
-        min: number;
-        max: number;
-        propagateCreateError: boolean;
-      };
+      poolDefaults(): { min: number; max: number; propagateCreateError: boolean };
       getPoolSettings(poolConfig: any): any;
       initializePool(config?: {}): void;
       pool: tarn.Pool<any> | undefined;
