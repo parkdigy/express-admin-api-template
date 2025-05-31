@@ -20,7 +20,7 @@ export default function (req: MyRequest, res: MyResponse, next: NextFunction) {
     } else {
       api.error(res, api.Error.Permission);
     }
-  } catch (err) {
+  } catch {
     api.error(res, api.Error.Permission);
   }
 }
