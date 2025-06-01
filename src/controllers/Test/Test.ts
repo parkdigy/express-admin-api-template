@@ -1,6 +1,6 @@
 import { Param_Boolean, Param_Id_Integer_Required, Param_Page_Limit, Param_String } from '@common_param';
 import { TestDataAddEditParams, TestDataListParams } from '@controllers';
-import { companyNoAutoDash, personalNoAutoDash, telNoAutoDash } from '@pdg/util';
+import { businessNoAutoDash, personalNoAutoDash, telNoAutoDash } from '@pdg/util';
 
 export default {
   /********************************************************************************************************************
@@ -24,7 +24,7 @@ export default {
       email: util.masking.email(info.email),
       tel: util.masking.tel(info.tel),
       mobile: util.masking.tel(info.mobile),
-      company_num: util.masking.companyNo(info.company_num),
+      company_num: util.masking.businessNo(info.company_num),
       personal_num: util.masking.personalNo(info.personal_num),
       text_array: JSON.parse(info.text_array),
       status_name: db.TestData.Status.getName(info.status),
@@ -66,7 +66,7 @@ export default {
             email: util.masking.email(info.email),
             tel: util.masking.tel(info.tel),
             mobile: util.masking.tel(info.mobile),
-            company_num: util.masking.companyNo(info.company_num),
+            company_num: util.masking.businessNo(info.company_num),
             personal_num: util.masking.personalNo(info.personal_num),
           }
     );
@@ -78,7 +78,7 @@ export default {
       excel.newColumn('Email', 'email', 30, 'l'),
       excel.newColumn('Url', 'url', 30, 'l'),
       excel.newColumn('Mobile', 'mobile', 20, 'c', (v) => telNoAutoDash(v)),
-      excel.newColumn('Company Num', 'company_num', 20, 'c', (v) => companyNoAutoDash(v)),
+      excel.newColumn('Company Num', 'company_num', 20, 'c', (v) => businessNoAutoDash(v)),
       excel.newColumn('Personal Num', 'personal_num', 20, 'c', (v) => personalNoAutoDash(v)),
       excel.newColumn('Int', 'num_int', 15, 'r'),
       excel.newColumn('Float', 'num_float', 15, 'r'),
@@ -128,7 +128,7 @@ export default {
           email: util.masking.email(info.email),
           tel: util.masking.tel(info.tel),
           mobile: util.masking.tel(info.mobile),
-          company_num: util.masking.companyNo(info.company_num),
+          company_num: util.masking.businessNo(info.company_num),
           personal_num: util.masking.personalNo(info.personal_num),
           text_array: JSON.parse(info.text_array),
           status_name: db.TestData.Status.getName(info.status),

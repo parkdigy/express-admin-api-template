@@ -9,7 +9,7 @@ import {
   beginTime,
   endTime,
   telNoAutoDash,
-  companyNoAutoDash,
+  businessNoAutoDash,
   personalNoAutoDash,
   isPersonalNo,
   isCompanyNo,
@@ -177,7 +177,7 @@ export default function param<
             value = defaultValue;
           }
           if (value) {
-            value = dash ? companyNoAutoDash(value) : value.replace(/-/g, '');
+            value = dash ? businessNoAutoDash(value) : value.replace(/-/g, '');
           }
           break;
         case 'personal_num':
