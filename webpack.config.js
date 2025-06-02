@@ -1,6 +1,9 @@
+/* eslint-disable */
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { EsbuildPlugin } = require('esbuild-loader');
 const path = require('path');
+const ESLintPlugin = require('eslint-webpack-plugin');
+/* eslint-enable */
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -70,5 +73,12 @@ module.exports = {
       },
     ],
   },
-  plugins: [new ForkTsCheckerWebpackPlugin()].filter(Boolean),
+  plugins: [
+    new ForkTsCheckerWebpackPlugin(),
+    new ESLintPlugin({
+      extensions: ['js', 'jsx', 'ts', 'tsx'],
+      failOnError: isProduction,
+      exclude: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'dist')],
+    }),
+  ].filter(Boolean),
 };
