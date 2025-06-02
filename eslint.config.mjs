@@ -15,7 +15,6 @@ export default defineConfig([
         sourceType: 'module',
       },
       globals: {
-        // Add any other specific global variables if needed, e.g.,
         module: 'readonly',
         process: 'readonly',
         __dirname: 'readonly',
