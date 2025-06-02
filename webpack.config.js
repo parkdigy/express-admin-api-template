@@ -48,6 +48,8 @@ module.exports = {
   externals: {
     express: 'commonjs express',
     knex: 'commonjs knex',
+    mysql: 'commonjs mysql',
+    mssql: 'commonjs mssql',
   },
   experiments: {
     topLevelAwait: true,
