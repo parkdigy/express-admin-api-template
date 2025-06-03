@@ -147,7 +147,7 @@ VALUES
 
 INSERT INTO `admin_menu` (`id`, `name`, `depth`, `parent_id`, `uri`, `is_super_admin_menu`, `is_all_user_menu`, `icon`, `seq`)
 VALUES
-	('admin', '어드민 관리', 1, NULL, NULL, 0, 0, 'gear', 100),
+	('admin', '어드민 관리', 1, NULL, NULL, 0, 0, 'Settings', 100),
 	('admin/menu', '메뉴 관리', 2, 'admin', '/admin/menu', 1, 0, NULL, 1),
 	('admin/user', '사용자 관리', 2, 'admin', '/admin/user', 1, 0, NULL, 10),
 	('admin/group', '그룹 관리', 2, 'admin', '/admin/group', 1, 0, NULL, 20),
