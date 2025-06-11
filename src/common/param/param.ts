@@ -274,13 +274,15 @@ export default function param<
           case 'object':
             {
               const valueString = value.toString();
-              if (
-                empty(
-                  validValues.find((val) => {
-                    return val.toString() === valueString;
-                  })
-                )
-              ) {
+              let found = false;
+              for (const validValue of validValues) {
+                if (validValue.toString() === valueString) {
+                  value = validValue;
+                  found = true;
+                  break;
+                }
+              }
+              if (!found) {
                 throw paramError(name);
               }
             }
@@ -288,15 +290,28 @@ export default function param<
           case 'array':
           case 'object_array':
           case 'enum_array':
-            if (
-              value.find((val: any) => {
+            {
+              const finalValue: any[] = [];
+              let notFound = false;
+              for (const val of value) {
                 const valString = val.toString();
-                return !validValues.find((v) => {
-                  return v.toString() === valString;
-                });
-              }) !== undefined
-            ) {
-              throw paramError(name);
+                let found = false;
+                for (const validValue of validValues) {
+                  if (validValue.toString() === valString) {
+                    finalValue.push(validValue);
+                    found = true;
+                    break;
+                  }
+                }
+                if (!found) {
+                  notFound = true;
+                  break;
+                }
+              }
+              if (notFound) {
+                throw paramError(name);
+              }
+              value = finalValue;
             }
             break;
         }
