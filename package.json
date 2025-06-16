@@ -51,6 +51,7 @@
     "@pdg/data": "^1.0.0",
     "@pdg/date-time": "^1.0.0",
     "@pdg/formatting": "^1.0.2",
+    "@pdg/masking": "^1.0.0",
     "@pdg/types": "^1.0.0",
     "@pdg/url": "^1.0.0",
     "@types/bcryptjs": "^3.0.0",

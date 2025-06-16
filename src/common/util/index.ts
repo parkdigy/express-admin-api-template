@@ -1,3 +1,8 @@
+import compare from '@pdg/compare';
+import data from '@pdg/data';
+import dateTime from '@pdg/date-time';
+import format from '@pdg/formatting';
+import masking from '@pdg/masking';
 import url from '@pdg/url';
 import file from './file';
 import ip from './ip';
@@ -9,6 +14,12 @@ import sha256 from './sha256';
 import uuid from './uuid';
 
 const util = {
+  compare,
+  data,
+  dateTime,
+  format,
+  masking,
+  url,
   file,
   ip,
   md5,
@@ -16,7 +27,6 @@ const util = {
   slack,
   sha1,
   sha256,
-  url,
   uuid,
 };
 
