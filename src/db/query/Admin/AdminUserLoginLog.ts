@@ -34,8 +34,8 @@ export default class AdminUserLoginLog extends MySqlQuery<tableName> {
       .join(db.AdminUser.getTableName('au'), 'au.id', 'll.admin_user_id')
       .select('au.email', 'au.name')
       //
-      .where('ll.create_date', '>=', util.date.beginTime(loginDateFrom))
-      .where('ll.create_date', '<=', util.date.endTime(loginDateTo))
+      .where('ll.create_date', '>=', util.dateTime.beginOfDay(loginDateFrom))
+      .where('ll.create_date', '<=', util.dateTime.endOfDay(loginDateTo))
       .orderBy('ll.create_date', 'desc');
 
     if (!isSuperAdmin) {

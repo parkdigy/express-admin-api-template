@@ -12,7 +12,7 @@ import {
   Param_Page_Limit,
   Param_String_Required,
 } from '@common_param';
-import { telNoAutoDash } from '@pdg/util';
+import { formatTelNo } from '@pdg/formatting';
 
 export default {
   /********************************************************************************************************************
@@ -66,7 +66,7 @@ export default {
       excel.newColumn('ID', 'id', 10, 'c'),
       excel.newColumn('이메일', 'email', 30, 'l'),
       excel.newColumn('이름', 'name', 20, 'c'),
-      excel.newColumn('전화번호', 'tel', 20, 'c', (v) => telNoAutoDash(v)),
+      excel.newColumn('전화번호', 'tel', 20, 'c', (v) => formatTelNo(v)),
       excel.newColumn('그룹분류', 'admin_group_name', 20, 'c'),
       excel.newColumn('계정상태', 'is_lock', 10, 'c', (v) => (v ? '제한' : '정상')),
       excel.newColumn('생성일', 'create_date', 20, 'c', (v) => dayjs(v).format('YYYY-MM-DD HH:mm:ss')),

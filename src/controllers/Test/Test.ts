@@ -1,6 +1,5 @@
 import { Param_Boolean, Param_Id_Integer_Required, Param_Page_Limit, Param_String } from '@common_param';
 import { TestDataAddEditParams, TestDataListParams } from '@controllers';
-import { businessNoAutoDash, personalNoAutoDash, telNoAutoDash } from '@pdg/util';
 
 export default {
   /********************************************************************************************************************
@@ -22,8 +21,8 @@ export default {
     const finalData = data.map((info) => ({
       ...info,
       email: util.masking.email(info.email),
-      tel: util.masking.tel(info.tel),
-      mobile: util.masking.tel(info.mobile),
+      tel: util.masking.telNo(info.tel),
+      mobile: util.masking.telNo(info.mobile),
       company_num: util.masking.businessNo(info.company_num),
       personal_num: util.masking.personalNo(info.personal_num),
       text_array: JSON.parse(info.text_array),
@@ -64,8 +63,8 @@ export default {
         : {
             ...info,
             email: util.masking.email(info.email),
-            tel: util.masking.tel(info.tel),
-            mobile: util.masking.tel(info.mobile),
+            tel: util.masking.telNo(info.tel),
+            mobile: util.masking.telNo(info.mobile),
             company_num: util.masking.businessNo(info.company_num),
             personal_num: util.masking.personalNo(info.personal_num),
           }
@@ -77,9 +76,9 @@ export default {
       excel.newColumn('Text Array', 'text_array', 40, 'l', (v) => JSON.parse(v).join(', ')),
       excel.newColumn('Email', 'email', 30, 'l'),
       excel.newColumn('Url', 'url', 30, 'l'),
-      excel.newColumn('Mobile', 'mobile', 20, 'c', (v) => telNoAutoDash(v)),
-      excel.newColumn('Company Num', 'company_num', 20, 'c', (v) => businessNoAutoDash(v)),
-      excel.newColumn('Personal Num', 'personal_num', 20, 'c', (v) => personalNoAutoDash(v)),
+      excel.newColumn('Mobile', 'mobile', 20, 'c', (v) => util.format.telNo(v)),
+      excel.newColumn('Company Num', 'company_num', 20, 'c', (v) => util.format.businessNo(v)),
+      excel.newColumn('Personal Num', 'personal_num', 20, 'c', (v) => util.format.personalNo(v)),
       excel.newColumn('Int', 'num_int', 15, 'r'),
       excel.newColumn('Float', 'num_float', 15, 'r'),
       excel.newColumn('Bool', 'bool', 8, 'c', (v) => (v ? 'Y' : 'N')),
@@ -126,8 +125,8 @@ export default {
       : {
           ...info,
           email: util.masking.email(info.email),
-          tel: util.masking.tel(info.tel),
-          mobile: util.masking.tel(info.mobile),
+          tel: util.masking.telNo(info.tel),
+          mobile: util.masking.telNo(info.mobile),
           company_num: util.masking.businessNo(info.company_num),
           personal_num: util.masking.personalNo(info.personal_num),
           text_array: JSON.parse(info.text_array),

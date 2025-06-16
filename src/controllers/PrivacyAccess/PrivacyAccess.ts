@@ -17,8 +17,8 @@ export default {
       case db.AdminPrivacyAccessLog.Type.TestEmail:
       case db.AdminPrivacyAccessLog.Type.TestTel:
       case db.AdminPrivacyAccessLog.Type.TestMobile:
-      case db.AdminPrivacyAccessLog.Type.TestCompanyNum:
-      case db.AdminPrivacyAccessLog.Type.TestPersonalNum:
+      case db.AdminPrivacyAccessLog.Type.TestBusinessNo:
+      case db.AdminPrivacyAccessLog.Type.TestPersonalNo:
         {
           const info = await db.TestData.find(req, { id: parent_id }).select(
             'email',
@@ -36,9 +36,9 @@ export default {
                 ? info.tel
                 : type === db.AdminPrivacyAccessLog.Type.TestMobile
                   ? info.mobile
-                  : type === db.AdminPrivacyAccessLog.Type.TestCompanyNum
+                  : type === db.AdminPrivacyAccessLog.Type.TestBusinessNo
                     ? info.company_num
-                    : type === db.AdminPrivacyAccessLog.Type.TestPersonalNum
+                    : type === db.AdminPrivacyAccessLog.Type.TestPersonalNo
                       ? info.personal_num
                       : '';
         }

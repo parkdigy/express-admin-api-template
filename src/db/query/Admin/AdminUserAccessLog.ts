@@ -37,8 +37,8 @@ export default class AdminUserAccessLog extends MySqlQuery<tableName> {
       .join(db.AdminUserAccessKey.getTableName('ak'), 'ak.id', 'al.admin_user_access_key_id')
       .select('ak.type', 'ak.title')
       //
-      .where('al.create_date', '>=', util.date.beginTime(searchDateFrom))
-      .where('al.create_date', '<=', util.date.endTime(searchDateTo))
+      .where('al.create_date', '>=', util.dateTime.beginOfDay(searchDateFrom))
+      .where('al.create_date', '<=', util.dateTime.endOfDay(searchDateTo))
       .orderBy('al.create_date', 'desc');
 
     if (keyword != null) {

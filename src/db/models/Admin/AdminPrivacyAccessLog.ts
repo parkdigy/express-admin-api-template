@@ -13,8 +13,8 @@ const Type = {
   TEST_EMAIL: 'Test Email',
   TEST_TEL: 'Test Tel',
   TEST_MOBILE: 'Test Mobile',
-  TEST_COMPANY_NUM: 'Test Company Number',
-  TEST_PERSONAL_NUM: 'Test Personal Number',
+  TEST_BUSINESS_NO: 'Test Company Number',
+  TEST_PERSONAL_NO: 'Test Personal Number',
 } as const;
 export type TAdminPrivacyAccessLog$Type = keyof typeof Type;
 export const TAdminPrivacyAccessLog$Type = makeEnum('type', Type);
