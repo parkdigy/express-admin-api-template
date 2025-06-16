@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { NumberBoolean } from '@types';
 
-export type ParamStringType = 'string' | 'email' | 'url' | 'tel' | 'mobile' | 'company_num' | 'personal_num';
+export type ParamStringType = 'string' | 'email' | 'url' | 'tel' | 'mobile' | 'business_no' | 'personal_no';
 export type ParamPasswordType = 'password';
 export type ParamNumberType = 'integer' | 'number' | 'page' | 'limit';
 export type ParamBooleanType = 'boolean' | 'number_boolean';
@@ -36,7 +36,7 @@ export type ParamOption<
   validValues?: readonly BaseType[]; // 허용 값 목록
   defaultValue?: BaseType | null; // 기본값
   nullable?: boolean; // null 가능 여부
-  dash?: boolean; // type 이 tel, mobile, company_num, personal_num 일 경우, '-' 추가 여부
+  dash?: boolean; // type 이 tel, mobile, business_no, personal_no 일 경우, '-' 추가 여부
   allowInnerUrl?: boolean; // type 이 url 일 경우, 내부 URL 허용 여부
   noTrim?: boolean; // trim 여부
   arrayValueSeparator?: string; // type 이 array 일 경우, 구분 값 (기본: ',')

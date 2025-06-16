@@ -11,7 +11,6 @@ import _menu from '../common/menu';
 import _db from '../db';
 import _api from '../common/api';
 
-/* eslint-disable */
 declare global {
   var aes256: typeof _aes256;
   var aws: typeof _aws;
@@ -26,7 +25,6 @@ declare global {
   var db: typeof _db;
   var api: typeof _api;
 }
-/* eslint-enable */
 
 globalThis.aes256 = _aes256;
 globalThis.aws = _aws;

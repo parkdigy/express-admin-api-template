@@ -1,5 +1,5 @@
 import '../../src/init/global.types';
-import '../../src/init/global.PdgUtil';
+import '../../src/init/global.pdg';
 import crypt from '../../src/common/crypt';
 
 describe('crypt', () => {

@@ -5,8 +5,8 @@
 import mime from 'mime-types';
 import path from 'path';
 import dayjs from 'dayjs';
-import { uuid } from '@pdg/util';
 import fs from 'fs';
+import { uuid } from './uuid';
 
 export const file = {
   /********************************************************************************************************************

@@ -5,20 +5,9 @@
 
 import { ParamOption, ParamOptionDataType } from './param.types';
 import dayjs from 'dayjs';
-import {
-  beginTime,
-  endTime,
-  telNoAutoDash,
-  businessNoAutoDash,
-  personalNoAutoDash,
-  isPersonalNo,
-  isCompanyNo,
-  isEmail,
-  isUrl,
-  isTelNo,
-  isMobileNo,
-  isNumericOnlyText,
-} from '@pdg/util';
+import { isPersonalNo, isBusinessNo, isEmail, isUrl, isTelNo, isMobileNo, isNumericText } from '@pdg/compare';
+import { formatTelNo, formatBusinessNo, formatPersonalNo } from '@pdg/formatting';
+import { beginDateOfDay, endDateOfDay } from '@pdg/date-time';
 
 function isValueEmpty(value: any) {
   return ['', null, undefined].includes(value);
@@ -123,10 +112,10 @@ export default function param<
           if (notEmpty(value) && dateType) {
             switch (dateType) {
               case 'from':
-                value = beginTime(value);
+                value = beginDateOfDay(value);
                 break;
               case 'to':
-                value = endTime(value);
+                value = endDateOfDay(value);
                 break;
             }
           }
@@ -164,23 +153,23 @@ export default function param<
           }
           if (value) {
             if (dash) {
-              value = telNoAutoDash(value);
+              value = formatTelNo(value);
             } else {
               value = value.replace(/-/g, '');
             }
           }
           break;
-        case 'company_num':
+        case 'business_no':
           if (!isValueEmpty(value)) {
-            if (!isCompanyNo(value)) throw paramError(name);
+            if (!isBusinessNo(value)) throw paramError(name);
           } else {
             value = defaultValue;
           }
           if (value) {
-            value = dash ? businessNoAutoDash(value) : value.replace(/-/g, '');
+            value = dash ? formatBusinessNo(value) : value.replace(/-/g, '');
           }
           break;
-        case 'personal_num':
+        case 'personal_no':
           if (!isValueEmpty(value)) {
             if (!isPersonalNo(value)) throw paramError(name);
           } else {
@@ -188,7 +177,7 @@ export default function param<
           }
 
           if (value) {
-            value = dash ? personalNoAutoDash(value) : value.replace(/-/g, '');
+            value = dash ? formatPersonalNo(value) : value.replace(/-/g, '');
           }
           break;
         case 'enum':
@@ -209,7 +198,7 @@ export default function param<
               case 'number':
                 value = value.map((vv: string | number) => {
                   if (typeof vv === 'string') {
-                    if (isNumericOnlyText(vv)) {
+                    if (isNumericText(vv)) {
                       return Number(vv);
                     } else {
                       throw paramError(name);
@@ -268,8 +257,8 @@ export default function param<
           case 'url':
           case 'tel':
           case 'mobile':
-          case 'company_num':
-          case 'personal_num':
+          case 'business_no':
+          case 'personal_no':
           case 'enum':
           case 'object':
             {

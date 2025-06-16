@@ -1,5 +1,5 @@
 import '../../src/init/global.types';
-import '../../src/init/global.PdgUtil';
+import '../../src/init/global.pdg';
 import aes256 from '../../src/common/aes256';
 import { Buffer } from 'buffer';
 

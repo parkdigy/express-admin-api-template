@@ -1,5 +1,5 @@
 import '../../src/init/global.types';
-import '../../src/init/global.PdgUtil';
+import '../../src/init/global.pdg';
 import '../../src/init/global.string';
 import '../../src/init/global.error';
 import param from '../../src/common/param';
@@ -7,7 +7,7 @@ import {
   Param_Array,
   Param_Array_Required,
   Param_Boolean,
-  Param_CompanyNum,
+  Param_BusinessNo,
   Param_Date,
   Param_Email,
   Param_Enum,
@@ -16,7 +16,7 @@ import {
   Param_Number,
   Param_Object_Required,
   Param_Password,
-  Param_PersonalNum,
+  Param_PersonalNo,
   Param_String,
   Param_String_Required,
   Param_Tel,
@@ -67,20 +67,20 @@ describe('param', () => {
       "'mobile' 파라메터 정보가 유효하지 않습니다."
     );
     expect(() =>
-      param({ params: { company_num: '012345678' } as Dict } as MyRequest, { company_num: Param_CompanyNum() })
-    ).toThrow("'company_num' 파라메터 정보가 유효하지 않습니다.");
+      param({ params: { business_no: '012345678' } as Dict } as MyRequest, { business_no: Param_BusinessNo() })
+    ).toThrow("'business_no' 파라메터 정보가 유효하지 않습니다.");
     expect(() =>
-      param({ params: { company_num: '012-34-5678' } as Dict } as MyRequest, { company_num: Param_CompanyNum() })
-    ).toThrow("'company_num' 파라메터 정보가 유효하지 않습니다.");
+      param({ params: { business_no: '012-34-5678' } as Dict } as MyRequest, { business_no: Param_BusinessNo() })
+    ).toThrow("'business_no' 파라메터 정보가 유효하지 않습니다.");
     expect(() =>
-      param({ params: { company_num: '012-345678-9' } as Dict } as MyRequest, { company_num: Param_CompanyNum() })
-    ).toThrow("'company_num' 파라메터 정보가 유효하지 않습니다.");
+      param({ params: { business_no: '012-345678-9' } as Dict } as MyRequest, { business_no: Param_BusinessNo() })
+    ).toThrow("'business_no' 파라메터 정보가 유효하지 않습니다.");
     expect(() =>
-      param({ params: { personal_num: '012345678901' } as Dict } as MyRequest, { personal_num: Param_PersonalNum() })
-    ).toThrow("'personal_num' 파라메터 정보가 유효하지 않습니다.");
+      param({ params: { personal_no: '012345678901' } as Dict } as MyRequest, { personal_no: Param_PersonalNo() })
+    ).toThrow("'personal_no' 파라메터 정보가 유효하지 않습니다.");
     expect(() =>
-      param({ params: { personal_num: '012345-678901' } as Dict } as MyRequest, { personal_num: Param_PersonalNum() })
-    ).toThrow("'personal_num' 파라메터 정보가 유효하지 않습니다.");
+      param({ params: { personal_no: '012345-678901' } as Dict } as MyRequest, { personal_no: Param_PersonalNo() })
+    ).toThrow("'personal_no' 파라메터 정보가 유효하지 않습니다.");
     expect(() =>
       param({ params: { array: ['a', 'd'] } as Dict } as MyRequest, {
         array: Param_Array('string', { validValues: ['a', 'b', 'c'] }),
@@ -113,14 +113,14 @@ describe('param', () => {
           mobile_dash: '010-1234-5678',
           mobile_to_dash: '01012345678',
           mobile_dash_to_dash: '010-1234-5678',
-          company_num: '0123456789',
-          company_num_dash: '012-34-56789',
-          company_num_to_dash: '0123456789',
-          company_num_dash_to_dash: '012-34-56789',
-          personal_num: '0123456789012',
-          personal_num_dash: '012345-6789012',
-          personal_num_to_dash: '0123456789012',
-          personal_num_dash_to_dash: '012345-6789012',
+          business_no: '0123456789',
+          business_no_dash: '012-34-56789',
+          business_no_to_dash: '0123456789',
+          business_no_dash_to_dash: '012-34-56789',
+          personal_no: '0123456789012',
+          personal_no_dash: '012345-6789012',
+          personal_no_to_dash: '0123456789012',
+          personal_no_dash_to_dash: '012345-6789012',
           number: 1.23,
           number_string: '1.23',
           number_empty: '',
@@ -159,14 +159,14 @@ describe('param', () => {
         mobile_dash: Param_Mobile(),
         mobile_to_dash: Param_Mobile({ dash: true }),
         mobile_dash_to_dash: Param_Mobile({ dash: true }),
-        company_num: Param_CompanyNum(),
-        company_num_dash: Param_CompanyNum(),
-        company_num_to_dash: Param_CompanyNum({ dash: true }),
-        company_num_dash_to_dash: Param_CompanyNum({ dash: true }),
-        personal_num: Param_PersonalNum(),
-        personal_num_dash: Param_PersonalNum(),
-        personal_num_to_dash: Param_PersonalNum({ dash: true }),
-        personal_num_dash_to_dash: Param_PersonalNum({ dash: true }),
+        business_no: Param_BusinessNo(),
+        business_no_dash: Param_BusinessNo(),
+        business_no_to_dash: Param_BusinessNo({ dash: true }),
+        business_no_dash_to_dash: Param_BusinessNo({ dash: true }),
+        personal_no: Param_PersonalNo(),
+        personal_no_dash: Param_PersonalNo(),
+        personal_no_to_dash: Param_PersonalNo({ dash: true }),
+        personal_no_dash_to_dash: Param_PersonalNo({ dash: true }),
         number: Param_Number(),
         number_string: Param_Number(),
         number_empty: Param_Number(),
@@ -206,14 +206,14 @@ describe('param', () => {
       mobile_dash: '01012345678',
       mobile_to_dash: '010-1234-5678',
       mobile_dash_to_dash: '010-1234-5678',
-      company_num: '0123456789',
-      company_num_dash: '0123456789',
-      company_num_to_dash: '012-34-56789',
-      company_num_dash_to_dash: '012-34-56789',
-      personal_num: '0123456789012',
-      personal_num_dash: '0123456789012',
-      personal_num_to_dash: '012345-6789012',
-      personal_num_dash_to_dash: '012345-6789012',
+      business_no: '0123456789',
+      business_no_dash: '0123456789',
+      business_no_to_dash: '012-34-56789',
+      business_no_dash_to_dash: '012-34-56789',
+      personal_no: '0123456789012',
+      personal_no_dash: '0123456789012',
+      personal_no_to_dash: '012345-6789012',
+      personal_no_dash_to_dash: '012345-6789012',
       number: 1.23,
       number_string: 1.23,
       number_empty: undefined,

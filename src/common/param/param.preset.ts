@@ -105,32 +105,32 @@ export const Param_Mobile_Nullable_Required = <const Option extends LocalRequire
 /********************************************************************************************************************
  * 사업자등록번호
  * ******************************************************************************************************************/
-export const Param_CompanyNum = <const Option extends LocalParamOption<'company_num'> = {}>(option?: Option) =>
-  MakeParam('company_num', option);
-export const Param_CompanyNum_Nullable = <const Option extends LocalRequiredParamOption<'company_num'> = {}>(
+export const Param_BusinessNo = <const Option extends LocalParamOption<'business_no'> = {}>(option?: Option) =>
+  MakeParam('business_no', option);
+export const Param_BusinessNo_Nullable = <const Option extends LocalRequiredParamOption<'business_no'> = {}>(
   option?: Option
-) => MakeParam('company_num', option, { nullable: true });
-export const Param_CompanyNum_Required = <const Option extends LocalRequiredParamOption<'company_num'> = {}>(
+) => MakeParam('business_no', option, { nullable: true });
+export const Param_BusinessNo_Required = <const Option extends LocalRequiredParamOption<'business_no'> = {}>(
   option?: Option
-) => MakeParam('company_num', option, { required: true });
-export const Param_CompanyNum_Nullable_Required = <const Option extends LocalRequiredParamOption<'company_num'> = {}>(
+) => MakeParam('business_no', option, { required: true });
+export const Param_BusinessNo_Nullable_Required = <const Option extends LocalRequiredParamOption<'business_no'> = {}>(
   option?: Option
-) => MakeParam('company_num', option, { nullable: true, required: true });
+) => MakeParam('business_no', option, { nullable: true, required: true });
 
 /********************************************************************************************************************
  * 주민등록번호
  * ******************************************************************************************************************/
-export const Param_PersonalNum = <const Option extends LocalParamOption<'personal_num'> = {}>(option?: Option) =>
-  MakeParam('personal_num', option);
-export const Param_PersonalNum_Nullable = <const Option extends LocalRequiredParamOption<'personal_num'> = {}>(
+export const Param_PersonalNo = <const Option extends LocalParamOption<'personal_no'> = {}>(option?: Option) =>
+  MakeParam('personal_no', option);
+export const Param_PersonalNo_Nullable = <const Option extends LocalRequiredParamOption<'personal_no'> = {}>(
   option?: Option
-) => MakeParam('personal_num', option, { nullable: true });
-export const Param_PersonalNum_Required = <const Option extends LocalRequiredParamOption<'personal_num'> = {}>(
+) => MakeParam('personal_no', option, { nullable: true });
+export const Param_PersonalNo_Required = <const Option extends LocalRequiredParamOption<'personal_no'> = {}>(
   option?: Option
-) => MakeParam('personal_num', option, { required: true });
-export const Param_PersonalNum_Nullable_Required = <const Option extends LocalRequiredParamOption<'personal_num'> = {}>(
+) => MakeParam('personal_no', option, { required: true });
+export const Param_PersonalNo_Nullable_Required = <const Option extends LocalRequiredParamOption<'personal_no'> = {}>(
   option?: Option
-) => MakeParam('personal_num', option, { nullable: true, required: true });
+) => MakeParam('personal_no', option, { nullable: true, required: true });
 
 /********************************************************************************************************************
  * 비밀번호

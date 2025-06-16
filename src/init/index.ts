@@ -4,7 +4,7 @@ import '../@types';
 
 import './global.types';
 import './global.log';
-import './global.PdgUtil';
+import './global.pdg';
 import './global.array';
 import './global.compare';
 import './global.dayjs';
