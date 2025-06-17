@@ -17,13 +17,15 @@ const makePublishBranch = (branchName, callback) => {
     'git remote update',
     `git branch ${branchName}`,
     `git checkout ${branchName}`,
-    isWin ? `(Get-Content .gitignore) -replace '#PUB#', '' | Set-Content .gitignore` : `sed -i '' 's/#PUB#//g' .gitignore`,
-    'npm run reset-gitignore',
+    isWin
+      ? `(Get-Content .gitignore) -replace '#PUB#', '' | Set-Content .gitignore`
+      : `sed -i '' 's/#PUB#//g' .gitignore`,
+    'npm run reset:gitignore',
     'git add .',
     `git commit -m '${branchName}'`,
     `git push --set-upstream origin ${branchName}`,
-    'git checkout main'
-  ]
+    'git checkout main',
+  ];
 
   const runCommand = (index) => {
     if (index >= commands.length) {
@@ -39,7 +41,6 @@ const makePublishBranch = (branchName, callback) => {
     } else {
       command = commandInfo.command;
       skipError = commandInfo.skipError;
-
     }
 
     ll(`\$ ${command}`);
@@ -52,10 +53,10 @@ const makePublishBranch = (branchName, callback) => {
 
       runCommand(index + 1);
     });
-  }
+  };
 
   runCommand(0);
-}
+};
 
 exec('git branch', (err, stdout, stderr) => {
   if (err) {
@@ -79,6 +80,6 @@ exec('git branch', (err, stdout, stderr) => {
   if (!modeBranchExists) {
     makePublishBranch(modeBranchName);
   } else {
-    ll(`${modeBranchName} branch already exists.`)
+    ll(`${modeBranchName} branch already exists.`);
   }
 });

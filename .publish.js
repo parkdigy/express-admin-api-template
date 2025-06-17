@@ -16,14 +16,21 @@ const publishBranch = (publishBranchName, mergeFromBranchName, callback) => {
     `git checkout ${publishBranchName}`,
     'git remote update',
     'git pull',
-    {command: `git merge -X theirs ${mergeFromBranchName}`, skipError: true},
-    isWin ? `(Get-Content .gitignore) -replace '#PUB#', '' | Set-Content .gitignore` : `sed -i '' 's/#PUB#//g' .gitignore`,
+    { command: `git merge -X theirs ${mergeFromBranchName}`, skipError: true },
+    isWin
+      ? `(Get-Content .gitignore) -replace '#PUB#', '' | Set-Content .gitignore`
+      : `sed -i '' 's/#PUB#//g' .gitignore`,
     'git add .',
-    'npm run reset-gitignore',
-    {command: isWin ? 'cmd /V /C "set "GIT_EDITOR=true" && git merge --continue"' : 'GIT_EDITOR=true git merge --continue', skipError: true},
+    'npm run reset:gitignore',
+    {
+      command: isWin
+        ? 'cmd /V /C "set "GIT_EDITOR=true" && git merge --continue"'
+        : 'GIT_EDITOR=true git merge --continue',
+      skipError: true,
+    },
     `git push origin ${publishBranchName}`,
-    `git checkout ${mergeFromBranchName}`
-  ]
+    `git checkout ${mergeFromBranchName}`,
+  ];
 
   const runCommand = (index) => {
     if (index >= commands.length) {
@@ -39,7 +46,6 @@ const publishBranch = (publishBranchName, mergeFromBranchName, callback) => {
     } else {
       command = commandInfo.command;
       skipError = commandInfo.skipError;
-
     }
 
     ll(`\$ ${command}`);
@@ -52,10 +58,10 @@ const publishBranch = (publishBranchName, mergeFromBranchName, callback) => {
 
       runCommand(index + 1);
     });
-  }
+  };
 
   runCommand(0);
-}
+};
 
 exec('git branch', (err, stdout, stderr) => {
   if (err) {

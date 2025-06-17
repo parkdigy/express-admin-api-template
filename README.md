@@ -9,7 +9,7 @@
 
 - .gitignore 적용
 ```shell
-npm run reset-gitignore
+npm run reset:gitignore
 ```
 
 - 빌드 실행
