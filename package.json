@@ -51,7 +51,7 @@
     "@pdg/crypto": "^1.0.1",
     "@pdg/data": "^1.0.1",
     "@pdg/date-time": "^1.0.2",
-    "@pdg/formatting": "^1.0.4",
+    "@pdg/formatting": "^1.0.5",
     "@pdg/masking": "^1.0.1",
     "@pdg/types": "^1.0.1",
     "@pdg/url": "^1.0.1",
