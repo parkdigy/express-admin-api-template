@@ -5,7 +5,7 @@
 import _jwt, { SignOptions } from 'jsonwebtoken';
 import { Jwt, JwtPayload } from './jwt.types';
 import crypt from '../crypt';
-import { CookieOptions } from 'express-serve-static-core';
+import { CookieOptions } from 'express';
 
 const jwt: Jwt = {
   cookieName: ifEmpty(process.env.AUTH_JWT_TOKEN_COOKIE_NAME, `_${process.env.PROJECT_NAME}_ajt_`), // AccessToken 저장 쿠키명
