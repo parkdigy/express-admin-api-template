@@ -5,14 +5,14 @@ export default {
   /********************************************************************************************************************
    * 데이터 상태 목록
    * ******************************************************************************************************************/
-  dataStatusList(req: MyRequest, res: MyResponse) {
+  dataStatusList(req: MyAuthRequest, res: MyResponse) {
     api.success(res, db.TestData.Status.getNameList());
   },
 
   /********************************************************************************************************************
    * 데이터 목록
    * ******************************************************************************************************************/
-  async dataList(req: MyRequest, res: MyResponse) {
+  async dataList(req: MyAuthRequest, res: MyResponse) {
     const { page, limit } = param(req, Param_Page_Limit());
     const options = param(req, TestDataListParams);
 
@@ -35,9 +35,7 @@ export default {
   /********************************************************************************************************************
    * 데이터 목록 엑셀 다운로드
    * ******************************************************************************************************************/
-  async exportDataList(req: MyRequest, res: MyResponse) {
-    if (!req.$$user) throw api.Error.Permission;
-
+  async exportDataList(req: MyAuthRequest, res: MyResponse) {
     const options = param(req, TestDataListParams);
     const { privacy_access, privacy_access_reason } = param(req, {
       privacy_access: Param_Boolean(),
@@ -93,9 +91,7 @@ export default {
   /********************************************************************************************************************
    * 데이터 정보
    * ******************************************************************************************************************/
-  async dataInfo(req: MyRequest, res: MyResponse) {
-    if (!req.$$user) throw api.Error.Permission;
-
+  async dataInfo(req: MyAuthRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
     const { privacy_access, privacy_access_reason } = param(req, {
       privacy_access: Param_Boolean(),
@@ -139,7 +135,7 @@ export default {
   /********************************************************************************************************************
    * 데이터 등록
    * ******************************************************************************************************************/
-  async dataAdd(req: MyRequest, res: MyResponse) {
+  async dataAdd(req: MyAuthRequest, res: MyResponse) {
     const { text_array, ...params } = param(req, TestDataAddEditParams);
 
     // 이메일 중복 체크
@@ -159,7 +155,7 @@ export default {
   /********************************************************************************************************************
    * 데이터 수정
    * ******************************************************************************************************************/
-  async dataEdit(req: MyRequest, res: MyResponse) {
+  async dataEdit(req: MyAuthRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
     const { text_array, ...params } = param(req, TestDataAddEditParams);
 
@@ -177,7 +173,7 @@ export default {
   /********************************************************************************************************************
    * 데이터 삭제
    * ******************************************************************************************************************/
-  async dataRemove(req: MyRequest, res: MyResponse) {
+  async dataRemove(req: MyAuthRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
 
     if (await db.TestData.notExists(req, { id })) throw paramError('id');
