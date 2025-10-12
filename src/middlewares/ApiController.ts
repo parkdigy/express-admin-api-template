@@ -11,11 +11,11 @@ import Starter from './Starter';
 import Finisher from './Finisher';
 import Logger from './Logger';
 import ApiCallPermissionChecker from './ApiCallPermissionChecker';
-import { MyController } from '@types';
+import { MyAuthController, MyController } from '@types';
 import { NextFunction, RequestHandler } from 'express';
 
 export default function (
-  controller: MyController,
+  controller: MyController | MyAuthController,
   callPermissionCheck = false,
   logging = true,
   loggingData = false,
@@ -25,7 +25,7 @@ export default function (
   const handlers: any[] = [
     Starter,
     ...afterStartMiddlewares,
-    async (req: MyRequest, res: MyResponse, next: NextFunction) => {
+    async (req: MyRequest | MyAuthRequest, res: MyResponse, next: NextFunction) => {
       function printError(err: Error) {
         ll(req.method, `${req.baseUrl}${req.path}`, err);
       }
@@ -43,7 +43,7 @@ export default function (
       };
 
       try {
-        await controller(req, res);
+        controller(req as any, res);
         try {
           await db.trans.commitAll(req);
         } catch (err) {

@@ -10,11 +10,11 @@
 import Starter from './Starter';
 import Finisher from './Finisher';
 import SessionAuthChecker from './JwtCookieAuthChecker';
-import { MyController } from '@types';
+import { MyAuthController, MyController } from '@types';
 import { NextFunction, RequestHandler } from 'express';
 
 export default function (
-  controller: MyController,
+  controller: MyController | MyAuthController,
   sessionAuthCheck = false,
   afterStartMiddlewares: RequestHandler[] = [],
   beforeFinishMiddlewares: RequestHandler[] = []
@@ -22,9 +22,9 @@ export default function (
   const result = [
     Starter,
     ...afterStartMiddlewares,
-    async (req: MyRequest, res: MyResponse, next: NextFunction) => {
+    async (req: MyRequest | MyAuthRequest, res: MyResponse, next: NextFunction) => {
       try {
-        await controller(req, res);
+        controller(req as any, res);
         await db.trans.commitAll(req);
       } catch (err) {
         await db.trans.rollbackAll(req);

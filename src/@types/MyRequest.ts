@@ -10,9 +10,16 @@ export interface MyRequestUser {
   is_privacy_access: boolean;
 }
 
-export interface MyRequest extends Request {
+interface MyRequestCommon extends Request {
   $$remoteIpAddress?: string;
   $$dbTransMySql?: Knex.Transaction[];
   $$dbTransMsSql?: Knex.Transaction[];
+}
+
+export interface MyRequest extends MyRequestCommon {
   $$user?: MyRequestUser;
+}
+
+export interface MyAuthRequest extends MyRequestCommon {
+  $$user: MyRequestUser;
 }

@@ -7,11 +7,15 @@
  * - Finisher 실행
  * ******************************************************************************************************************/
 
-import { MyController } from '@types';
+import { MyAuthController, MyController } from '@types';
 import { RequestHandler } from 'express';
 import { MulterRemover } from './Multer';
 import Controller from './Controller';
 
-export default function (multer: RequestHandler, controller: MyController, sessionAuthCheck = false) {
+export default function (
+  multer: RequestHandler,
+  controller: MyController | MyAuthController,
+  sessionAuthCheck = false
+) {
   return Controller(controller, sessionAuthCheck, [multer], [MulterRemover]);
 }
