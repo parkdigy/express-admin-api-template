@@ -8,17 +8,17 @@ export default {
   /********************************************************************************************************************
    * 로그인 정보
    * ******************************************************************************************************************/
-  getInfo(req: MyRequest, res: MyResponse) {
+  getInfo(req: MyAuthRequest, res: MyResponse) {
     api.success(res, {
-      email: req.$$user?.email,
-      is_super: req.$$user?.is_super_admin,
+      email: req.$$user.email,
+      is_super: req.$$user.is_super_admin,
     });
   },
 
   /********************************************************************************************************************
    * 로그인
    * ******************************************************************************************************************/
-  async signIn(req: MyRequest, res: MyResponse) {
+  async signIn(req: MyAuthRequest, res: MyResponse) {
     const { email, password } = param(req, { email: Param_Email_Required(), password: Param_Password_Required() });
 
     const userInfo = await db.AdminUser.infoForSignIn(req, email);
@@ -84,7 +84,7 @@ export default {
   /********************************************************************************************************************
    * 로그아웃
    * ******************************************************************************************************************/
-  signOut(req: MyRequest, res: MyResponse) {
+  signOut(req: MyAuthRequest, res: MyResponse) {
     jwt.clearAccessToken(res);
 
     api.success(res);
