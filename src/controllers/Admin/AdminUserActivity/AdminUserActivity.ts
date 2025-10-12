@@ -7,7 +7,7 @@ export default {
   /********************************************************************************************************************
    * 목록
    * ******************************************************************************************************************/
-  async list(req: MyRequest, res: MyResponse) {
+  async list(req: MyAuthRequest, res: MyResponse) {
     const { page, limit } = param(req, Param_Page_Limit());
     const { user_activity_type_id, parent_id } = param(req, {
       user_activity_type_id: Param_Integer_Required(),

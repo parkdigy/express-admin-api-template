@@ -5,12 +5,12 @@
 
 import ApiMenuRoleChecker from './ApiMenuRoleChecker';
 import ApiController from './ApiController';
-import { MyController } from '@types';
+import { MyAuthController, MyController } from '@types';
 import { RequestHandler } from 'express';
 
 export default function (
   menus: string | string[],
-  controller: MyController,
+  controller: MyController | MyAuthController,
   logging = true,
   loggingData = false,
   afterStartMiddlewares: RequestHandler[] = [],

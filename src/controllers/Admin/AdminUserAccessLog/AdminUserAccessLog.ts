@@ -8,7 +8,7 @@ export default {
   /********************************************************************************************************************
    * 목록
    * ******************************************************************************************************************/
-  async list(req: MyRequest, res: MyResponse) {
+  async list(req: MyAuthRequest, res: MyResponse) {
     const { page, limit } = param(req, Param_Page_Limit());
     const { keyword_option, keyword, type, search_date_from, search_date_to } = param(req, AdminUserAccessLogListParam);
 
@@ -27,7 +27,7 @@ export default {
   /********************************************************************************************************************
    * 목록 엑셀 다운로드
    * ******************************************************************************************************************/
-  async exportList(req: MyRequest, res: MyResponse) {
+  async exportList(req: MyAuthRequest, res: MyResponse) {
     const { keyword_option, keyword, type, search_date_from, search_date_to } = param(req, AdminUserAccessLogListParam);
 
     const list = await db.AdminUserAccessLog.list(req, search_date_from, search_date_to, keyword_option, keyword, type);
@@ -44,9 +44,7 @@ export default {
   /********************************************************************************************************************
    * 등록
    * ******************************************************************************************************************/
-  async add(req: MyRequest, res: MyResponse) {
-    if (!req.$$user) throw api.newExceptionError();
-
+  async add(req: MyAuthRequest, res: MyResponse) {
     const { id, url } = param(req, Param_Id_String_Required(), { url: Param_String_Required() });
 
     let result: 'NOTFOUND' | 'SUCCESS' | 'PASSWORD_RESET' = 'NOTFOUND';

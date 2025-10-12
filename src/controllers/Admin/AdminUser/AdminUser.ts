@@ -18,9 +18,7 @@ export default {
   /********************************************************************************************************************
    * 목록
    * ******************************************************************************************************************/
-  async list(req: MyRequest, res: MyResponse) {
-    if (!req.$$user) throw api.Error.Permission;
-
+  async list(req: MyAuthRequest, res: MyResponse) {
     const isSuperAdmin = req.$$user.is_super_admin;
 
     const { page, limit } = param(req, Param_Page_Limit());
@@ -57,7 +55,7 @@ export default {
   /********************************************************************************************************************
    * 목록 엑셀 다운로드
    * ******************************************************************************************************************/
-  async exportList(req: MyRequest, res: MyResponse) {
+  async exportList(req: MyAuthRequest, res: MyResponse) {
     const { keyword_option, keyword, is_lock, admin_group_id } = param(req, AdminUserListParam);
 
     const list = await db.AdminUser.list(req, { keyword_option, keyword, is_lock, admin_group_id });
@@ -76,19 +74,19 @@ export default {
   /********************************************************************************************************************
    * 정보
    * ******************************************************************************************************************/
-  async info(req: MyRequest, res: MyResponse) {
+  async info(req: MyAuthRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
 
     const info = await db.AdminUser.info(req, id);
     if (!info) throw paramError();
 
-    api.success(res, { ...info, editable: info.admin_group_id !== SUPER_ADMIN_GROUP_ID || req.$$user?.is_super_admin });
+    api.success(res, { ...info, editable: info.admin_group_id !== SUPER_ADMIN_GROUP_ID || req.$$user.is_super_admin });
   },
 
   /********************************************************************************************************************
    * 등록
    * ******************************************************************************************************************/
-  async add(req: MyRequest, res: MyResponse) {
+  async add(req: MyAuthRequest, res: MyResponse) {
     const { email, name, tel, admin_group_id } = param(req, {
       email: Param_Email_Required(),
       name: Param_String_Required(),
@@ -130,7 +128,7 @@ export default {
   /********************************************************************************************************************
    * 수정
    * ******************************************************************************************************************/
-  async edit(req: MyRequest, res: MyResponse) {
+  async edit(req: MyAuthRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
     const { name, tel, admin_group_id } = param(req, {
       name: Param_String_Required(),
@@ -142,10 +140,10 @@ export default {
     const userInfo = await db.AdminUser.info(req, id);
     if (!userInfo) throw api.Error.Parameter;
 
-    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user?.is_super_admin) {
+    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user.is_super_admin) {
       throw api.newExceptionError('Super Admin 그룹에 속한 사용자는 수정할 수 없습니다.');
     }
-    if (!req.$$user?.is_super_admin && admin_group_id === SUPER_ADMIN_GROUP_ID) {
+    if (!req.$$user.is_super_admin && admin_group_id === SUPER_ADMIN_GROUP_ID) {
       throw api.newExceptionError('Super Admin 그룹으로 변경할 수 없습니다.');
     }
 
@@ -195,13 +193,13 @@ export default {
   /********************************************************************************************************************
    * 비밀번호 초기화
    * ******************************************************************************************************************/
-  async passwordReset(req: MyRequest, res: MyResponse) {
+  async passwordReset(req: MyAuthRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
 
     const userInfo = await db.AdminUser.info(req, id);
     if (!userInfo) throw api.Error.Parameter;
 
-    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user?.is_super_admin) {
+    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user.is_super_admin) {
       throw api.newExceptionError('Super Admin 그룹에 속한 사용자는 수정할 수 없습니다.');
     }
 
@@ -217,13 +215,13 @@ export default {
   /********************************************************************************************************************
    * 사용 제한
    * ******************************************************************************************************************/
-  async lock(req: MyRequest, res: MyResponse) {
+  async lock(req: MyAuthRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
 
     const userInfo = await db.AdminUser.info(req, id);
     if (!userInfo) throw api.Error.Parameter;
 
-    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user?.is_super_admin) {
+    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user.is_super_admin) {
       throw api.newExceptionError('Super Admin 그룹에 속한 사용자는 수정할 수 없습니다.');
     }
 
@@ -237,13 +235,13 @@ export default {
   /********************************************************************************************************************
    * 사용 제한 해제
    * ******************************************************************************************************************/
-  async unlock(req: MyRequest, res: MyResponse) {
+  async unlock(req: MyAuthRequest, res: MyResponse) {
     const { id } = param(req, Param_Id_Integer_Required());
 
     const userInfo = await db.AdminUser.info(req, id);
     if (!userInfo) throw api.Error.Parameter;
 
-    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user?.is_super_admin) {
+    if (userInfo.admin_group_id === SUPER_ADMIN_GROUP_ID && !req.$$user.is_super_admin) {
       throw api.newExceptionError('Super Admin 그룹에 속한 사용자는 수정할 수 없습니다.');
     }
 

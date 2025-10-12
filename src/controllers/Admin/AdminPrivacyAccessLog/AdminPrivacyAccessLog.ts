@@ -5,16 +5,14 @@ export default {
   /********************************************************************************************************************
    * 구분 목록
    * ******************************************************************************************************************/
-  typeList(req: MyRequest, res: MyResponse) {
+  typeList(req: MyAuthRequest, res: MyResponse) {
     api.success(res, db.AdminPrivacyAccessLog.Type.getNameList());
   },
 
   /********************************************************************************************************************
    * 목록
    * ******************************************************************************************************************/
-  async list(req: MyRequest, res: MyResponse) {
-    if (!req.$$user) throw api.Error.Permission;
-
+  async list(req: MyAuthRequest, res: MyResponse) {
     const { page, limit } = param(req, Param_Page_Limit());
     const options = param(req, AdminPrivacyAccessLogListParams);
 
@@ -34,9 +32,7 @@ export default {
   /********************************************************************************************************************
    * 목록 엑셀 다운로드
    * ******************************************************************************************************************/
-  async exportList(req: MyRequest, res: MyResponse) {
-    if (!req.$$user) throw api.Error.Permission;
-
+  async exportList(req: MyAuthRequest, res: MyResponse) {
     const options = param(req, AdminPrivacyAccessLogListParams);
 
     if (!req.$$user.is_super_admin) {

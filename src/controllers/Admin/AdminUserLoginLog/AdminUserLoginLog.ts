@@ -9,9 +9,7 @@ export default {
   /********************************************************************************************************************
    * 목록
    * ******************************************************************************************************************/
-  async list(req: MyRequest, res: MyResponse) {
-    if (!req.$$user) throw api.newExceptionError();
-
+  async list(req: MyAuthRequest, res: MyResponse) {
     const { page, limit } = param(req, Param_Page_Limit());
 
     const { keyword_option, keyword, login_date_from, login_date_to } = param(req, AdminUserLoginLogListParam);
@@ -32,9 +30,7 @@ export default {
   /********************************************************************************************************************
    * 목록 엑셀 다운로드
    * ******************************************************************************************************************/
-  async exportList(req: MyRequest, res: MyResponse) {
-    if (!req.$$user) throw api.Error.Permission;
-
+  async exportList(req: MyAuthRequest, res: MyResponse) {
     const { keyword_option, keyword, login_date_from, login_date_to } = param(req, AdminUserLoginLogListParam);
 
     const list = await db.AdminUserLoginLog.list(

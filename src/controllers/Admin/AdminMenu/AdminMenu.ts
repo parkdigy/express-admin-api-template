@@ -24,7 +24,7 @@ export default {
   /********************************************************************************************************************
    * 목록
    * ******************************************************************************************************************/
-  async list(req: MyRequest, res: MyResponse) {
+  async list(req: MyAuthRequest, res: MyResponse) {
     // 메뉴 목록
     const list = await db.AdminMenu.list(req);
 
@@ -63,7 +63,7 @@ export default {
   /********************************************************************************************************************
    * 정보
    * ******************************************************************************************************************/
-  async info(req: MyRequest, res: MyResponse) {
+  async info(req: MyAuthRequest, res: MyResponse) {
     const params = param(req, { id: Param_String_Required() });
 
     const id = replaceId(params.id); // id 치환
@@ -85,7 +85,7 @@ export default {
   /********************************************************************************************************************
    * 등록
    * ******************************************************************************************************************/
-  async add(req: MyRequest, res: MyResponse) {
+  async add(req: MyAuthRequest, res: MyResponse) {
     const {
       parent_id,
       id: paramId,
@@ -156,7 +156,7 @@ export default {
   /********************************************************************************************************************
    * 수정
    * ******************************************************************************************************************/
-  async edit(req: MyRequest, res: MyResponse) {
+  async edit(req: MyAuthRequest, res: MyResponse) {
     const {
       id: paramId,
       new_id: paramNewId,
@@ -224,7 +224,7 @@ export default {
   /********************************************************************************************************************
    * SUPER 권한 수정
    * ******************************************************************************************************************/
-  async editSuper(req: MyRequest, res: MyResponse) {
+  async editSuper(req: MyAuthRequest, res: MyResponse) {
     const { id: paramId, is_super_admin_menu } = param(req, {
       id: Param_String_Required(),
       is_super_admin_menu: Param_Boolean_Required(),
@@ -251,7 +251,7 @@ export default {
   /********************************************************************************************************************
    * ALL 권한 수정
    * ******************************************************************************************************************/
-  async editAll(req: MyRequest, res: MyResponse) {
+  async editAll(req: MyAuthRequest, res: MyResponse) {
     const { id: paramId, is_all_user_menu } = param(req, {
       id: Param_String_Required(),
       is_all_user_menu: Param_Boolean_Required(),
@@ -278,7 +278,7 @@ export default {
   /********************************************************************************************************************
    * 노출순서 수정
    * ******************************************************************************************************************/
-  async editSeq(req: MyRequest, res: MyResponse) {
+  async editSeq(req: MyAuthRequest, res: MyResponse) {
     // JSON.stringify() 로 인코딩 된 data 파라미터 전달
     // Data 구조 : { id: string: seq: number }[]
     const { data: paramData } = param(req, { data: Param_String_Required() });
@@ -311,7 +311,7 @@ export default {
   /********************************************************************************************************************
    * 삭제
    * ******************************************************************************************************************/
-  async remove(req: MyRequest, res: MyResponse) {
+  async remove(req: MyAuthRequest, res: MyResponse) {
     const { id: paramId } = param(req, {
       id: Param_String_Required(),
     });

@@ -8,9 +8,7 @@ export default {
   /********************************************************************************************************************
    * 비밀번호 변경
    * ******************************************************************************************************************/
-  async passwordChange(req: MyRequest, res: MyResponse) {
-    if (!req.$$user) throw api.Error.Permission;
-
+  async passwordChange(req: MyAuthRequest, res: MyResponse) {
     const { id: userId, must_password_change: mustPasswordChange } = req.$$user;
 
     const { new_password } = param(req, { new_password: Param_Password_Required() });
@@ -31,10 +29,10 @@ export default {
   /********************************************************************************************************************
    * API 호출 권한 등록
    * ******************************************************************************************************************/
-  async apiCallPermission(req: MyRequest, res: MyResponse) {
+  async apiCallPermission(req: MyAuthRequest, res: MyResponse) {
     const { password } = param(req, { password: Param_Password_Required() });
 
-    const info = await db.AdminUser.getBuilder(req).where('id', req.$$user?.id).select('password').first();
+    const info = await db.AdminUser.getBuilder(req).where('id', req.$$user.id).select('password').first();
     if (!info) throw api.newExceptionError();
 
     if (!util.password.check(password, info.password)) {
