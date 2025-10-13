@@ -9,7 +9,9 @@ const router = express.Router();
 // pong
 router.get(
   '/',
-  ApiController((req: MyRequest, res: MyResponse) => res.send('pong'))
+  ApiController((req: MyRequest, res: MyResponse) => {
+    res.send('pong');
+  })
 );
 
 export default router;

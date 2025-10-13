@@ -24,7 +24,7 @@ export default function (
     ...afterStartMiddlewares,
     async (req: MyRequest | MyAuthRequest, res: MyResponse, next: NextFunction) => {
       try {
-        controller(req as any, res);
+        await controller(req as any, res);
         await db.trans.commitAll(req);
       } catch (err) {
         await db.trans.rollbackAll(req);

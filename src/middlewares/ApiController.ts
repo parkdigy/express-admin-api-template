@@ -43,7 +43,7 @@ export default function (
       };
 
       try {
-        controller(req as any, res);
+        await controller(req as any, res);
         try {
           await db.trans.commitAll(req);
         } catch (err) {
