@@ -70,7 +70,13 @@ const jwt = {
       if (token) {
         const { key } = jwt.verify(token);
         const payload = crypt.dec(key);
-        const payloadData = JSON.parse(payload);
+        const payloadData = JSON.parse(payload) as {
+          dt: string;
+          ua: string | null;
+          ip: string | null;
+          id: number;
+          ed: number;
+        };
 
         userId = payloadData.id;
         expireDays = payloadData.ed;
