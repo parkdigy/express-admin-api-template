@@ -40,7 +40,7 @@ export class ApiError {
     if (notEmpty(this.$msg)) result.m = this.$msg;
     if (notEmpty(this.$htmlMsg)) result.hm = this.$htmlMsg;
 
-    if (additionalError && process.env.APP_ENV === 'local') {
+    if (additionalError && env.isLocal) {
       result.e = additionalError;
     }
 
