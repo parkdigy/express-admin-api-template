@@ -10,7 +10,7 @@ const scheduler: Scheduler = {
       j.cancel();
     });
     this.$jobs = [];
-    if (process.env.APP_ENV !== 'local') {
+    if (!env.isLocal) {
       ll('job start');
 
       this.$jobs.push(schedule.minutely(new TestJob()));

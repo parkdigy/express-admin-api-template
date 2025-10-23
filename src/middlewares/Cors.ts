@@ -11,7 +11,7 @@ const defaultCorsOptions: CorsOptions = {
   exposedHeaders: ['Content-Disposition'],
 };
 
-export default env.isLocal()
+export default env.isLocal
   ? Cors({
       origin: true,
       ...defaultCorsOptions,

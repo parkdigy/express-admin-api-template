@@ -21,7 +21,7 @@ export default {
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `:warning: *${process.env.APP_NAME} (${process.env.APP_ENV})*`,
+                text: `:warning: *${env.title} (${env.env})*`,
               },
             },
             ...makeBlocks(msgBlocks),

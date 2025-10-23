@@ -5,7 +5,7 @@
 import { NextFunction } from 'express';
 
 export default function (req: MyRequest, res: MyResponse, next: NextFunction) {
-  if (env.isLocal()) {
+  if (env.isLocal) {
     next();
   } else {
     res.send(404);
