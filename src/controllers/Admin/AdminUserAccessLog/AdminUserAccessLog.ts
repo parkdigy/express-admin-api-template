@@ -59,7 +59,7 @@ export default {
         result = 'SUCCESS';
       } else {
         if (await db.AdminUserAccessKey.exists(req, { id })) {
-          if (!env.isLocal) {
+          if (env.isNotLocal) {
             await db.AdminUserAccessLog.addWithCreateDate(req, {
               admin_user_id: req.$$user.id,
               admin_user_access_key_id: id,
