@@ -102,7 +102,7 @@ function startServer() {
     ll(`Listening : ${isSecure ? process.env.APP_SECURE_PORT : process.env.APP_PORT}`);
 
     // 슬랙에 서버 실행 메시지 발송
-    if (!env.isLocal && notEmpty(process.env.SLACK_WEB_HOOK_URL)) {
+    if (env.isNotLocal && notEmpty(process.env.SLACK_WEB_HOOK_URL)) {
       exec('git remote -v', (err, stdout, stderr) => {
         if (!err || notEmpty(stderr)) {
           const appName = path.basename(stdout.split('\n')[0].split('\t')[1].split(' ')[0], '.git');
