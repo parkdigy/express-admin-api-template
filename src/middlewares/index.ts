@@ -20,3 +20,4 @@ export { default as ApiMulterControllerExportRole } from './ApiMulterControllerE
 export { default as ApiMulterControllerReadRole } from './ApiMulterControllerReadRole';
 export { default as ApiMulterControllerWriteRole } from './ApiMulterControllerWriteRole';
 export { default as ApiMenuRoleChecker } from './ApiMenuRoleChecker';
+export { default as ApiJwtCookieAuthCheckMulterController } from './ApiJwtCookieAuthCheckMulterController';
