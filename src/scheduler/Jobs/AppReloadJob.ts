@@ -2,11 +2,11 @@ import JobBase from '../JobBase';
 import logging from '@common_logging';
 import { exec } from 'child_process';
 
-if (process.env.APP_ENV === 'local') {
-  setTimeout(async () => {
-    await new AppReloadJob().handler();
-  }, 5000);
-}
+// if (process.env.APP_ENV === 'local') {
+//   setTimeout(async () => {
+//     await new AppReloadJob().handler();
+//   }, 5000);
+// }
 
 class AppReloadJob extends JobBase {
   getId(): string {
