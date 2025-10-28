@@ -1,5 +1,5 @@
 import schedule from './schedule';
-import { TestJob } from './Jobs';
+import { AppReloadJob } from './Jobs';
 import { Scheduler } from './scheduler.types';
 
 const scheduler: Scheduler = {
@@ -13,7 +13,13 @@ const scheduler: Scheduler = {
     if (env.isNotLocal) {
       ll('job start');
 
-      this.$jobs.push(schedule.minutely(new TestJob()));
+      this.$jobs.push(
+        schedule.dailyAt(
+          Number(ifEmpty(process.env.PM2_RELOAD_HOUR, '5')),
+          Number(ifEmpty(process.env.PM2_RELOAD_MINUTE, '0')),
+          new AppReloadJob()
+        )
+      );
     }
   },
 };

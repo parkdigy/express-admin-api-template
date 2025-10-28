@@ -1,16 +1,23 @@
 import JobBase from '../JobBase';
 import logging from '@common_logging';
+import { exec } from 'child_process';
 
-class TestJob extends JobBase {
+if (process.env.APP_ENV === 'local') {
+  setTimeout(async () => {
+    await new AppReloadJob().handler();
+  }, 5000);
+}
+
+class AppReloadJob extends JobBase {
   getId(): string {
-    return 'TestJob';
+    return 'AppReloadJob';
   }
 
   async handler() {
     try {
       ll(this.getId(), 'start');
 
-      //
+      exec('npm run pm2:reload');
 
       ll(this.getId(), 'complete');
     } catch (err) {
@@ -19,4 +26,4 @@ class TestJob extends JobBase {
   }
 }
 
-export default TestJob;
+export default AppReloadJob;
