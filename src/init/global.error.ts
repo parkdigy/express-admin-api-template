@@ -10,6 +10,7 @@ declare global {
 
   /**
    * 오류를 출력합니다.
+   * @Param req MyRequest 객체
    * @param err Error 객체
    */
   function printError(req: MyRequest, err: Error): void;
