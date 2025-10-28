@@ -33,6 +33,7 @@ globalThis.paramError = (name?: string) => {
 globalThis.printError = (req: MyRequest, err: Error) => {
   // 개발 환경일 경우에만 출력
   ll('!!!ERROR!!! >>>>>>>>>>>>>>>>>>>>>>>>>>');
+  ll(req.method, `${req.baseUrl}${req.path}`);
   const data = {
     ...req.params,
     ...req.query,
