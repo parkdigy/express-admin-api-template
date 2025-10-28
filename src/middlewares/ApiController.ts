@@ -26,17 +26,13 @@ export default function (
     Starter,
     ...afterStartMiddlewares,
     async (req: MyRequest | MyAuthRequest, res: MyResponse, next: NextFunction) => {
-      function printError(err: Error) {
-        ll(req.method, `${req.baseUrl}${req.path}`, err);
-      }
-
       const handleException = async (err: Error) => {
-        printError(err);
+        printError(req, err);
 
         try {
           await db.trans.rollbackAll(req);
         } catch (err) {
-          printError(err as Error);
+          printError(req, err as Error);
         }
 
         api.error(res, err);
