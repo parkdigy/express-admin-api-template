@@ -13,13 +13,19 @@ const scheduler: Scheduler = {
     if (env.isNotLocal) {
       ll('job start');
 
-      this.$jobs.push(
-        schedule.dailyAt(
-          Number(ifEmpty(process.env.PM2_RELOAD_HOUR, '5')),
-          Number(ifEmpty(process.env.PM2_RELOAD_MINUTE, '0')),
-          new AppReloadJob()
-        )
-      );
+      if (contains(['true', '1'], process.env.PM2_RELOAD)) {
+        ll(
+          `!!! PM2 reload activated! Daily at ${ifEmpty(process.env.PM2_RELOAD_HOUR, '5').padStart(2, '0')}:${ifEmpty(process.env.PM2_RELOAD_MINUTE, '0').padStart(2, '0')} !!!`
+        );
+
+        this.$jobs.push(
+          schedule.dailyAt(
+            Number(ifEmpty(process.env.PM2_RELOAD_HOUR, '5')),
+            Number(ifEmpty(process.env.PM2_RELOAD_MINUTE, '0')),
+            new AppReloadJob()
+          )
+        );
+      }
     }
   },
 };

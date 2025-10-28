@@ -28,6 +28,7 @@ declare namespace NodeJS {
     APP_SECURE_CERT_PATH: string;
 
     // PM2 Reload
+    PM2_RELOAD: string;
     PM2_RELOAD_HOUR: string;
     PM2_RELOAD_MINUTE: string;
 
