@@ -9,6 +9,7 @@ import {
   GetObjectCommand,
   GetObjectCommandOutput,
   PutObjectCommand,
+  DeleteObjectCommand,
   NotFound,
 } from '@aws-sdk/client-s3';
 import fs from 'fs';
@@ -255,6 +256,37 @@ export const awsS3Private = {
           resolve(data);
         })
         .catch((err) => reject(err));
+    });
+  },
+
+  /********************************************************************************************************************
+   * 파일 삭제
+   * @param s3Path S3 경로
+   * @param s3FileName S3 파일명
+   * ******************************************************************************************************************/
+  deleteObject(s3Path: string, s3FileName: string) {
+    if (!s3) throw new Error('env 에 S3 (Private) 정보를 등록해야합니다.');
+    if (empty(process.env.S3_PRIVATE_BUCKET)) throw new Error('env 에 S3_PRIVATE_BUCKET 값을 등록해야 합니다.');
+
+    return new Promise<boolean>((resolve, reject) => {
+      try {
+        const key = util.url.join(process.env.S3_PRIVATE_PATH || '', s3Path, s3FileName);
+
+        const command = new DeleteObjectCommand({
+          Bucket: process.env.S3_PRIVATE_BUCKET,
+          Key: key,
+        });
+
+        s3.send(command)
+          .then(() => {
+            resolve(true);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      } catch (err) {
+        reject(err);
+      }
     });
   },
 };

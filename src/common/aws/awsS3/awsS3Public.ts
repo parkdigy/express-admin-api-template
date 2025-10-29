@@ -2,7 +2,14 @@
  * AWS S3 모듈 (Public)
  * ******************************************************************************************************************/
 
-import {S3Client, HeadObjectCommand, PutObjectCommandInput, PutObjectCommand, NotFound} from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  HeadObjectCommand,
+  PutObjectCommandInput,
+  PutObjectCommand,
+  DeleteObjectCommand,
+  NotFound,
+} from '@aws-sdk/client-s3';
 import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
@@ -212,6 +219,47 @@ const awsS3Public = {
         } catch (err) {
           reject(err);
         }
+      }
+    });
+  },
+
+  /********************************************************************************************************************
+   * URL로 파일 삭제
+   * @param url S3 파일의 전체 URL
+   * ******************************************************************************************************************/
+  deleteUrl(url: string) {
+    if (!s3) throw new Error('env 에 S3 (Public) 정보를 등록해야합니다.');
+    if (empty(process.env.S3_BUCKET)) throw new Error('env 에 S3_BUCKET 값을 등록해야 합니다.');
+
+    return new Promise<boolean>((resolve, reject) => {
+      try {
+        const bucket = process.env.S3_BUCKET;
+
+        const prefix = `https://${bucket}.s3.amazonaws.com/`;
+        if (!url.startsWith(prefix)) {
+          return reject(new Error('S3 URL 형식이 올바르지 않습니다.'));
+        }
+
+        const key = url.substring(prefix.length);
+
+        if (empty(key)) {
+          return reject(new Error('URL에서 S3 객체 키(Key)를 추출할 수 없습니다.'));
+        }
+
+        const command = new DeleteObjectCommand({
+          Bucket: bucket,
+          Key: key,
+        });
+
+        s3.send(command)
+          .then(() => {
+            resolve(true);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      } catch (err) {
+        reject(err);
       }
     });
   },
