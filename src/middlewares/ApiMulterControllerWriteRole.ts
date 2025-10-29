@@ -4,14 +4,14 @@
  * ******************************************************************************************************************/
 
 import ApiMenuRoleChecker from './ApiMenuRoleChecker';
-import { MyController } from '@types';
+import { MyAuthController, MyController } from '@types';
 import { RequestHandler } from 'express';
 import ApiMulterController from './ApiMulterController';
 
 export default function (
   menus: string | string[],
   multer: RequestHandler,
-  controller: MyController,
+  controller: MyController | MyAuthController,
   logging = true,
   loggingData = false
 ): any[] {
