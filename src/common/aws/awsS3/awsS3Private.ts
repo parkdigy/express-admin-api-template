@@ -249,7 +249,7 @@ export const awsS3Private = {
       s3.send(
         new GetObjectCommand({
           Bucket: process.env.S3_PRIVATE_BUCKET,
-          Key: util.url.join(process.env.S3_PRIVATE_PATH || '', s3Path, s3FileName),
+          Key: util.url.join(s3Path, s3FileName),
         })
       )
         .then((data) => {
@@ -270,7 +270,7 @@ export const awsS3Private = {
 
     return new Promise<boolean>((resolve, reject) => {
       try {
-        const key = util.url.join(process.env.S3_PRIVATE_PATH || '', s3Path, s3FileName);
+        const key = util.url.join(s3Path, s3FileName);
 
         const command = new DeleteObjectCommand({
           Bucket: process.env.S3_PRIVATE_BUCKET,
