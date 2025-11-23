@@ -5,7 +5,7 @@ import { exec } from 'child_process';
 // if (process.env.APP_ENV === 'local') {
 //   setTimeout(async () => {
 //     await new AppReloadJob().handler();
-//   }, 5000);
+//   }, 1000);
 // }
 
 class AppReloadJob extends JobBase {
