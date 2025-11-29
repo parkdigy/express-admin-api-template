@@ -58,6 +58,12 @@ export default class MySqlQuery<
         const value = whereColumnValues[key];
         if (value === null) {
           negative ? builder.whereNotNull(key) : builder.whereNull(key);
+        } else if (
+          typeof value === 'object' &&
+          typeof value.toSQL === 'function' &&
+          (value.toSQL().method === 'raw' || value.toSQL().method === 'Raw')
+        ) {
+          builder.whereRaw(db.raw(`${key} ?`, [value]));
         } else if (Array.isArray(value)) {
           negative ? builder.whereNotIn(key, value) : builder.whereIn(key, value);
         } else {
