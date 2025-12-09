@@ -107,7 +107,7 @@
     "multer": "^2.0.2",
     "node-hot-loader": "^1.23.0",
     "node-schedule": "^2.1.1",
-    "nodemailer": "^7.0.10",
+    "nodemailer": "^7.0.11",
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
     "redis": "^5.1.1",
