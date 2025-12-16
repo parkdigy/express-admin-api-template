@@ -2,6 +2,7 @@ import compare from '@pdg/compare';
 import data from '@pdg/data';
 import dateTime from '@pdg/date-time';
 import format from '@pdg/formatting';
+import korean from '@pdg/korean';
 import masking from '@pdg/masking';
 import url from '@pdg/url';
 import crypto from '@pdg/crypto';
@@ -16,6 +17,7 @@ const util = {
   data,
   dateTime,
   format,
+  korean,
   masking,
   url,
   ...crypto,
