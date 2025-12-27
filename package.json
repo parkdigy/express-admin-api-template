@@ -60,7 +60,7 @@
     "@pdg/formatting": "^1.0.8",
     "@pdg/korean": "^1.0.4",
     "@pdg/masking": "^1.0.4",
-    "@pdg/types": "^1.0.9",
+    "@pdg/types": "^1.0.10",
     "@pdg/url": "^1.0.3",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.19",
