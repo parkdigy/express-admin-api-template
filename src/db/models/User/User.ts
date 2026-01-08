@@ -4,7 +4,7 @@
 
 import { Knex } from 'knex';
 import { makeEnum } from '../@util';
-import { TableInsertData, TableUpdateData } from '../@types';
+import { type TableInsertData, type TableUpdateData } from '../@types';
 
 /** 상태 */
 const Status = { ON: '사용', OFF: '미사용', LOCK: '잠금' };
@@ -26,7 +26,7 @@ export interface TUser {
 export type TUser$InsertData = TableInsertData<TUser, 'id', 'login_fail_count' | 'status'>;
 export type TUser$UpdateData = TableUpdateData<TUser, 'id' | 'create_date', 'update_date'>;
 
-export default TUser;
+export type { TUser as default };
 
 declare module 'knex/types/tables' {
   interface Tables {

@@ -3,7 +3,17 @@
  * ******************************************************************************************************************/
 
 import bigDecimal from 'js-big-decimal';
-import { RoundingModes } from 'js-big-decimal/dist/node/roundingModes';
+
+enum RoundingModes {
+  CEILING = 0,
+  DOWN = 1,
+  FLOOR = 2,
+  HALF_DOWN = 3,
+  HALF_EVEN = 4,
+  HALF_UP = 5,
+  UNNECESSARY = 6,
+  UP = 7,
+}
 
 /** 숫자 앞의 0 제거 */
 function removeStartingZeros(str: string) {

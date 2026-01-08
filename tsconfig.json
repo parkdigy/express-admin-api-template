@@ -11,6 +11,7 @@
     "noImplicitAny": true,
     "experimentalDecorators": true,
     "preserveSymlinks": true,
+    "noEmit": true,
     "baseUrl": "./",
     "paths": {
       "@common_aes256": ["src/common/aes256"],

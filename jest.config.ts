@@ -1,9 +1,9 @@
-import type { Config } from 'jest';
+import { type Config } from 'jest';
 
 const config: Config = {
   verbose: false,
   transform: {
-    '^.+\\.(js|ts)$': 'ts-jest',
+    '^.+\\.(js|ts)$': ['ts-jest', { tsconfig: 'tsconfig.test.json' }],
   },
   testEnvironment: 'node',
   setupFiles: ['dotenv/config'],
@@ -11,4 +11,4 @@ const config: Config = {
   detectOpenHandles: true,
 };
 
-export default config;
+module.exports = config;

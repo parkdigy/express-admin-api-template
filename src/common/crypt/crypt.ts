@@ -5,7 +5,7 @@
 
 import { encode as safeEncode, decode as safeDecode, trim as safeTrim } from 'url-safe-base64';
 import aes256 from '../aes256';
-import { Crypt } from './crypt.types';
+import { type Crypt } from './crypt.types';
 
 const crypt: Crypt = {
   /********************************************************************************************************************

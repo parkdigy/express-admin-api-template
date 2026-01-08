@@ -3,7 +3,7 @@
  * ******************************************************************************************************************/
 
 import crypto from 'crypto';
-import { Aes256 } from './aes256.types';
+import { type Aes256 } from './aes256.types';
 
 const CIPHER_ALGORITHM = 'aes-256-ctr';
 

@@ -5,9 +5,9 @@
 import {
   S3Client,
   HeadObjectCommand,
-  PutObjectCommandInput,
+  type PutObjectCommandInput,
   GetObjectCommand,
-  GetObjectCommandOutput,
+  type GetObjectCommandOutput,
   PutObjectCommand,
   DeleteObjectCommand,
   NotFound,

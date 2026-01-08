@@ -1,4 +1,4 @@
-import { ParamArrayItemType, ParamOption, ParamType, ParamTypeDataType } from './param.types';
+import { type ParamArrayItemType, type ParamOption, type ParamType, type ParamTypeDataType } from './param.types';
 
 type LocalParamOption<T extends ParamType, DataType = ParamTypeDataType<T>> = Omit<ParamOption<T, DataType>, 'type'>;
 type LocalRequiredParamOption<T extends ParamType, DataType = ParamTypeDataType<T>> = Omit<

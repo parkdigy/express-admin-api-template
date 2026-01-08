@@ -2,10 +2,10 @@
  * JWT 모듈
  * ******************************************************************************************************************/
 
-import _jwt, { SignOptions, VerifyOptions } from 'jsonwebtoken';
-import { JwtPayload } from './jwt.types';
+import _jwt, { type SignOptions, type VerifyOptions } from 'jsonwebtoken';
+import { type JwtPayload } from './jwt.types';
 import crypt from '../crypt';
-import { CookieOptions } from 'express';
+import { type CookieOptions } from 'express';
 
 const jwt = {
   cookieName: ifEmpty(process.env.AUTH_JWT_TOKEN_COOKIE_NAME, `_${process.env.PROJECT_NAME}_ajt_`), // AccessToken 저장 쿠키명

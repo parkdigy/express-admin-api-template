@@ -4,7 +4,7 @@
  * - 데이터가 너무 길 경우 500자로 제한
  * ******************************************************************************************************************/
 
-import { NextFunction } from 'express';
+import { type NextFunction } from 'express';
 import logging from '@common_logging';
 
 const $logging = process.env.LOGGING === 'true';

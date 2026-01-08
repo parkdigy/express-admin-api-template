@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { NumberBoolean } from '@types';
+import { type NumberBoolean } from '@types';
 
 export type ParamStringType = 'string' | 'email' | 'url' | 'tel' | 'mobile' | 'business_no' | 'personal_no';
 export type ParamPasswordType = 'password';

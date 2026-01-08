@@ -2,10 +2,9 @@
  * MS-SQL Query Class
  * ******************************************************************************************************************/
 
-import { TableRecord } from '@types';
-import { DeferredKeySelection, Knex, StrKey, UnwrapArrayMember } from 'knex';
+import { type TableRecord } from '@types';
+import { type DeferredKeySelection, Knex, type StrKey, type UnwrapArrayMember } from 'knex';
 import { MsSqlKnexUtil } from '../../knex';
-import ResolveTableType = Knex.ResolveTableType;
 
 export default class MsSqlQuery<
   TTable extends Knex.TableNames,
@@ -98,8 +97,8 @@ export default class MsSqlQuery<
   _find<
     SelectColumns extends Extract<keyof TRecord, string>[] | undefined = undefined,
     SelectColumnsKeys extends string | never = SelectColumns extends undefined
-      ? never
-      : UnwrapArrayMember<SelectColumns>,
+    ? never
+    : UnwrapArrayMember<SelectColumns>,
     TResult = Knex.QueryBuilder<
       TRecord,
       DeferredKeySelection<
@@ -128,8 +127,8 @@ export default class MsSqlQuery<
   findWithNoLock<
     SelectColumns extends Extract<keyof TRecord, string>[] | undefined = undefined,
     SelectColumnsKeys extends string | never = SelectColumns extends undefined
-      ? never
-      : UnwrapArrayMember<SelectColumns>,
+    ? never
+    : UnwrapArrayMember<SelectColumns>,
     TResult = Knex.QueryBuilder<
       TRecord,
       DeferredKeySelection<
@@ -206,7 +205,7 @@ export default class MsSqlQuery<
   /********************************************************************************************************************
    * add
    * ******************************************************************************************************************/
-  add<TKey extends StrKey<ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
+  add<TKey extends StrKey<Knex.ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
     req: MyRequest,
     data: TInsertRecord | readonly TInsertRecord[],
     returning?: Returning
@@ -223,7 +222,7 @@ export default class MsSqlQuery<
   /********************************************************************************************************************
    * addWithCreateDate
    * ******************************************************************************************************************/
-  addWithCreateDate<TKey extends StrKey<ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
+  addWithCreateDate<TKey extends StrKey<Knex.ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
     req: MyRequest,
     data: Omit<TInsertRecord, 'create_date'> | readonly Omit<TInsertRecord, 'create_date'>[],
     returning?: Returning
@@ -243,7 +242,7 @@ export default class MsSqlQuery<
   /********************************************************************************************************************
    * addWithCreateUpdateDate
    * ******************************************************************************************************************/
-  addWithCreateUpdateDate<TKey extends StrKey<ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
+  addWithCreateUpdateDate<TKey extends StrKey<Knex.ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
     req: MyRequest,
     data:
       | Omit<TInsertRecord, 'create_date' | 'update_date'>
