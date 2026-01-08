@@ -4,13 +4,13 @@
 
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
-import { TAdminUserAccessKey$Type } from '@db';
+import { AdminUserAccessKeyType } from '@const';
 
 const tableName: Knex.TableNames = 'admin_user_access_key';
 type tableName = typeof tableName;
 
 export default class AdminUserAccessKey extends MySqlQuery<tableName> {
-  Type = TAdminUserAccessKey$Type;
+  Type = AdminUserAccessKeyType;
 
   constructor() {
     super(tableName);
@@ -19,7 +19,7 @@ export default class AdminUserAccessKey extends MySqlQuery<tableName> {
   /********************************************************************************************************************
    * 등록/수정
    ********************************************************************************************************************/
-  async addEdit(req: MyRequest, id: string, type: TAdminUserAccessKey$Type, title: string) {
+  async addEdit(req: MyRequest, id: string, type: AdminUserAccessKeyType, title: string) {
     if (await this.exists(req, { id })) {
       return this.edit(req, { type, title }, { id });
     } else {

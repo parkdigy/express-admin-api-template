@@ -4,19 +4,14 @@
  ********************************************************************************************************************/
 
 import { Knex } from 'knex';
-import { makeEnum } from '../@util';
 import { type TableInsertData, type TableUpdateData } from '../@types';
-
-/** 구분 */
-const Type = { VIEW: '화면', EXPORT: 'Export' } as const;
-export type TAdminUserAccessKey$Type = keyof typeof Type;
-export const TAdminUserAccessKey$Type = makeEnum('type', Type);
+import type { AdminUserAccessKeyType } from '@const';
 
 export interface TAdminUserAccessKey {
   /** Primary Key */
   id: string; // ID // max:200
   /** Others */
-  type: TAdminUserAccessKey$Type; // 구분
+  type: AdminUserAccessKeyType; // 구분
   title: string; // 이름 : max:100
 }
 

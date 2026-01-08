@@ -4,19 +4,19 @@
 
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
-import { TTestData$Status } from '@db_models';
+import { TestDataStatus } from '@const';
 
 const tableName: Knex.TableNames = 'test_data';
 type tableName = typeof tableName;
 
 export default class User extends MySqlQuery<tableName> {
-  Status = TTestData$Status;
+  Status = TestDataStatus;
 
   constructor() {
     super(tableName);
   }
 
-  list(req: MyRequest, options: { keyword?: string; status?: TTestData$Status }) {
+  list(req: MyRequest, options: { keyword?: string; status?: TestDataStatus }) {
     const builder = this.getBuilder(req).select('*').orderBy('id', 'desc');
 
     if (options.keyword) {

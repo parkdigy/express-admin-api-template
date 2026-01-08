@@ -3,13 +3,8 @@
  * ******************************************************************************************************************/
 
 import { Knex } from 'knex';
-import { makeEnum } from '../@util';
 import { type TableInsertData, type TableUpdateData } from '../@types';
-
-/** 상태 */
-const Status = { ON: '사용', OFF: '미사용' };
-export type TTestData$Status = keyof typeof Status;
-export const TTestData$Status = makeEnum('status', Status);
+import type { TestDataStatus } from '@const';
 
 export interface TTestData {
   /** Primary Key */
@@ -28,7 +23,7 @@ export interface TTestData {
   date: Date; // 날짜 // date
   datetime: Date; // 날짜시간 // datetime
   text_array: string; // 텍스트 배열 // json
-  status: TTestData$Status; // 상태
+  status: TestDataStatus; // 상태
   create_date: Date; // 등록일자
   update_date: Date; // 수정일자
 }

@@ -4,13 +4,13 @@
 
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
-import { TAdminPrivacyAccessLog$Type } from '@db';
+import { AdminPrivacyAccessLogType } from '@const';
 
 const tableName: Knex.TableNames = 'admin_privacy_access_log';
 type tableName = typeof tableName;
 
 export default class AdminPrivacyAccessLog extends MySqlQuery<tableName> {
-  Type = TAdminPrivacyAccessLog$Type;
+  Type = AdminPrivacyAccessLogType;
 
   constructor() {
     super(tableName);
@@ -24,7 +24,7 @@ export default class AdminPrivacyAccessLog extends MySqlQuery<tableName> {
     options: {
       search_date_from: Date;
       search_date_to: Date;
-      type?: TAdminPrivacyAccessLog$Type;
+      type?: AdminPrivacyAccessLogType;
       admin_user_id?: number;
     }
   ) {
