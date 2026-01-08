@@ -31,6 +31,8 @@
       "@middlewares": ["src/middlewares"],
       "@types": ["src/@types"],
       "@db": ["src/db"],
+      "@db_common": ["src/db/@common"],
+      "@db_types": ["src/db/@types"],
       "@db_models": ["src/db/models"],
       "@db_models_types": ["src/db/models/@types"],
       "@db_models_util": ["src/db/models/@util"],
