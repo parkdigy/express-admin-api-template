@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { TableRecord } from '@types';
+import { type TableRecord } from '@types';
 import knex from './knex';
 
 export default {

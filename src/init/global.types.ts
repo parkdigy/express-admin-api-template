@@ -1,4 +1,4 @@
-import { MyRequest as _MyRequest, MyAuthRequest as _MyAuthRequest, MyResponse as _MyResponse } from '@types';
+import { type MyRequest as _MyRequest, type MyAuthRequest as _MyAuthRequest, type MyResponse as _MyResponse } from '@types';
 
 declare global {
   type MyRequest = _MyRequest;

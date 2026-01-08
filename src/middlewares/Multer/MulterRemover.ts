@@ -2,7 +2,7 @@
  * Multer 파일 삭제 처리 미들웨어
  * ******************************************************************************************************************/
 
-import { NextFunction } from 'express';
+import { type NextFunction } from 'express';
 import fs from 'fs';
 
 export default function (req: MyRequest, res: MyResponse, next: NextFunction) {

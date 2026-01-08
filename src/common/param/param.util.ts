@@ -1,4 +1,4 @@
-import { ParamOption, Params } from './param.types';
+import { type ParamOption, type Params } from './param.types';
 
 /********************************************************************************************************************
  * ParamsSetRequired
