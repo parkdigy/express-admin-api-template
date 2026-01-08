@@ -1,4 +1,4 @@
-import { ApiData, ApiPaging, ApiResponse, ApiError } from './api.types';
+import { type ApiData, type ApiPaging, type ApiResponse, ApiError } from './api.types';
 
 type ApiMsg =
   | string

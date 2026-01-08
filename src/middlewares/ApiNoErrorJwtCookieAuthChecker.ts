@@ -6,7 +6,7 @@
  * - 로그인 실패 시, 쿠키에서 JWT 토큰을 삭제
  * ******************************************************************************************************************/
 
-import { NextFunction } from 'express';
+import { type NextFunction } from 'express';
 
 export default async function (req: MyRequest, res: MyResponse, next: NextFunction) {
   try {

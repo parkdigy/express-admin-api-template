@@ -7,8 +7,8 @@
  * - Finisher 실행
  * ******************************************************************************************************************/
 
-import { MyAuthController, MyController } from '@types';
-import { RequestHandler } from 'express';
+import { type MyAuthController, type MyController } from '@types';
+import { type RequestHandler } from 'express';
 import { MulterOriginalNameChanger, MulterRemover } from './Multer';
 import ApiController from './ApiController';
 import ApiNoErrorJwtCookieAuthChecker from './ApiNoErrorJwtCookieAuthChecker';
