@@ -4,10 +4,12 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "allowImportingTsExtensions": false,
+    "allowSyntheticDefaultImports": true,
+    "verbatimModuleSyntax": true,
     "strict": true,
     "noImplicitAny": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
     "preserveSymlinks": true,
     "baseUrl": "./",
     "paths": {
