@@ -2,7 +2,7 @@
  * 이메일 전송을 위한 모듈
  * ******************************************************************************************************************/
 
-import nodemailer, { Transporter } from 'nodemailer';
+import nodemailer, { type Transporter } from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import Mail from 'nodemailer/lib/mailer';
 import internal from 'stream';

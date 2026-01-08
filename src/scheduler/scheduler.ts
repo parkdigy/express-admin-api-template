@@ -1,6 +1,6 @@
 import schedule from './schedule';
 import { AppReloadJob } from './Jobs';
-import { Scheduler } from './scheduler.types';
+import { type Scheduler } from './scheduler.types';
 
 const scheduler: Scheduler = {
   $jobs: [],

@@ -2,7 +2,7 @@
  * Cors 미들웨어
  * ******************************************************************************************************************/
 
-import Cors, { CorsOptions } from 'cors';
+import Cors, { type CorsOptions } from 'cors';
 
 const corsWhiteList: string[] = [];
 

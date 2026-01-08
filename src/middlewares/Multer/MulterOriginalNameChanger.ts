@@ -1,4 +1,4 @@
-import { NextFunction } from 'express';
+import { type NextFunction } from 'express';
 import iconv from 'iconv-lite';
 
 export default function (req: MyRequest, res: MyResponse, next: NextFunction) {

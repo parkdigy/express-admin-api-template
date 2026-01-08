@@ -1,5 +1,5 @@
-import _schedule, { JobCallback } from 'node-schedule';
-import { IJobBase } from '../../scheduler';
+import _schedule, { type JobCallback } from 'node-schedule';
+import { type IJobBase } from '../../scheduler';
 
 /** week */
 // 0 : 일요일

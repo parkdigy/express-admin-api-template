@@ -19,7 +19,7 @@ if (TsConfigJson.compilerOptions.paths) {
 module.exports = {
   mode: isProduction ? 'production' : 'development',
   target: 'node',
-  stats: isProduction,
+  stats: isProduction ? 'normal' : 'errors-warnings',
   resolve: {
     extensions: ['.js', '.ts'],
     alias,

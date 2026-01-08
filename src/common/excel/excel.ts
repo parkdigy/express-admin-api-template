@@ -4,18 +4,18 @@
 
 import xlsx from 'sheetjs-style';
 import {
-  ExcelBorder,
-  ExcelBorderStyle,
-  ExcelStyle,
-  ExcelColor,
-  ExcelColumnOption,
-  ExcelFill,
-  ExcelFont,
-  ExcelColumnOptionAlign,
-  ExcelColumnOnValueReturn,
-  ExcelColumnParamOption,
-  ExcelColumnCellOption,
-  ExcelAlignment,
+  type ExcelBorder,
+  type ExcelBorderStyle,
+  type ExcelStyle,
+  type ExcelColor,
+  type ExcelColumnOption,
+  type ExcelFill,
+  type ExcelFont,
+  type ExcelColumnOptionAlign,
+  type ExcelColumnOnValueReturn,
+  type ExcelColumnParamOption,
+  type ExcelColumnCellOption,
+  type ExcelAlignment,
 } from './excel.types';
 
 /** 기본 Border 스타일 */

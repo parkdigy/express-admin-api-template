@@ -2,10 +2,9 @@
  * MySql Query Class
  * ******************************************************************************************************************/
 
-import { TableRecord } from '@types';
-import { DeferredKeySelection, Knex, StrKey, UnwrapArrayMember } from 'knex';
+import { type TableRecord } from '@types';
+import { type DeferredKeySelection, Knex, type StrKey, type UnwrapArrayMember } from 'knex';
 import { MySqlKnexUtil } from '../../knex';
-import ResolveTableType = Knex.ResolveTableType;
 
 export default class MySqlQuery<
   TTable extends Knex.TableNames,
@@ -46,9 +45,8 @@ export default class MySqlQuery<
     alias?: TAlias,
     indexName?: string
   ): `${TTable} as ${TAlias}` {
-    return `${alias ? `${this.tableName} as ${alias}` : `${this.tableName} as ${this.tableName}`}${
-      indexName ? ` force index(${indexName})` : ''
-    }` as any;
+    return `${alias ? `${this.tableName} as ${alias}` : `${this.tableName} as ${this.tableName}`}${indexName ? ` force index(${indexName})` : ''
+      }` as any;
   }
 
   /********************************************************************************************************************
@@ -81,8 +79,8 @@ export default class MySqlQuery<
   find<
     SelectColumns extends Extract<keyof TRecord, string>[] | undefined = undefined,
     SelectColumnsKeys extends string | never = SelectColumns extends undefined
-      ? never
-      : UnwrapArrayMember<SelectColumns>,
+    ? never
+    : UnwrapArrayMember<SelectColumns>,
     TResult = Knex.QueryBuilder<
       TRecord,
       DeferredKeySelection<
@@ -138,7 +136,7 @@ export default class MySqlQuery<
   /********************************************************************************************************************
    * add
    * ******************************************************************************************************************/
-  add<TKey extends StrKey<ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
+  add<TKey extends StrKey<Knex.ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
     req: MyRequest,
     data: TInsertRecord | readonly TInsertRecord[],
     returning?: Returning
@@ -155,7 +153,7 @@ export default class MySqlQuery<
   /********************************************************************************************************************
    * addWithCreateDate
    * ******************************************************************************************************************/
-  addWithCreateDate<TKey extends StrKey<ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
+  addWithCreateDate<TKey extends StrKey<Knex.ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
     req: MyRequest,
     data: Omit<TInsertRecord, 'create_date'> | readonly Omit<TInsertRecord, 'create_date'>[],
     returning?: Returning
@@ -175,7 +173,7 @@ export default class MySqlQuery<
   /********************************************************************************************************************
    * addWithCreateUpdateDate
    * ******************************************************************************************************************/
-  addWithCreateUpdateDate<TKey extends StrKey<ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
+  addWithCreateUpdateDate<TKey extends StrKey<Knex.ResolveTableType<TRecord>>, Returning extends TKey | TKey[]>(
     req: MyRequest,
     data:
       | Omit<TInsertRecord, 'create_date' | 'update_date'>

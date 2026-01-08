@@ -3,7 +3,7 @@
  * - req.$$remoteIpAddress 에 클라이언트 IP 주소 저장
  * ******************************************************************************************************************/
 
-import { NextFunction } from 'express';
+import { type NextFunction } from 'express';
 
 export default function (req: MyRequest, res: MyResponse, next: NextFunction) {
   const forwardedVal = req.headers['x-forwarded-for'];

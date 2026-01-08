@@ -4,7 +4,7 @@
  * - starter 로그 출력
  * ******************************************************************************************************************/
 
-import { NextFunction } from 'express';
+import { type NextFunction } from 'express';
 
 export default async function (req: MyRequest, res: MyResponse, next: NextFunction) {
   env.$$routerCount = (env.$$routerCount || 0) + 1;
