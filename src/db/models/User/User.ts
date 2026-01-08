@@ -4,7 +4,7 @@
 
 import { Knex } from 'knex';
 import { type TableInsertData, type TableUpdateData } from '../@types';
-import { type UserStatus } from '@db_types';
+import type { UserStatus } from '@const';
 
 export interface TUser {
   /** Primary Key */

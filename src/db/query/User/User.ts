@@ -4,7 +4,7 @@
 
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
-import { UserStatus } from '@db_types';
+import { UserStatus } from '@const';
 
 const tableName: Knex.TableNames = 'user';
 type tableName = typeof tableName;

@@ -8,12 +8,6 @@ function camelCase<T extends string>(str: T): CamelCase<T> {
 }
 
 /********************************************************************************************************************
- * MakeType
- * ******************************************************************************************************************/
-
-export type MakeType<T> = ValueOf<{ [K in keyof T]: T[K] extends (...args: any[]) => any ? never : T[K] }>;
-
-/********************************************************************************************************************
  * Types
  * ******************************************************************************************************************/
 
@@ -44,10 +38,10 @@ type MakeFinalItems<Items extends TItems> = {
 }[number][];
 
 /********************************************************************************************************************
- * _makeType
+ * __makeConst
  * ******************************************************************************************************************/
 
-export function _makeType<
+export function __makeConst<
   const Name extends string,
   const Value extends string | number,
   const ValueName extends string,
@@ -98,10 +92,10 @@ export function _makeType<
 }
 
 /********************************************************************************************************************
- * makeType
+ * _makeConst
  * ******************************************************************************************************************/
 
-export function makeType<
+function _makeConst<
   const Name extends string,
   const StringValue extends string,
   const NumberValue extends number,
@@ -120,5 +114,19 @@ export function makeType<
     }
   }) as FinalItems;
 
-  return _makeType(name, finalItems);
+  return __makeConst(name, finalItems);
 }
+
+/********************************************************************************************************************
+ * declare global
+ * ******************************************************************************************************************/
+
+declare global {
+  var makeConst: typeof _makeConst;
+
+  type MakeConst<T> = ValueOf<{ [K in keyof T]: T[K] extends (...args: any[]) => any ? never : T[K] }>;
+}
+
+globalThis.makeConst = _makeConst;
+
+export {};
