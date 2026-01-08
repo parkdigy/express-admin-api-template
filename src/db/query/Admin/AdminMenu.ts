@@ -2,7 +2,7 @@
  * 어드민 메뉴 Query Class
  ********************************************************************************************************************/
 
-import { TableRecord } from '@types';
+import { type TableRecord } from '@types';
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
 

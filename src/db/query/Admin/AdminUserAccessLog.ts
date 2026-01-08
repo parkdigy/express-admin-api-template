@@ -4,7 +4,7 @@
 
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
-import { TAdminUserAccessKey } from '@db_models';
+import { type TAdminUserAccessKey } from '@db_models';
 
 const tableName: Knex.TableNames = 'admin_user_access_log';
 type tableName = typeof tableName;

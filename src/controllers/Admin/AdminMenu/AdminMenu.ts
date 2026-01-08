@@ -2,9 +2,9 @@
  * 어드민 메뉴 Controller
  * ******************************************************************************************************************/
 
-import { AdminMenuListItem } from './AdminMenu.types';
+import { type AdminMenuListItem } from './AdminMenu.types';
 import { Param_Boolean_Required, Param_String, Param_String_Required } from '@common_param';
-import { TAdminMenu$UpdateData } from '@db_models';
+import { type TAdminMenu$UpdateData } from '@db_models';
 
 // 다음 메뉴들은 수정/삭제할 수 없음
 // '어드민 관리', '어드민 관리 > 메뉴 관리', '어드민 관리 > 사용자 관리', '어드민 관리 > 그룹 관리'

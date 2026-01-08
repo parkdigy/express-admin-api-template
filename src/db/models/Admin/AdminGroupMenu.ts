@@ -4,9 +4,9 @@
  *********************************************************************************************************************/
 
 import { Knex } from 'knex';
-import { TAdminGroup } from './AdminGroup';
-import TAdminMenu from './AdminMenu';
-import { TableInsertData, TableUpdateData } from '../@types';
+import { type TAdminGroup } from './AdminGroup';
+import type TAdminMenu from './AdminMenu';
+import { type TableInsertData, type TableUpdateData } from '../@types';
 
 export interface TAdminGroupMenu {
   /** Primary Keys */
@@ -21,7 +21,7 @@ export interface TAdminGroupMenu {
 export type TAdminGroupMenu$InsertData = TableInsertData<TAdminGroupMenu, never, 'read' | 'write' | 'export'>;
 export type TAdminGroupMenu$UpdateData = TableUpdateData<TAdminGroupMenu, 'admin_group_id' | 'admin_menu_id'>;
 
-export default TAdminGroupMenu;
+export type { TAdminGroupMenu as default };
 
 declare module 'knex/types/tables' {
   interface Tables {

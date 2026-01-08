@@ -4,9 +4,9 @@
  ********************************************************************************************************************/
 
 import { Knex } from 'knex';
-import { TAdminUser } from './AdminUser';
-import TAdminGroup from './AdminGroup';
-import { TableInsertData } from '../@types';
+import { type TAdminUser } from './AdminUser';
+import type TAdminGroup from './AdminGroup';
+import { type TableInsertData } from '../@types';
 
 export interface TAdminGroupUser {
   /** Primary Keys */
@@ -16,7 +16,7 @@ export interface TAdminGroupUser {
 
 export type TAdminGroupUser$InsertData = TableInsertData<TAdminGroupUser>;
 
-export default TAdminGroupUser;
+export type { TAdminGroupUser as default };
 
 declare module 'knex/types/tables' {
   interface Tables {

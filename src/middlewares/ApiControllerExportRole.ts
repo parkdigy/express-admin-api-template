@@ -5,8 +5,8 @@
 
 import ApiMenuRoleChecker from './ApiMenuRoleChecker';
 import ApiController from './ApiController';
-import { MyAuthController, MyController } from '@types';
-import { RequestHandler } from 'express';
+import { type MyAuthController, type MyController } from '@types';
+import { type RequestHandler } from 'express';
 
 export default function (
   menus: string | string[],

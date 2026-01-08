@@ -5,7 +5,7 @@
  * - 모든 사용자 메뉴 체크
  * ******************************************************************************************************************/
 
-import { NextFunction } from 'express';
+import { type NextFunction } from 'express';
 
 export default function (menus: string | string[], role = menu.Role.Read) {
   return async (req: MyRequest, res: MyResponse, next: NextFunction) => {

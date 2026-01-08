@@ -3,7 +3,7 @@
  ********************************************************************************************************************/
 
 import { Knex } from 'knex';
-import { TableInsertData, TableUpdateData } from '../@types';
+import { type TableInsertData, type TableUpdateData } from '../@types';
 
 export interface TAdminGroup {
   /** Primary Key */
@@ -17,7 +17,7 @@ export interface TAdminGroup {
 export type TAdminGroup$InsertData = TableInsertData<TAdminGroup, 'id', 'is_lock' | 'is_privacy_access'>;
 export type TAdminGroup$UpdateData = TableUpdateData<TAdminGroup, 'id'>;
 
-export default TAdminGroup;
+export type { TAdminGroup as default };
 
 declare module 'knex/types/tables' {
   interface Tables {

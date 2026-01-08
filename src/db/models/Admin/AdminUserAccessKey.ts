@@ -5,7 +5,7 @@
 
 import { Knex } from 'knex';
 import { makeEnum } from '../@util';
-import { TableInsertData, TableUpdateData } from '../@types';
+import { type TableInsertData, type TableUpdateData } from '../@types';
 
 /** 구분 */
 const Type = { VIEW: '화면', EXPORT: 'Export' } as const;
@@ -23,7 +23,7 @@ export interface TAdminUserAccessKey {
 export type TAdminUserAccessKey$InsertData = TableInsertData<TAdminUserAccessKey>;
 export type TAdminUserAccessKey$UpdateData = TableUpdateData<TAdminUserAccessKey, 'id'>;
 
-export default TAdminUserAccessKey;
+export type { TAdminUserAccessKey as default };
 
 declare module 'knex/types/tables' {
   interface Tables {

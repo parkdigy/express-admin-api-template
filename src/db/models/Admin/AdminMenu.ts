@@ -4,7 +4,7 @@
  ********************************************************************************************************************/
 
 import { Knex } from 'knex';
-import { TableInsertData, TableUpdateData } from '../@types';
+import { type TableInsertData, type TableUpdateData } from '../@types';
 
 export interface TAdminMenu {
   /** Primary Key */
@@ -27,7 +27,7 @@ export type TAdminMenu$InsertData = TableInsertData<
 >;
 export type TAdminMenu$UpdateData = TableUpdateData<TAdminMenu>;
 
-export default TAdminMenu;
+export type { TAdminMenu as default };
 
 declare module 'knex/types/tables' {
   interface Tables {

@@ -4,7 +4,7 @@
 
 import { Knex } from 'knex';
 import { makeEnum } from '../@util';
-import { TableInsertData, TableUpdateData } from '../@types';
+import { type TableInsertData, type TableUpdateData } from '../@types';
 
 /** 상태 */
 const Status = { ON: '사용', OFF: '미사용' };
@@ -36,7 +36,7 @@ export interface TTestData {
 export type TTestData$InsertData = TableInsertData<TTestData, 'id'>;
 export type TTestData$UpdateData = TableUpdateData<TTestData, 'id' | 'create_date', 'update_date'>;
 
-export default TTestData;
+export type { TTestData as default };
 
 declare module 'knex/types/tables' {
   interface Tables {

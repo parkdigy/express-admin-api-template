@@ -4,9 +4,9 @@
  ********************************************************************************************************************/
 
 import { Knex } from 'knex';
-import TAdminUser from './AdminUser';
-import TAdminUserAccessKey from './AdminUserAccessKey';
-import { TableInsertData } from '../@types';
+import type TAdminUser from './AdminUser';
+import type TAdminUserAccessKey from './AdminUserAccessKey';
+import { type TableInsertData } from '../@types';
 
 export interface TAdminUserAccessLog {
   /** Primary Key */
@@ -20,7 +20,7 @@ export interface TAdminUserAccessLog {
 
 export type TAdminUserAccessLog$InsertData = TableInsertData<TAdminUserAccessLog, 'id'>;
 
-export default TAdminUserAccessLog;
+export type { TAdminUserAccessLog as default };
 
 declare module 'knex/types/tables' {
   interface Tables {

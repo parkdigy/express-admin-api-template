@@ -3,8 +3,8 @@
  ********************************************************************************************************************/
 
 import { Knex } from 'knex';
-import { TableInsertData } from '../@types';
-import TAdminUser from './AdminUser';
+import { type TableInsertData } from '../@types';
+import type TAdminUser from './AdminUser';
 
 export interface TAdminUserLoginLog {
   /** Primary Key */
@@ -19,7 +19,7 @@ export interface TAdminUserLoginLog {
 
 export type TAdminUserLoginLog$InsertData = TableInsertData<TAdminUserLoginLog, 'id'>;
 
-export default TAdminUserLoginLog;
+export type { TAdminUserLoginLog as default };
 
 declare module 'knex/types/tables' {
   interface Tables {

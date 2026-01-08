@@ -3,7 +3,7 @@
  ********************************************************************************************************************/
 
 import { Knex } from 'knex';
-import { TableInsertData, TableUpdateData } from '../@types';
+import { type TableInsertData, type TableUpdateData } from '../@types';
 
 export interface TAdminUserActivityType {
   /** Primary Key */
@@ -15,7 +15,7 @@ export interface TAdminUserActivityType {
 export type TAdminUserActivityType$InsertData = TableInsertData<TAdminUserActivityType>;
 export type TAdminUserActivityType$UpdateData = TableUpdateData<TAdminUserActivityType, 'id'>;
 
-export default TAdminUserActivityType;
+export type { TAdminUserActivityType as default };
 
 declare module 'knex/types/tables' {
   interface Tables {

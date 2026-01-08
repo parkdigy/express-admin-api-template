@@ -4,8 +4,8 @@
  * ******************************************************************************************************************/
 
 import ApiMenuRoleChecker from './ApiMenuRoleChecker';
-import { MyAuthController, MyController } from '@types';
-import { RequestHandler } from 'express';
+import { type MyAuthController, type MyController } from '@types';
+import { type RequestHandler } from 'express';
 import ApiMulterController from './ApiMulterController';
 
 export default function (

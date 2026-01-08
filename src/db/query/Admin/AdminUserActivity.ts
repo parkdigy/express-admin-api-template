@@ -4,7 +4,7 @@
 
 import { MySqlQuery } from '../@common';
 import { Knex } from 'knex';
-import { TAdminUser, TAdminUserActivity } from '@db_models';
+import { type TAdminUser, type TAdminUserActivity } from '@db_models';
 
 const tableName: Knex.TableNames = 'admin_user_activity';
 type tableName = typeof tableName;

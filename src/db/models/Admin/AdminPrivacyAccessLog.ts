@@ -3,7 +3,7 @@
  ********************************************************************************************************************/
 
 import { Knex } from 'knex';
-import { TableInsertData } from '../@types';
+import { type TableInsertData } from '../@types';
 import { makeEnum } from '@db_models_util';
 
 /** 구분 */
@@ -32,7 +32,7 @@ export interface TAdminPrivacyAccessLog {
 
 export type TAdminPrivacyAccessLog$InsertData = TableInsertData<TAdminPrivacyAccessLog, 'id'>;
 
-export default TAdminPrivacyAccessLog;
+export type { TAdminPrivacyAccessLog as default };
 
 declare module 'knex/types/tables' {
   interface Tables {
