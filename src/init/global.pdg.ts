@@ -26,7 +26,7 @@ import {
   ifNotNullAndUndefined as _ifNotNullAndUndefined,
 } from '@pdg/compare';
 import { now as _now, nowJs as _nowJs, nowTime as _nowTime } from '@pdg/date-time';
-import { lv as _lv, vl as _vl, copy as _copy } from '@pdg/data';
+import { lv as _lv, vl as _vl, copy as _copy, makeConst as _makeConst } from '@pdg/data';
 
 declare global {
   /** types */
@@ -65,6 +65,7 @@ declare global {
   var lv: typeof _lv;
   var vl: typeof _vl;
   var copy: typeof _copy;
+  var makeConst: typeof _makeConst;
 }
 
 /** compare */
@@ -90,5 +91,6 @@ globalThis.nowTime = _nowTime;
 globalThis.lv = _lv;
 globalThis.vl = _vl;
 globalThis.copy = _copy;
+globalThis.makeConst = _makeConst;
 
 export {};
