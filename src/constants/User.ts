@@ -8,4 +8,4 @@ export const UserStatus = makeConst('status', [
   ['LOCK', '잠금'],
 ]);
 
-export type UserStatus = MakeConst<typeof UserStatus>;
+export type UserStatus = typeof UserStatus.Type;
