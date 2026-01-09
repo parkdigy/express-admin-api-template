@@ -8,8 +8,6 @@ import { ApiControllerReadRole, ApiControllerWriteRole, ApiJwtCookieAuthChecker 
 
 const router = express.Router();
 
-// 데이터 상태 목록
-router.get('/data/status', ApiJwtCookieAuthChecker, ApiControllerReadRole(menu.test.list, Test.dataStatusList));
 // 데이터 목록
 router.get('/data', ApiJwtCookieAuthChecker, ApiControllerReadRole(menu.test.list, Test.dataList));
 // 데이터 등록

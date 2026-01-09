@@ -2,7 +2,7 @@
  * 테스트 데이터 상태
  * ******************************************************************************************************************/
 
-export const TestDataStatus = makeConst('status', [
+export const TestDataStatus = makeConst([
   ['ON', '사용'],
   ['OFF', '미사용'],
 ]);

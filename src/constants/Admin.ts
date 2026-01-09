@@ -2,7 +2,7 @@
  * 개인정보 조회 구분
  * ******************************************************************************************************************/
 
-export const AdminPrivacyAccessLogType = makeConst('type', [
+export const AdminPrivacyAccessLogType = makeConst([
   ['TEST_EXPORT_LIST', 'Test List 액셀 다운로드'],
   ['TEST_INFO', 'Test Info'],
   ['TEST_EMAIL', 'Test Email'],
@@ -18,7 +18,7 @@ export type AdminPrivacyAccessLogType = typeof AdminPrivacyAccessLogType.Type;
  * 관리자 접근 KEY 구분
  * ******************************************************************************************************************/
 
-export const AdminUserAccessKeyType = makeConst('type', [
+export const AdminUserAccessKeyType = makeConst([
   ['VIEW', '화면'],
   ['EXPORT', 'Export'],
 ]);

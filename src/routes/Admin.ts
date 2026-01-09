@@ -98,11 +98,6 @@ router.get('/login_log', ApiControllerReadRole(menu.admin.loginLog, AdminUserLog
 /********************************************************************************************************************
  * 어드민 개인정보 조회 로그
  * ******************************************************************************************************************/
-// 어드민 개인정보 조회 로그 - 구분 목록
-router.get(
-  '/privacy_access_log/type',
-  ApiControllerReadRole(menu.admin.privacyAccessLog, AdminPrivacyAccessLog.typeList)
-);
 // 어드민 개인정보 조회 로그 - 목록
 router.get('/privacy_access_log', ApiControllerReadRole(menu.admin.privacyAccessLog, AdminPrivacyAccessLog.list));
 
