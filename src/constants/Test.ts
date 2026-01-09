@@ -7,4 +7,4 @@ export const TestDataStatus = makeConst('status', [
   ['OFF', '미사용'],
 ]);
 
-export type TestDataStatus = MakeConst<typeof TestDataStatus>;
+export type TestDataStatus = typeof TestDataStatus.Type;

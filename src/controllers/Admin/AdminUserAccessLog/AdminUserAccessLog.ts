@@ -34,7 +34,7 @@ export default {
 
     excel.export(res, `접근_통계_${dayjs().format('YYYYMMDD')}.xlsx`, list, [
       excel.newColumn('이메일', 'email', 20, 'l'),
-      excel.newColumn('구분', 'type', 10, 'c', (v) => db.AdminUserAccessKey.Type.getName(v)),
+      excel.newColumn('구분', 'type', 10, 'c', (v) => db.AdminUserAccessKey.Type.getLabel(v)),
       excel.newColumn('화면', 'title', 40, 'l'),
       excel.newColumn('URL', 'url', 50, 'l'),
       excel.newColumn('접근시간', 'create_date', 20, 'c', (v) => dayjs(v).format('YYYY-MM-DD HH:mm:ss')),

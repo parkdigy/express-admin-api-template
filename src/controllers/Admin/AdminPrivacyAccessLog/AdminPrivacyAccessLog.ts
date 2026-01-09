@@ -6,7 +6,7 @@ export default {
    * 구분 목록
    * ******************************************************************************************************************/
   typeList(req: MyAuthRequest, res: MyResponse) {
-    api.success(res, db.AdminPrivacyAccessLog.Type.getNameList());
+    api.success(res, db.AdminPrivacyAccessLog.Type.getNvList());
   },
 
   /********************************************************************************************************************
@@ -24,7 +24,7 @@ export default {
 
     api.success(
       res,
-      data.map((info) => ({ ...info, type_name: db.AdminPrivacyAccessLog.Type.getName(info.type) })),
+      data.map((info) => ({ ...info, type_name: db.AdminPrivacyAccessLog.Type.getLabel(info.type) })),
       paging
     );
   },
@@ -44,7 +44,7 @@ export default {
     excel.export(res, `개인정보조회로그_${dayjs().format('YYYYMMDD')}.xlsx`, list, [
       excel.newColumn('ID', 'id', 10, 'c'),
       excel.newColumn('조회 관리자', 30, 'c', (info) => `(${info.admin_user_id}) ${info.admin_user_name}`),
-      excel.newColumn('구분', 50, 'l', (info) => db.AdminPrivacyAccessLog.Type.getName(info.type)),
+      excel.newColumn('구분', 50, 'l', (info) => db.AdminPrivacyAccessLog.Type.getLabel(info.type)),
       excel.newColumn('사유', 'reason', 50, 'l'),
       excel.newColumn('참조 ID', 20, 'c', (info) => (info.parent_id === 0 ? '' : info.parent_id)),
       excel.newColumn('조회일자', 'create_date', 20, 'c', (v) => dayjs(v).format('YYYY-MM-DD HH:mm:ss')),

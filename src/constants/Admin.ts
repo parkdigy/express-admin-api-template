@@ -12,7 +12,7 @@ export const AdminPrivacyAccessLogType = makeConst('type', [
   ['TEST_PERSONAL_NO', 'Test Personal Number'],
 ]);
 
-export type AdminPrivacyAccessLogType = MakeConst<typeof AdminPrivacyAccessLogType>;
+export type AdminPrivacyAccessLogType = typeof AdminPrivacyAccessLogType.Type;
 
 /********************************************************************************************************************
  * 관리자 접근 KEY 구분
@@ -23,4 +23,4 @@ export const AdminUserAccessKeyType = makeConst('type', [
   ['EXPORT', 'Export'],
 ]);
 
-export type AdminUserAccessKeyType = MakeConst<typeof AdminUserAccessKeyType>;
+export type AdminUserAccessKeyType = typeof AdminUserAccessKeyType.Type;

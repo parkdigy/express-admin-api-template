@@ -6,7 +6,7 @@ export default {
    * 데이터 상태 목록
    * ******************************************************************************************************************/
   dataStatusList(req: MyAuthRequest, res: MyResponse) {
-    api.success(res, db.TestData.Status.getNameList());
+    api.success(res, db.TestData.Status.getNvList());
   },
 
   /********************************************************************************************************************
@@ -26,7 +26,7 @@ export default {
       company_num: util.masking.businessNo(info.company_num),
       personal_num: util.masking.personalNo(info.personal_num),
       text_array: JSON.parse(info.text_array),
-      status_name: db.TestData.Status.getName(info.status),
+      status_name: db.TestData.Status.getLabel(info.status),
     }));
 
     api.success(res, finalData, paging);
@@ -82,7 +82,7 @@ export default {
       excel.newColumn('Bool', 'bool', 8, 'c', (v) => (v ? 'Y' : 'N')),
       excel.newColumn('Date', 'date', 12, 'c', (v) => dayjs(v).format('YYYY-MM-DD')),
       excel.newColumn('Datetime', 'datetime', 20, 'c', (v) => dayjs(v).format('YYYY-MM-DD HH:mm:ss')),
-      excel.newColumn('Status', 'status', 8, 'c', (v) => db.TestData.Status.getName(v)),
+      excel.newColumn('Status', 'status', 8, 'c', (v) => db.TestData.Status.getLabel(v)),
       excel.newColumn('Create Date', 'create_date', 20, 'c', (v) => dayjs(v).format('YYYY-MM-DD HH:mm:ss')),
       excel.newColumn('Update Date', 'update_date', 20, 'c', (v) => dayjs(v).format('YYYY-MM-DD HH:mm:ss')),
     ]);
@@ -116,7 +116,7 @@ export default {
       ? {
           ...info,
           text_array: JSON.parse(info.text_array),
-          status_name: db.TestData.Status.getName(info.status),
+          status_name: db.TestData.Status.getLabel(info.status),
         }
       : {
           ...info,
@@ -126,7 +126,7 @@ export default {
           company_num: util.masking.businessNo(info.company_num),
           personal_num: util.masking.personalNo(info.personal_num),
           text_array: JSON.parse(info.text_array),
-          status_name: db.TestData.Status.getName(info.status),
+          status_name: db.TestData.Status.getLabel(info.status),
         };
 
     api.success(res, finalInfo);
