@@ -1,15 +1,18 @@
 import 'dotenv/config';
 
+import './global.log';
+
+import './global.pdg';
+import './global.dayjs';
+
+import './global.array';
+import './global.string';
+import './global.error';
+
 import '../@types';
 
 import './global.types';
-import './global.log';
-import './global.pdg';
-import './global.array';
 import './global.compare';
-import './global.dayjs';
-import './global.string';
-import './global.error';
 import './global.common';
 
 import './global.admin';
