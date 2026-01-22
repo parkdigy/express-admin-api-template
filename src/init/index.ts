@@ -6,6 +6,7 @@ import './global.pdg';
 import './global.dayjs';
 
 import './global.array';
+import './global.object';
 import './global.string';
 import './global.error';
 
