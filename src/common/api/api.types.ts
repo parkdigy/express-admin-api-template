@@ -55,6 +55,10 @@ export class ApiError {
     return this.$msg;
   }
 
+  getHtmlMsg() {
+    return this.$htmlMsg;
+  }
+
   getStatus() {
     return this.$status;
   }
