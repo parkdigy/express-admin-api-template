@@ -72,6 +72,19 @@ const api = {
   },
 
   /**
+   * 신규 오류 생성 (기존 오류의 메시지 치환)
+   */
+  newErrorReplaceMsg(error: ApiError, replace: Record<string, string | number>) {
+    const originalMsg: ApiMsg = {
+      text: error.getMsg() ?? '',
+      html: error.getHtmlMsg(),
+      replace,
+    };
+    const replacedMsg = getReplacedMsg(originalMsg);
+    return new ApiError(error.getStatus(), error.getCode(), replacedMsg?.text, replacedMsg?.html);
+  },
+
+  /**
    * 신규 Exception 오류 생성 (기존 오류에서 복사)
    */
   newExceptionError(msg?: ApiMsg) {
