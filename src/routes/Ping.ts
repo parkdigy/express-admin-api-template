@@ -9,7 +9,7 @@ const router = express.Router();
 router.get(
   '/',
   ApiController((req: MyRequest, res: MyResponse) => {
-    res.send('pong');
+    res.send(req.$$remoteIpAddress ? `pong : ${req.$$remoteIpAddress}` : 'pong');
   })
 );
 
