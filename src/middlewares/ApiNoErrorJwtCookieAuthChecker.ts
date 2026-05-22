@@ -15,8 +15,6 @@ export default async function (req: MyRequest, res: MyResponse, next: NextFuncti
       req.$$user = await db.User.infoForSession(req, userId);
       if (req.$$user == null) {
         jwt.clearAccessToken(res);
-      } else {
-        next();
       }
     } else {
       jwt.clearAccessToken(res);
