@@ -7,7 +7,6 @@ import { type ParamOption, type ParamOptionDataType } from './param.types';
 import dayjs from 'dayjs';
 import { isPersonalNo, isBusinessNo, isEmail, isUrl, isTelNo, isMobileNo, isNumericText } from '@pdg/compare';
 import { formatTelNo, formatBusinessNo, formatPersonalNo } from '@pdg/formatting';
-import { beginDateOfDay, endDateOfDay } from '@pdg/date-time';
 
 function isValueEmpty(value: any) {
   return ['', null, undefined].includes(value);
