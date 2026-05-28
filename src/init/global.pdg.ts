@@ -25,7 +25,30 @@ import {
   ifNullOrUndefined as _ifNullOrUndefined,
   ifNotNullAndUndefined as _ifNotNullAndUndefined,
 } from '@pdg/compare';
-import { now as _now, nowJs as _nowJs, nowTime as _nowTime } from '@pdg/date-time';
+import {
+  beginDateOfDay as _beginDateOfDay,
+  beginDateOfMonth as _beginDateOfMonth,
+  endDateOfDay as _endDateOfDay,
+  endDateOfMonth as _endDateOfMonth,
+  extractDate as _extractDate,
+  formatDate as _formatDate,
+  getY as _getY,
+  getYm as _getYm,
+  getYmd as _getYmd,
+  getYmdh as _getYmdh,
+  getYmdhm as _getYmdhm,
+  getYmdhms as _getYmdhms,
+  now as _now,
+  nowJs as _nowJs,
+  nowTime as _nowTime,
+  nowY as _nowY,
+  nowYm as _nowYm,
+  nowYmd as _nowYmd,
+  nowYmdh as _nowYmdh,
+  nowYmdhm as _nowYmdhm,
+  nowYmdhms as _nowYmdhms,
+  weekdayText as _weekdayText,
+} from '@pdg/date-time';
 import { lv as _lv, vl as _vl, copy as _copy, makeConst as _makeConst } from '@pdg/data';
 
 declare global {
@@ -56,10 +79,29 @@ declare global {
   var ifNullOrUndefined: typeof _ifNullOrUndefined;
   var ifNotNullAndUndefined: typeof _ifNotNullAndUndefined;
 
-  /** date */
+  /** date-time */
+  var beginDateOfDay: typeof _beginDateOfDay;
+  var beginDateOfMonth: typeof _beginDateOfMonth;
+  var endDateOfDay: typeof _endDateOfDay;
+  var endDateOfMonth: typeof _endDateOfMonth;
+  var extractDate: typeof _extractDate;
+  var formatDate: typeof _formatDate;
+  var getY: typeof _getY;
+  var getYm: typeof _getYm;
+  var getYmd: typeof _getYmd;
+  var getYmdh: typeof _getYmdh;
+  var getYmdhm: typeof _getYmdhm;
+  var getYmdhms: typeof _getYmdhms;
   var now: typeof _now;
   var nowJs: typeof _nowJs;
   var nowTime: typeof _nowTime;
+  var nowY: typeof _nowY;
+  var nowYm: typeof _nowYm;
+  var nowYmd: typeof _nowYmd;
+  var nowYmdh: typeof _nowYmdh;
+  var nowYmdhm: typeof _nowYmdhm;
+  var nowYmdhms: typeof _nowYmdhms;
+  var weekdayText: typeof _weekdayText;
 
   /** data */
   var lv: typeof _lv;
@@ -82,10 +124,29 @@ globalThis.ifNotUndefined = _ifNotUndefined;
 globalThis.ifNullOrUndefined = _ifNullOrUndefined;
 globalThis.ifNotNullAndUndefined = _ifNotNullAndUndefined;
 
-/** date */
+/** date-time */
+globalThis.beginDateOfDay = _beginDateOfDay;
+globalThis.beginDateOfMonth = _beginDateOfMonth;
+globalThis.endDateOfDay = _endDateOfDay;
+globalThis.endDateOfMonth = _endDateOfMonth;
+globalThis.extractDate = _extractDate;
+globalThis.formatDate = _formatDate;
+globalThis.getY = _getY;
+globalThis.getYm = _getYm;
+globalThis.getYmd = _getYmd;
+globalThis.getYmdh = _getYmdh;
+globalThis.getYmdhm = _getYmdhm;
+globalThis.getYmdhms = _getYmdhms;
 globalThis.now = _now;
 globalThis.nowJs = _nowJs;
 globalThis.nowTime = _nowTime;
+globalThis.nowY = _nowY;
+globalThis.nowYm = _nowYm;
+globalThis.nowYmd = _nowYmd;
+globalThis.nowYmdh = _nowYmdh;
+globalThis.nowYmdhm = _nowYmdhm;
+globalThis.nowYmdhms = _nowYmdhms;
+globalThis.weekdayText = _weekdayText;
 
 /** data */
 globalThis.lv = _lv;
