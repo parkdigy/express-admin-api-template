@@ -125,7 +125,6 @@ function startServer() {
               },
               {
                 timeout: 1000 * 60,
-                httpsAgent: new https.Agent({ rejectUnauthorized: false }),
               }
             )
             .then(() => {

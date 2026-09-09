@@ -16,17 +16,13 @@ export default async function (req: MyRequest, res: MyResponse, next: NextFuncti
       if (user) {
         req.$$user = user;
         jwt.saveAccessToken(req, res, userId, expireDays);
-
-        next();
       } else {
         jwt.clearAccessToken(res);
-
-        res.status(401).end();
       }
-    } else {
-      res.status(401).end();
     }
   } catch {
-    res.status(401).end();
+    //
   }
+
+  next();
 }
