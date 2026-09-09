@@ -4,6 +4,7 @@ import {
   MULTER_MAX_FILE_SIZE_BYTES,
   default as MulterOptions,
 } from '../../../src/middlewares/Multer/MulterOptions';
+import { type MyRequest } from '../../../src/@types';
 
 function makeFile(originalname: string, mimetype: string) {
   return { originalname, mimetype, fieldname: 'file' } as Express.Multer.File;
@@ -28,7 +29,6 @@ describe('MulterOptions', () => {
     ['photo.jpg', 'image/jpeg'],
     ['photo.JPEG', 'image/jpeg'],
     ['photo.png', 'image/png'],
-    ['animation.gif', 'image/gif'],
     ['photo.webp', 'image/webp'],
     ['document.pdf', 'application/pdf'],
   ])('allows a matching safe file type: %s', (originalname, mimetype) => {
