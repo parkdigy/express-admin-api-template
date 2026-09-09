@@ -52,7 +52,16 @@ process.on('SIGINT', () => {
 
 app.use(helmet());
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
-app.use(express.json({ limit: '10mb' }));
+app.use(
+  express.json({
+    limit: '10mb',
+    verify(req, _res, buf) {
+      if (req.url?.split('?')[0] === '/deploy/github') {
+        (req as MyRequest).$$rawBody = buf;
+      }
+    },
+  })
+);
 app.use(cookieParser());
 
 if (
