@@ -9,6 +9,7 @@
     "dev:lint": "nodemon --watch src --watch .env src/app.ts --exec 'eslint src --cache'",
     "lint": "eslint src",
     "tsc": "npx tsc --noEmit",
+    "verify": "npm run tsc && npm run lint && npm test -- --runInBand",
     "clean:dev": "rm -rf @dev && mkdir @dev",
     "clean:prod": "rm -rf dist && mkdir dist",
     "build:webpack": "cross-env NODE_ENV=production webpack --progress ",
