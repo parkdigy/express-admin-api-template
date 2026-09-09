@@ -88,4 +88,40 @@ describe('Deploy.github', () => {
     expect(res.send).toHaveBeenCalledWith({ result: { c: -12, m: '배포 중 오류가 발생했습니다.' } });
     expect(JSON.stringify(res.send.mock.calls)).not.toContain('sensitive command output');
   });
+
+  it('returns git pull output in a successful response for deployment notification compatibility', () => {
+    const rawBody = Buffer.from('{"ref":"refs/heads/main","after":"commit"}');
+    const gitPullOutput = 'Updating previous..commit\nFast-forward\n';
+    process.env.DEPLOY_GITHUB_REF = 'refs/heads/main';
+    mockedExec
+      .mockImplementationOnce(
+        (_command: string, callback: (err: Error | null, stdout: string, stderr: string) => void) => {
+          callback(null, gitPullOutput, '');
+        }
+      )
+      .mockImplementationOnce(
+        (_command: string, callback: (err: Error | null, stdout: string, stderr: string) => void) => {
+          callback(null, 'commit\n', '');
+        }
+      )
+      .mockImplementationOnce(() => undefined);
+    const req = {
+      headers: {
+        'x-hub-signature-256': sign(rawBody, secret),
+        'x-github-event': 'push',
+      },
+      body: JSON.parse(rawBody.toString()),
+      $$rawBody: rawBody,
+    } as unknown as MyRequest;
+    const res = makeResponse();
+
+    Deploy.github(req, res as unknown as MyResponse);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith({
+      result: { c: 0, m: '성공적으로 배포되었습니다.' },
+      data: gitPullOutput,
+    });
+    expect(mockedExec).toHaveBeenNthCalledWith(3, 'npm run install:prod && npm run pm2:reload');
+  });
 });
