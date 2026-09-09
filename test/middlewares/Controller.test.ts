@@ -1,5 +1,11 @@
 import Controller from '../../src/middlewares/Controller';
+import { type MyRequest, type MyResponse } from '../../src/@types';
+import { db as _db } from '../../src/db';
+import '../../src/init/global.error';
 
+declare global {
+  var db: typeof _db;
+}
 describe('Controller error response', () => {
   it('logs the internal error and returns only a standardized response', async () => {
     const internalError = new Error('SQL failed password=database-secret');
@@ -8,7 +14,7 @@ describe('Controller error response', () => {
         commitAll: jest.fn(),
         rollbackAll: jest.fn().mockResolvedValue(undefined),
       },
-    } as unknown as typeof db;
+    } as unknown as typeof _db;
     globalThis.printError = jest.fn();
 
     const res = {
@@ -40,7 +46,7 @@ describe('Controller error response', () => {
         commitAll: jest.fn(),
         rollbackAll: jest.fn().mockRejectedValue(new Error('rollback database detail')),
       },
-    } as unknown as typeof db;
+    } as unknown as typeof _db;
     globalThis.printError = jest.fn();
     const res = {
       headersSent: false,

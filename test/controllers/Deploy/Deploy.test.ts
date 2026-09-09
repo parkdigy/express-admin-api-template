@@ -1,6 +1,8 @@
 import crypto from 'crypto';
 import { exec } from 'child_process';
 import Deploy from '../../../src/controllers/Deploy/Deploy';
+import { type MyRequest, type MyResponse } from '../../../src/@types';
+import '../../../src/init/global.log';
 
 jest.mock('child_process', () => ({ exec: jest.fn() }));
 
