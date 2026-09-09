@@ -4,6 +4,7 @@
 # publish
 # 배포 시 publish/development, publish/staging, publish/production Branch 생성하고 모두 주석 해제
 #PUB#/.agents
+#PUB#/_workspace
 #PUB#/database
 #PUB#/src
 #PUB#/test
