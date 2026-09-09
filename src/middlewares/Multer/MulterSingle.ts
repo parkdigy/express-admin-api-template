@@ -6,5 +6,5 @@
 import multer from 'multer';
 
 export default function (name = 'file', dest = '@uploads/') {
-  return multer({ dest: dest }).single(name);
+  return multer({ dest }).single(name);
 }

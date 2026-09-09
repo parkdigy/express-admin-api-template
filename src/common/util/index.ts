@@ -9,6 +9,7 @@ import crypto from '@pdg/crypto';
 import file from './file';
 import ip from './ip';
 import password from './password';
+import sanitize from './sanitize';
 import slack from './slack';
 import uuid from './uuid';
 
@@ -24,6 +25,7 @@ const util = {
   file,
   ip,
   password,
+  sanitize,
   slack,
   uuid,
 };

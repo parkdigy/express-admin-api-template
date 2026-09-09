@@ -5,5 +5,5 @@
 import multer from 'multer';
 
 export default function (maxCount: number, name = 'files', dest = '@uploads/') {
-  return multer({ dest: dest }).array(name, maxCount);
+  return multer({ dest }).array(name, maxCount);
 }

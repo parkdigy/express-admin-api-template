@@ -5,5 +5,5 @@
 import multer from 'multer';
 
 export default function (fields: string[], dest = '@uploads/') {
-  return multer({ dest: dest }).fields(fields.map((field) => ({ name: field, maxCount: 1 })));
+  return multer({ dest }).fields(fields.map((field) => ({ name: field, maxCount: 1 })));
 }

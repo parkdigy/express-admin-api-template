@@ -27,9 +27,21 @@ export default function (
         await controller(req as any, res);
         await db.trans.commitAll(req);
       } catch (err) {
-        await db.trans.rollbackAll(req);
+        try {
+          await db.trans.rollbackAll(req);
+        } catch (rollbackError) {
+          printError(req, rollbackError);
+        }
+        printError(req, err);
 
-        res.send((err as Error).toString());
+        if (!res.headersSent) {
+          res.status(500).send({
+            result: {
+              c: -1,
+              m: '요청 처리 중 오류가 발생했습니다.',
+            },
+          });
+        }
       }
 
       next();
