@@ -112,34 +112,43 @@ function startServer() {
 
     // 슬랙에 서버 실행 메시지 발송
     if (env.isNotLocal && notEmpty(process.env.SLACK_WEB_HOOK_URL)) {
-      exec('git remote -v', (err, stdout, stderr) => {
-        if (!err || notEmpty(stderr)) {
-          const appName = path.basename(stdout.split('\n')[0].split('\t')[1].split(' ')[0], '.git');
-          axios
-            .post(
-              process.env.SLACK_WEB_HOOK_URL,
-              {
-                blocks: [
-                  {
-                    type: 'section',
-                    text: {
-                      type: 'plain_text',
-                      text: `:rocket: ${appName} (${env.env})  서버가 실행되었습니다. :rocket:`,
-                    },
-                  },
-                  {
-                    type: 'divider',
-                  },
-                ],
-              },
-              {
-                timeout: 1000 * 60,
-              }
-            )
-            .then(() => {
-              //
-            });
+      exec('git config --get remote.origin.url', (err, stdout) => {
+        if (err) {
+          ll('Failed to get git remote origin URL', err);
+          return;
         }
+
+        const remoteUrl = stdout.trim();
+        if (empty(remoteUrl)) {
+          ll('Git remote origin URL is empty');
+          return;
+        }
+
+        const appName = path.basename(remoteUrl, '.git');
+        axios
+          .post(
+            process.env.SLACK_WEB_HOOK_URL,
+            {
+              blocks: [
+                {
+                  type: 'section',
+                  text: {
+                    type: 'plain_text',
+                    text: `:rocket: ${appName} (${env.env})  서버가 실행되었습니다. :rocket:`,
+                  },
+                },
+                {
+                  type: 'divider',
+                },
+              ],
+            },
+            {
+              timeout: 1000 * 60,
+            }
+          )
+          .then(() => {
+            //
+          });
       });
     }
   };
