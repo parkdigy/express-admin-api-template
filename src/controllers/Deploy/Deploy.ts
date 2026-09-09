@@ -11,12 +11,13 @@ export default {
    * ******************************************************************************************************************/
   github(req: MyRequest, res: MyResponse) {
     // 성공 응답
-    const sendSuccess = () => {
+    const sendSuccess = (data: string) => {
       res.status(200).send({
         result: {
           c: 0,
           m: '성공적으로 배포되었습니다.',
         },
+        data,
       });
     };
 
@@ -101,7 +102,7 @@ export default {
               sendFail(-16);
             } else {
               if (req.body.after.trim() === stdout2.replace(/\n/g, '').trim()) {
-                sendSuccess();
+                sendSuccess(data);
 
                 const checkText = 'Already up to date.';
                 if (data.substring(0, checkText.length) !== checkText) {
