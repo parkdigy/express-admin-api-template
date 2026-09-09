@@ -4,7 +4,8 @@
  * ******************************************************************************************************************/
 
 import multer from 'multer';
+import MulterOptions from './MulterOptions';
 
 export default function (name = 'file', dest = '@uploads/') {
-  return multer({ dest }).single(name);
+  return multer(MulterOptions(dest, 1)).single(name);
 }
