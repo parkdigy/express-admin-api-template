@@ -8,6 +8,7 @@ export interface MyRequestUser {
 
 interface MyRequestCommon extends Request {
   $$remoteIpAddress?: string;
+  $$rawBody?: Buffer;
   $$dbTransMySql?: Knex.Transaction[];
   $$dbTransMsSql?: Knex.Transaction[];
 }

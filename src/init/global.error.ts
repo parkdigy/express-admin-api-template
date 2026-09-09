@@ -11,9 +11,9 @@ declare global {
   /**
    * 오류를 출력합니다.
    * @Param req MyRequest 객체
-   * @param err Error 객체
+   * @param err 오류 값
    */
-  function printError(req: MyRequest, err: Error): void;
+  function printError(req: MyRequest, err: unknown): void;
 }
 
 /********************************************************************************************************************
@@ -30,28 +30,16 @@ globalThis.paramError = (name?: string) => {
 /********************************************************************************************************************
  * printError
  * ******************************************************************************************************************/
-globalThis.printError = (req: MyRequest, err: any) => {
-  // 개발 환경일 경우에만 출력
+globalThis.printError = (req: MyRequest, err: unknown) => {
   ll('!!!ERROR!!! >>>>>>>>>>>>>>>>>>>>>>>>>>');
   ll(req.method, `${req.baseUrl}${req.path}`);
-  const data = {
-    ...req.params,
-    ...req.query,
-    ...req.body,
-  };
-  Object.keys(data).forEach((key) => {
-    if (typeof data[key] === 'string' && data[key].length > 1000) {
-      data[key] = `${data[key].substring(0, 1000)}... (length: ${data[key].length})`;
-    }
-  });
+  const data = util.sanitize.sanitizeForLog({ ...req.params, ...req.query, ...req.body }, 1000);
   ll(data);
 
-  if (err.stack) {
-    ll(err.stack.substring(0, 200), err.stack.length > 200 ? '...' : '');
-  } else if (err.message) {
-    ll(err.message);
+  if (err instanceof Error) {
+    ll(util.sanitize.sanitizeLogText(err.stack || `${err.name}: ${err.message}`, 1000));
   } else {
-    ll(err);
+    ll(util.sanitize.sanitizeForLog(err, 1000));
   }
   ll('<<<<<<<<<<<<<<<<<<<<<<<<<< !!!ERROR!!!');
 };

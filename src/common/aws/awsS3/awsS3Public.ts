@@ -12,7 +12,7 @@ import {
 } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import path from 'path';
-import axios from 'axios';
+import { downloadDataFromUrl, parseDownloadUrl } from './downloadDataFromUrl';
 
 let s3: S3Client;
 
@@ -173,7 +173,7 @@ const awsS3Public = {
     if (empty(process.env.S3_BUCKET)) throw new Error('env 에 S3_BUCKET 값을 등록해야 합니다.');
 
     return new Promise<string>((resolve, reject) => {
-      let ext: string | false = path.extname(url);
+      let ext: string | false = path.extname(parseDownloadUrl(url).pathname);
       if (empty(ext) && notEmpty(mimeType)) {
         ext = util.file.mimeTypeExtension(mimeType);
       }
@@ -186,9 +186,8 @@ const awsS3Public = {
         }
 
         try {
-          return axios
-            .get(url, { responseType: 'arraybuffer' })
-            .then((res) => {
+          return downloadDataFromUrl(url)
+            .then((data) => {
               if (empty(s3FileName)) {
                 s3FileName = util.file.randomName(ext);
               }
@@ -199,7 +198,7 @@ const awsS3Public = {
                 Bucket: process.env.S3_BUCKET,
                 Key: s3PathName,
                 ACL: 'public-read',
-                Body: res.data,
+                Body: data,
                 ContentType: mimeType,
               });
 

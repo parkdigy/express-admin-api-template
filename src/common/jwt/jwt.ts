@@ -50,12 +50,12 @@ const jwt = {
 
     const accessToken = this.sign(payload, jwtOptions);
 
-    const options: CookieOptions = { httpOnly: true };
+    const options: CookieOptions = { httpOnly: true, path: '/' };
     if (expireDays > -1) {
       options.maxAge = 1000 * 60 * 60 * 24 * expireDays;
     }
 
-    res.clearCookie(this.cookieName);
+    res.clearCookie(this.cookieName, { path: '/' });
     res.cookie(this.cookieName, accessToken, options);
   },
 
@@ -104,7 +104,7 @@ const jwt = {
    * JWT 토큰 삭제
    * ******************************************************************************************************************/
   clearAccessToken(res: MyResponse) {
-    res.clearCookie(this.cookieName);
+    res.clearCookie(this.cookieName, { path: '/' });
   },
 };
 

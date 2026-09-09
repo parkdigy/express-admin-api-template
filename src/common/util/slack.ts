@@ -2,7 +2,6 @@
  * Slack 모듈
  * ******************************************************************************************************************/
 
-import https from 'https';
 import axios from 'axios';
 
 type Blocks = Dict | '-' | string | (Dict | '-' | string)[];
@@ -29,7 +28,6 @@ export default {
         },
         {
           timeout: 1000 * 60,
-          httpsAgent: new https.Agent({ rejectUnauthorized: false }),
         }
       );
     }
@@ -49,7 +47,6 @@ export default {
             },
             {
               timeout: 1000 * 60,
-              httpsAgent: new https.Agent({ rejectUnauthorized: false }),
             }
           )
           .then(() => {
@@ -75,7 +72,6 @@ export default {
             },
             {
               timeout: 1000 * 60,
-              httpsAgent: new https.Agent({ rejectUnauthorized: false }),
             }
           )
           .then(() => {
