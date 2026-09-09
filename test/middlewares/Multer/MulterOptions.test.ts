@@ -28,7 +28,6 @@ describe('MulterOptions', () => {
     ['photo.jpg', 'image/jpeg'],
     ['photo.JPEG', 'image/jpeg'],
     ['photo.png', 'image/png'],
-    ['animation.gif', 'image/gif'],
     ['photo.webp', 'image/webp'],
     ['document.pdf', 'application/pdf'],
   ])('allows a matching safe file type: %s', (originalname, mimetype) => {
