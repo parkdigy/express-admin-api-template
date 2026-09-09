@@ -37,7 +37,7 @@
       "@db_models_util": ["src/db/models/@util"],
       "@db_query_common": ["src/db/query/@common"]
     },
-    "types": ["webpack-env", "jest"],
+    "types": ["webpack-env", "jest", "node"],
     "typeRoots": ["node_modules/@types", "src/@types"]
   },
   "include": ["src/**/*"],
