@@ -7,6 +7,8 @@
 #PUB#/src
 #PUB#/test
 #PUB#.env.example
+#PUB#.git-commit.js
+#PUB#.git-merge.js
 #PUB#.gitmodules
 #PUB#.prettierignore
 #PUB#.prettierrc.cjs
