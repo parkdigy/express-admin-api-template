@@ -4,6 +4,7 @@ import {
   MULTER_MAX_FILE_SIZE_BYTES,
   default as MulterOptions,
 } from '../../../src/middlewares/Multer/MulterOptions';
+import { type MyRequest } from '../../../src/@types';
 
 function makeFile(originalname: string, mimetype: string) {
   return { originalname, mimetype, fieldname: 'file' } as Express.Multer.File;
