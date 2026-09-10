@@ -136,8 +136,8 @@ const api = {
 
   /**
    * 오류 전송
-   * ‼️ ApiController 미들웨어 내에서 사용 시 이 함수를 사용하지 말고, throwError(), throwException() 함수를 사용해야 함 ‼️
-   * ‼️ ApiController 내에서 이 함수 사용 시 db 가 rollback 되지 않고, commit 됨 ‼️
+   * 🚨 ApiController 미들웨어 내에서 사용 시 이 함수를 사용하지 말고, throwError(), throwException() 함수를 사용해야 함 🚨
+   * 🚨 ApiController 내에서 이 함수 사용 시 db 가 rollback 되지 않고, commit 됨 🚨
    */
   error(res: MyResponse, error: ApiError | Error) {
     if (error instanceof ApiError) {

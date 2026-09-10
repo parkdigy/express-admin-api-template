@@ -46,7 +46,7 @@ const makePublishBranch = (branchName, callback) => {
     ll(`\$ ${command}`);
     exec(command, (err, stdout, stderr) => {
       if (!skipError && err) {
-        ll('ERROR‼️', err);
+        ll('🚨ERROR🚨', err);
         callback && callback(false);
         return;
       }
@@ -60,7 +60,7 @@ const makePublishBranch = (branchName, callback) => {
 
 exec('git branch', (err, stdout, stderr) => {
   if (err) {
-    ll('ERROR‼️', err);
+    ll('🚨ERROR🚨', err);
     return;
   }
 
