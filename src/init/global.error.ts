@@ -31,17 +31,25 @@ globalThis.paramError = (name?: string) => {
  * printError
  * ******************************************************************************************************************/
 globalThis.printError = (req: MyRequest, err: unknown) => {
-  ll('‼️ERROR‼️ >>>>>>>>>>>>>>>>>>>>>>>>>>');
-  ll(req.method, `${req.baseUrl}${req.path}`);
+  ll('🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨');
+  ll('🚨', `[${req.method}]`, `${req.baseUrl}${req.path}`);
   const data = util.sanitize.sanitizeForLog({ ...req.params, ...req.query, ...req.body }, 1000);
-  ll(data);
-
-  if (err instanceof Error) {
-    ll(util.sanitize.sanitizeLogText(err.stack || `${err.name}: ${err.message}`, 1000));
+  if (typeof data === 'object') {
+    ll('🚨', JSON.stringify(data, null, 2).trim().replaceAll('\n', '\n🚨 '));
   } else {
-    ll(util.sanitize.sanitizeForLog(err, 1000));
+    ll('', `🚨 ${data}`.replaceAll('\n', '\n🚨 '));
   }
-  ll('<<<<<<<<<<<<<<<<<<<<<<<<<< ‼️ERROR‼️');
+  if (err instanceof Error) {
+    ll('🚨', util.sanitize.sanitizeLogText(err.stack || `${err.name}: ${err.message}`, 1000).replaceAll('\n', '\n🚨'));
+  } else {
+    const sanitizedErr = util.sanitize.sanitizeForLog(err, 1000);
+    if (typeof sanitizedErr === 'object') {
+      ll('🚨', `${JSON.stringify(sanitizedErr, null, 2).trim()}`.replaceAll('\n', '\n🚨 '));
+    } else {
+      ll('🚨', `${sanitizedErr}`.replaceAll('\n', '\n🚨 '));
+    }
+  }
+  ll('🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨');
 };
 
 export {};
