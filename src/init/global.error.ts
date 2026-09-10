@@ -31,7 +31,7 @@ globalThis.paramError = (name?: string) => {
  * printError
  * ******************************************************************************************************************/
 globalThis.printError = (req: MyRequest, err: unknown) => {
-  ll('!!!ERROR!!! >>>>>>>>>>>>>>>>>>>>>>>>>>');
+  ll('‼️ERROR‼️ >>>>>>>>>>>>>>>>>>>>>>>>>>');
   ll(req.method, `${req.baseUrl}${req.path}`);
   const data = util.sanitize.sanitizeForLog({ ...req.params, ...req.query, ...req.body }, 1000);
   ll(data);
@@ -41,7 +41,7 @@ globalThis.printError = (req: MyRequest, err: unknown) => {
   } else {
     ll(util.sanitize.sanitizeForLog(err, 1000));
   }
-  ll('<<<<<<<<<<<<<<<<<<<<<<<<<< !!!ERROR!!!');
+  ll('<<<<<<<<<<<<<<<<<<<<<<<<<< ‼️ERROR‼️');
 };
 
 export {};
