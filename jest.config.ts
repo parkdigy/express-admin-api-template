@@ -10,6 +10,9 @@ const config: Config = {
   forceExit: true,
   detectOpenHandles: true,
   transformIgnorePatterns: ['/node_modules/(?!uuid)'],
+  moduleNameMapper: require('ts-jest').pathsToModuleNameMapper(require('./tsconfig.json').compilerOptions.paths, {
+    prefix: '<rootDir>/',
+  }),
 };
 
 module.exports = config;
