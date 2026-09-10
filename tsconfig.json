@@ -11,6 +11,7 @@
     "noImplicitAny": true,
     "experimentalDecorators": true,
     "preserveSymlinks": true,
+    "resolveJsonModule": true,
     "noEmit": true,
     "baseUrl": "./",
     "paths": {
