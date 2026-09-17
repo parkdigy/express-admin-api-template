@@ -16,6 +16,9 @@ import {
   type ExcelColumnParamOption,
   type ExcelColumnCellOption,
   type ExcelAlignment,
+  type ExcelExportOptions,
+  type ExcelFooterCell,
+  ExcelColumn,
 } from './excel.types';
 
 /** 기본 Border 스타일 */
@@ -41,25 +44,6 @@ const $defaultSumStyle: ExcelStyle = {
   fill: { fgColor: { rgb: 'efefef' } },
 };
 
-/** 기본 Column 설정 */
-const $defaultColumnOptions: Partial<ExcelColumnOption<any, any>> = {
-  width: 20,
-  align: 'l',
-};
-
-/** Column 클래스 */
-class Column<T, Name extends keyof T | undefined> {
-  $options: ExcelColumnOption<T, Name>;
-
-  constructor(options: ExcelColumnOption<T, Name>) {
-    this.$options = { ...$defaultColumnOptions, ...(options || {}) } as ExcelColumnOption<T, Name>;
-  }
-
-  getOptions(): ExcelColumnOption<T, Name> {
-    return this.$options;
-  }
-}
-
 /** 새로운 Column 생성 */
 function newColumn<T, Name extends keyof T>(
   title: string | string[],
@@ -69,7 +53,7 @@ function newColumn<T, Name extends keyof T>(
   onValue?: (value: T[Name], info: T) => ExcelColumnOnValueReturn,
   options?: ExcelColumnParamOption<T, Name>,
   onCellOptions?: (info: T) => ExcelColumnCellOption<T, Name> | void | undefined | false
-): Column<T, Name>;
+): ExcelColumn<T, Name>;
 function newColumn<T>(
   title: string | string[],
   width?: number,
@@ -77,8 +61,8 @@ function newColumn<T>(
   onValue?: (info: T) => ExcelColumnOnValueReturn,
   options?: ExcelColumnParamOption<T, undefined>,
   onCellOptions?: (info: T) => ExcelColumnCellOption<T, undefined> | void | undefined | false
-): Column<T, undefined>;
-function newColumn<T, Name extends keyof T | undefined>(option: ExcelColumnOption<T, Name>): Column<T, Name>;
+): ExcelColumn<T, undefined>;
+function newColumn<T, Name extends keyof T | undefined>(option: ExcelColumnOption<T, Name>): ExcelColumn<T, Name>;
 function newColumn<T, Name extends keyof T | undefined>(
   titleOrOption: any,
   nameOrWidth?: any,
@@ -91,7 +75,7 @@ function newColumn<T, Name extends keyof T | undefined>(
   if (typeof titleOrOption === 'string' || Array.isArray(titleOrOption)) {
     if (typeof nameOrWidth === 'string') {
       if (typeof optionsOrOnCellOptions === 'function') {
-        return new Column<T, Name>({
+        return new ExcelColumn<T, Name>({
           title: titleOrOption,
           name: nameOrWidth as Name,
           width: widthOrAlign,
@@ -100,7 +84,7 @@ function newColumn<T, Name extends keyof T | undefined>(
           onCellOptions: optionsOrOnCellOptions,
         });
       } else {
-        return new Column<T, Name>({
+        return new ExcelColumn<T, Name>({
           title: titleOrOption,
           name: nameOrWidth as Name,
           width: widthOrAlign,
@@ -112,7 +96,7 @@ function newColumn<T, Name extends keyof T | undefined>(
       }
     } else {
       if (typeof onValueOrOptions === 'function') {
-        return new Column<T, Name>({
+        return new ExcelColumn<T, Name>({
           title: titleOrOption,
           width: nameOrWidth,
           align: widthOrAlign,
@@ -120,7 +104,7 @@ function newColumn<T, Name extends keyof T | undefined>(
           onCellOptions: onValueOrOptions,
         });
       } else {
-        return new Column<T, Name>({
+        return new ExcelColumn<T, Name>({
           title: titleOrOption,
           width: nameOrWidth,
           align: widthOrAlign,
@@ -131,7 +115,7 @@ function newColumn<T, Name extends keyof T | undefined>(
       }
     }
   } else {
-    return new Column<T, Name>(titleOrOption);
+    return new ExcelColumn<T, Name>(titleOrOption);
   }
 }
 
@@ -218,12 +202,14 @@ const excel = {
    * @param fileName 파일명
    * @param rawData 데이터
    * @param columns Column 정보
+   * @param options Footer 행과 스타일 설정
    * ******************************************************************************************************************/
   export<T, Name extends keyof T | undefined>(
     res: MyResponse,
     fileName: string,
     rawData: T[],
-    columns: (Column<T, Name> | false | null | undefined | (Column<T, Name> | false | null | undefined)[])[]
+    columns: (ExcelColumn<T, Name> | false | null | undefined | (ExcelColumn<T, Name> | false | null | undefined)[])[],
+    options: ExcelExportOptions = {}
   ) {
     const data: any[] = [];
     const header: ExcelColumnOption<T, Name>['title'][] = [];
@@ -235,7 +221,7 @@ const excel = {
     const sum: ExcelColumnOption<T, Name>['sum'][] = [];
     const colSumStyle: ExcelColumnOption<T, Name>['sumStyle'][] = [];
 
-    const finalColumns: Column<T, Name>[] = [];
+    const finalColumns: ExcelColumn<T, Name>[] = [];
     for (const column of columns) {
       if (column) {
         if (Array.isArray(column)) {
@@ -415,6 +401,36 @@ const excel = {
       }
     }
 
+    const footerStartRow = headerRows + data.length + (sumRow > -1 ? 1 : 0);
+    const footerCellOptions: ExcelFooterCell[][] = [];
+    const footerData = (options.footer ?? []).map((cells, footerRow) => {
+      const values: (string | number)[] = header.map(() => '');
+      const cellOptions: ExcelFooterCell[] = [];
+      let col = 0;
+      for (const cell of cells) {
+        const cellOption = typeof cell === 'object' ? cell : { value: cell };
+        const colSpan = cellOption.colSpan ?? 1;
+        if (!Number.isInteger(colSpan) || colSpan < 1 || col + colSpan > finalColumns.length) {
+          throw new Error('Excel footer colSpan must be a positive integer within the column count.');
+        }
+        values[col] = cellOption.value;
+        for (let offset = 0; offset < colSpan; offset += 1) {
+          cellOptions[col + offset] = cellOption;
+        }
+        if (colSpan > 1) {
+          const row = footerStartRow + footerRow;
+          ws['!merges'] ??= [];
+          ws['!merges'].push({ s: { r: row, c: col }, e: { r: row, c: col + colSpan - 1 } });
+        }
+        col += colSpan;
+      }
+      footerCellOptions.push(cellOptions);
+      return values;
+    });
+    if (footerData.length > 0) {
+      xlsx.utils.sheet_add_aoa(ws, footerData, { origin: { r: footerStartRow, c: 0 } });
+    }
+
     for (const key in ws) {
       if (Object.prototype.hasOwnProperty.call(ws, key)) {
         if (!key.startsWith('!')) {
@@ -431,7 +447,16 @@ const excel = {
             }
           }
 
-          if (row < headerRows) {
+          if (row >= footerStartRow) {
+            const cellOptions = footerCellOptions[row - footerStartRow]?.[col];
+            style = { ...defaultSumStyle, ...options.footerStyle, ...cellOptions?.style };
+            if (cellOptions?.format !== undefined) {
+              style.numFmt = cellOptions.format;
+            }
+            horizontalAlignment = cellOptions?.align
+              ? this.getAlign(cellOptions.align)
+              : (style.alignment?.horizontal ?? 'left');
+          } else if (row < headerRows) {
             const colStyle = colHeaderStyle ? colHeaderStyle[col] : undefined;
             style = { ...style, ...defaultHeaderStyle, ...colStyle };
             const title = header[col];
