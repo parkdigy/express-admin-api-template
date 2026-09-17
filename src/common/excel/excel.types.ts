@@ -78,6 +78,23 @@ export interface ExcelStyle {
 export type ExcelColumnOptionAlign = 'l' | 'c' | 'r';
 export type ExcelColumnSum = string | boolean;
 export type ExcelColumnOnValueReturn = string | number | null | undefined | false;
+
+/** Footer 셀은 왼쪽부터 순서대로 배치하며 colSpan만큼 컬럼을 차지한다. */
+export interface ExcelFooterCell {
+  value: string | number;
+  colSpan?: number;
+  align?: ExcelColumnOptionAlign;
+  format?: string;
+  style?: ExcelStyle;
+}
+
+export interface ExcelExportOptions {
+  /** 기존 sum 합계 행 다음에 추가할 footer 행들 */
+  footer?: (string | number | ExcelFooterCell)[][];
+  /** 기본 합계 스타일에 덧붙일 footer 공통 스타일 */
+  footerStyle?: ExcelStyle;
+}
+
 export interface ExcelColumnOption<T, Name extends keyof T | undefined> {
   title: string | string[];
   name?: Name;
@@ -103,3 +120,22 @@ export type ExcelColumnCellOption<T, Name extends keyof T | undefined> = Omit<
   ExcelColumnOption<T, Name>,
   'title' | 'name' | 'width' | 'align' | 'headerStyle' | 'sum' | 'sumStyle' | 'onValue' | 'onOptions'
 >;
+
+/** 기본 Column 설정 */
+const $defaultColumnOptions: Partial<ExcelColumnOption<any, any>> = {
+  width: 20,
+  align: 'l',
+};
+
+/** Column 클래스 */
+export class ExcelColumn<T, Name extends keyof T | undefined> {
+  $options: ExcelColumnOption<T, Name>;
+
+  constructor(options: ExcelColumnOption<T, Name>) {
+    this.$options = { ...$defaultColumnOptions, ...(options || {}) } as ExcelColumnOption<T, Name>;
+  }
+
+  getOptions(): ExcelColumnOption<T, Name> {
+    return this.$options;
+  }
+}
