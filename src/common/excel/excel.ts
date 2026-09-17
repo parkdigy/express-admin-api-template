@@ -62,7 +62,7 @@ class Column<T, Name extends keyof T | undefined> {
 
 /** 새로운 Column 생성 */
 function newColumn<T, Name extends keyof T>(
-  title: string,
+  title: string | string[],
   name: Name,
   width?: number,
   align?: ExcelColumnOptionAlign,
@@ -71,7 +71,7 @@ function newColumn<T, Name extends keyof T>(
   onCellOptions?: (info: T) => ExcelColumnCellOption<T, Name> | void | undefined | false
 ): Column<T, Name>;
 function newColumn<T>(
-  title: string,
+  title: string | string[],
   width?: number,
   align?: ExcelColumnOptionAlign,
   onValue?: (info: T) => ExcelColumnOnValueReturn,
@@ -88,7 +88,7 @@ function newColumn<T, Name extends keyof T | undefined>(
   optionsOrOnCellOptions?: any,
   onCellOptions?: (info: T) => ExcelColumnCellOption<T, Name> | void | undefined | false
 ) {
-  if (typeof titleOrOption === 'string') {
+  if (typeof titleOrOption === 'string' || Array.isArray(titleOrOption)) {
     if (typeof nameOrWidth === 'string') {
       if (typeof optionsOrOnCellOptions === 'function') {
         return new Column<T, Name>({
@@ -322,8 +322,9 @@ const excel = {
     let headerData: string[][] | null = null;
     let headerRows = 0;
     if (header) {
-      headerData = (Array.isArray(header[0]) ? header : [header]) as string[][];
-      headerRows = headerData.length;
+      const columnHeaders = header.map((title) => (Array.isArray(title) ? title : [title]));
+      headerRows = Math.max(1, ...columnHeaders.map((titles) => titles.length));
+      headerData = Array.from({ length: headerRows }, (_, row) => columnHeaders.map((titles) => titles[row] ?? ''));
     }
 
     data.forEach((item) => {
@@ -342,6 +343,49 @@ const excel = {
     }
 
     const ws = xlsx.utils.aoa_to_sheet(finalData);
+
+    let parentGroups = header.map(() => 0);
+    const mergeHeaderData = header.some((title) => Array.isArray(title)) ? headerData : null;
+    mergeHeaderData?.forEach((titles, row) => {
+      const groups: number[] = [];
+      const isLastTitle = (col: number) => Array.isArray(header[col]) && header[col].length === row + 1;
+      for (let start = 0; start < titles.length;) {
+        let end = start + 1;
+        while (
+          titles[start] !== '' &&
+          end < titles.length &&
+          Array.isArray(header[start]) &&
+          Array.isArray(header[end]) &&
+          titles[end] === titles[start] &&
+          isLastTitle(end) === isLastTitle(start) &&
+          parentGroups[end] === parentGroups[start]
+        ) {
+          end += 1;
+        }
+        for (let col = start; col < end; col += 1) {
+          groups[col] = start;
+        }
+        const lastRow = isLastTitle(start) && titles[start] !== '' ? headerRows - 1 : row;
+        if (end - start > 1 || lastRow > row) {
+          ws['!merges'] ??= [];
+          ws['!merges'].push({ s: { r: row, c: start }, e: { r: lastRow, c: end - 1 } });
+          for (let col = start + 1; col < end; col += 1) {
+            ws[xlsx.utils.encode_cell({ r: row, c: col })].v = '';
+          }
+        }
+        start = end;
+      }
+      parentGroups = groups;
+    });
+
+    if (headerRows > 1) {
+      header.forEach((title, col) => {
+        if (typeof title === 'string') {
+          ws['!merges'] ??= [];
+          ws['!merges'].push({ s: { r: 0, c: col }, e: { r: headerRows - 1, c: col } });
+        }
+      });
+    }
 
     if (width) {
       ws['!cols'] = width.map((w) => ({ width: w }));
@@ -390,6 +434,11 @@ const excel = {
           if (row < headerRows) {
             const colStyle = colHeaderStyle ? colHeaderStyle[col] : undefined;
             style = { ...style, ...defaultHeaderStyle, ...colStyle };
+            const title = header[col];
+            const titleRows = Array.isArray(title) ? title.length : 1;
+            if (titleRows < headerRows && row === titleRows - 1) {
+              style.alignment = { vertical: 'center', ...style.alignment };
+            }
           } else {
             const cellOptions = dataOptions[row - headerRows]?.[col] || {};
 
