@@ -14,6 +14,7 @@ describe('excel', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it('should export Excel with correct data', () => {
@@ -210,6 +211,75 @@ describe('excel', () => {
     expect(sheet['!merges']).toEqual(['A1:C1', 'A2:B3'].map(xlsx.utils.decode_range));
     expect(sheet.C2.v).toBe('이름');
     expect(sheet.C3.v).toBe('상호');
+  });
+
+  it('exports footer rows with merged cells after the existing sum row', () => {
+    const write = jest.spyOn(xlsx, 'write');
+    excel.export(
+      res,
+      'test.xlsx',
+      [{ id: 1, name: '인포바인', amount: 100 }],
+      [
+        excel.newColumn(['거래처', 'ID'], 'id'),
+        excel.newColumn(['거래처', '이름'], 'name'),
+        excel.newColumn('금액', 'amount', 18, 'r', undefined, { sum: true }),
+      ],
+      {
+        footer: [
+          [
+            { value: '합계', align: 'c' },
+            { value: '발행금액: 100원', colSpan: 2 },
+          ],
+          [
+            { value: '총액', colSpan: 2 },
+            { value: 100, align: 'r', format: '#,##0' },
+          ],
+        ],
+        footerStyle: { fill: { fgColor: { rgb: 'ffbfbfbf' } } },
+      }
+    );
+
+    const workbook = xlsx.read((res.send as jest.Mock).mock.calls[0][0], {
+      type: 'buffer',
+      sheetStubs: true,
+    });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    expect(sheet['!merges']).toEqual(['A1:B1', 'C1:C2', 'B5:C5', 'A6:B6'].map(xlsx.utils.decode_range));
+    expect(sheet.C4.f).toBe('SUM(C3:C3)');
+    expect(sheet.A5.v).toBe('합계');
+    expect(sheet.B5.v).toBe('발행금액: 100원');
+    expect(sheet.C6.v).toBe(100);
+    expect(sheet.C6.t).toBe('n');
+    expect(sheet['!ref']).toBe('A1:C6');
+
+    const styledSheet = write.mock.calls[0][0].Sheets.SheetJS;
+    expect(styledSheet.A5.s.alignment.horizontal).toBe('center');
+    expect(styledSheet.B5.s.alignment.horizontal).toBe('left');
+    expect(styledSheet.C6.s.numFmt).toBe('#,##0');
+    expect(styledSheet.C5.s.fill.fgColor.rgb).toBe('ffbfbfbf');
+  });
+
+  it('exports a footer without data or a sum row', () => {
+    excel.export(res, 'test.xlsx', [], [excel.newColumn('이름'), excel.newColumn('금액')], {
+      footer: [['합계', 0], [{ value: '조회 결과 없음', colSpan: 2 }]],
+    });
+    const workbook = xlsx.read((res.send as jest.Mock).mock.calls[0][0], { type: 'buffer' });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    expect(xlsx.utils.sheet_to_json(sheet, { header: 1 })).toEqual([
+      ['이름', '금액'],
+      ['합계', 0],
+      ['조회 결과 없음', ''],
+    ]);
+    expect(sheet['!merges']).toEqual([xlsx.utils.decode_range('A3:B3')]);
+  });
+
+  it.each([0, -1, 1.5, 3])('rejects invalid footer colSpan %s before sending the file', (colSpan) => {
+    expect(() =>
+      excel.export(res, 'test.xlsx', [], [excel.newColumn('이름'), excel.newColumn('금액')], {
+        footer: [[{ value: '합계', colSpan }]],
+      })
+    ).toThrow('Excel footer colSpan');
+    expect(res.send).not.toHaveBeenCalled();
   });
 
   it('keeps lower header merges inside all ancestor groups', () => {
