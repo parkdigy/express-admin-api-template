@@ -365,7 +365,7 @@ const excel = {
           if (typeof sum[c] === 'string') {
             ws[cell] = { t: 's', v: sum[c] };
           } else if (typeof sum[c] === 'boolean' && sum[c]) {
-            ws[cell] = { f: `SUM(${col}${headerRows}:${col}${lastRowIndex})` };
+            ws[cell] = { f: `SUM(${col}${headerRows + 1}:${col}${lastRowIndex})` };
           }
         }
       }
@@ -391,7 +391,7 @@ const excel = {
             const colStyle = colHeaderStyle ? colHeaderStyle[col] : undefined;
             style = { ...style, ...defaultHeaderStyle, ...colStyle };
           } else {
-            const cellOptions = dataOptions[row - headerRows][col];
+            const cellOptions = dataOptions[row - headerRows]?.[col] || {};
 
             if (sumRow > -1 && row === sumRow - 1) {
               const colStyle = colSumStyle ? colSumStyle[col] : undefined;
