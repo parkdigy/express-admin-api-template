@@ -4,6 +4,7 @@ import { type Options } from 'multer';
 export const MULTER_MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
 export const MULTER_MAX_FIELDS = 20;
 export const MULTER_MAX_FIELD_SIZE_BYTES = 1024 * 1024;
+export const MULTER_MAX_FIELD_ARRAY_INDEX = 100;
 
 export const MULTER_ALLOWED_FILE_TYPES: Readonly<Record<string, readonly string[]>> = {
   'image/jpeg': ['.jpg', '.jpeg'],
@@ -28,16 +29,19 @@ export default function (dest: string, maxFiles: number, maxSize = MULTER_MAX_FI
     throw new TypeError('maxFiles 는 1 이상의 정수여야 합니다.');
   }
 
+  const limits: NonNullable<Options['limits']> & { fieldArrayIndexLimit: number } = {
+    fieldArrayIndexLimit: MULTER_MAX_FIELD_ARRAY_INDEX,
+    fileSize: maxSize,
+    files: maxFiles,
+    fields: MULTER_MAX_FIELDS,
+    parts: maxFiles + MULTER_MAX_FIELDS,
+    fieldNameSize: 100,
+    fieldSize: MULTER_MAX_FIELD_SIZE_BYTES,
+  };
+
   return {
     dest,
-    limits: {
-      fileSize: maxSize,
-      files: maxFiles,
-      fields: MULTER_MAX_FIELDS,
-      parts: maxFiles + MULTER_MAX_FIELDS,
-      fieldNameSize: 100,
-      fieldSize: MULTER_MAX_FIELD_SIZE_BYTES,
-    },
+    limits,
     fileFilter(_req, file, callback) {
       const allowedExtensions = MULTER_ALLOWED_FILE_TYPES[file.mimetype.toLowerCase()];
       const extension = path.extname(file.originalname).toLowerCase();
