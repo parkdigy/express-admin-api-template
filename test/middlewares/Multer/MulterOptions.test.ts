@@ -1,4 +1,5 @@
 import {
+  MULTER_MAX_FIELD_ARRAY_INDEX,
   MULTER_MAX_FIELDS,
   MULTER_MAX_FIELD_SIZE_BYTES,
   MULTER_MAX_FILE_SIZE_BYTES,
@@ -15,6 +16,7 @@ describe('MulterOptions', () => {
     const options = MulterOptions('@uploads/', 3);
 
     expect(options.limits).toEqual({
+      fieldArrayIndexLimit: MULTER_MAX_FIELD_ARRAY_INDEX,
       fileSize: MULTER_MAX_FILE_SIZE_BYTES,
       files: 3,
       fields: MULTER_MAX_FIELDS,
@@ -22,6 +24,7 @@ describe('MulterOptions', () => {
       fieldNameSize: 100,
       fieldSize: MULTER_MAX_FIELD_SIZE_BYTES,
     });
+    expect(MULTER_MAX_FIELD_ARRAY_INDEX).toBe(100);
     expect(MULTER_MAX_FILE_SIZE_BYTES).toBe(10 * 1024 * 1024);
   });
 
