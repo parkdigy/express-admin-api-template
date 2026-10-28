@@ -123,5 +123,10 @@
     "winston": "^3.19.0",
     "winston-daily-rotate-file": "^5.0.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  },
+  "allowScripts": {
+    "aws-crt@1.33.1": true,
+    "core-js@3.50.0": true,
+    "fsevents@2.3.3": true
   }
 }
