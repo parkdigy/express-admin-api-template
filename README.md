@@ -11,7 +11,8 @@ npm run dev
 
 `dev:hot`은 Rspack으로 서버를 빌드하고 코드 변경을 HMR로 반영한다.
 HMR로 처리할 수 없는 변경은 서버를 재시작하며, `.env` 변경도 재시작한다.
-`dev:lint`는 별도 프로세스로 ESLint를 실행한다.
+`dev:lint`는 별도 프로세스로 ESLint를 실행하고, `dev:types`는 TypeScript 타입 오류를 감시한다.
+`dev:hot`만 실행하면 타입·ESLint 검사는 수행하지 않으므로, 일반 개발에는 `npm run dev`를 사용한다.
 파일 감시가 제한된 환경에서는 `WATCHPACK_POLLING=500 npm run dev:hot`으로 polling 감시를 사용할 수 있다.
 
 ```shell

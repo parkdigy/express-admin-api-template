@@ -4,9 +4,10 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "dev": "concurrently --kill-others 'npm run dev:hot' 'npm run dev:lint'",
+    "dev": "concurrently --kill-others 'npm run dev:hot' 'npm run dev:lint' 'npm run dev:types'",
     "dev:hot": "npm run clean:dev && node scripts/dev.cjs",
     "dev:lint": "nodemon --watch src --watch .env src/app.ts --exec 'eslint src --cache'",
+    "dev:types": "nodemon --watch src --watch tsconfig.json --ext ts,json --exec 'tsc --noEmit'",
     "lint": "eslint src",
     "tsc": "npx tsc --noEmit",
     "verify": "npm run tsc && npm run lint && npm test -- --runInBand",

@@ -26,7 +26,7 @@ description: Express API 템플릿에서 라우트·컨트롤러·DB 계약을 �
 3. 변경이 필요하면 모델/Knex 타입 → query → `db` 연결/export → controller → route 순서로 계약을 맞추고, 환경변수는 `.env.example`까지 동기화한다.
 4. 같은 `req`가 모든 builder에 전달되는지, 필요한 `db.trans.begin(req)`이 있는지, controller 반환 전에 비동기 작업이 모두 `await`되는지 확인한다.
 5. 정상·입력 오류·인증 실패·DB 실패를 검토한다. 외부 호출이 있으면 `외부 성공 → DB 실패 → 재시도`와 중복 실행 조건도 별도로 검토한다.
-6. 가장 가까운 테스트를 먼저 실행한 뒤 `npm run verify`를 실행한다. 번들 계약을 바꿨고 생성물 쓰기가 허용되면 `npm run build:webpack`을 추가한다.
+6. 가장 가까운 테스트를 먼저 실행한 뒤 `npm run verify`를 실행한다. 번들 계약을 바꿨고 생성물 쓰기가 허용되면 `npm run build:rspack`을 추가한다.
 7. 소스 검증 결과와 실제 DB·Redis·HTTP·PM2·외부 서비스에서 확인하지 못한 영역을 나눠 보고한다.
 
 이 흐름은 결합도가 높은 계약을 한 소유자가 순서대로 통합하는 Pipeline 방식이다. 읽기 전용 탐색이나 독립 리뷰만 병렬화할 수 있으며, 같은 파일을 여러 작업자가 동시에 수정하거나 상태를 공유하는 테스트를 병렬 실행하지 않는다.

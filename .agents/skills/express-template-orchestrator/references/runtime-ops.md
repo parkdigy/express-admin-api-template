@@ -13,7 +13,7 @@
 - 공통 모듈은 명시적 import/export를 우선하고 관련 `index.ts`를 맞춘다.
 - 전역 추가가 꼭 필요하면 `src/init`의 런타임 할당과 `declare global` 타입을 함께 변경한다.
 - 프로토타입 확장에는 전체 런타임 회귀 테스트를 추가한다.
-- TypeScript path alias는 `tsconfig.json`이 원본이고 webpack이 이를 읽어 alias를 만든다. alias·진입점 변경은 TypeScript 통과만으로 충분하지 않다.
+- TypeScript path alias는 `tsconfig.json`이 원본이고 Rspack이 이를 읽어 alias를 만든다. alias·진입점 변경은 TypeScript 통과만으로 충분하지 않다.
 
 ## 스케줄러
 
@@ -25,7 +25,7 @@
 ## 배포
 
 - `/deploy/github`는 GitHub 서명과 ref 확인 후 Git, 설치, PM2 명령을 실행할 수 있는 운영 엔드포인트다. 정적 분석 외 실제 호출은 배포 작업으로 취급한다.
-- `npm run build:webpack`은 production 번들을 `dist`에 쓰고, `npm run build`는 그 전에 Watchman 상태와 `dist`를 변경한다.
+- `npm run build:rspack`은 production 번들을 `dist`에 쓰고, `npm run build`는 그 전에 Watchman 상태와 `dist`를 변경한다.
 - 배포 브랜치 스크립트는 checkout, merge, push, Git index 변경을 포함하므로 일반 검증에 사용하지 않는다.
 
 ## 검증 경계
@@ -33,4 +33,4 @@
 - `npm run verify`는 `npm run tsc && npm run lint && npm test -- --runInBand`이다.
 - `tsc`와 lint의 기본 대상은 `src`; Jest 테스트는 `test/`에 있고 `tsconfig.test.json`을 사용한다.
 - 현재 테스트는 주로 `common`과 `init` 단위 동작을 다룬다. 실제 HTTP route, MySQL transaction, Redis session, scheduler, PM2 reload는 별도 통합·라이브 검증 없이는 확인됐다고 보고하지 않는다.
-- webpack 설정·path alias·entry 변경은 생성물 쓰기가 허용된 경우 `npm run build:webpack`으로 확인하고, 소스 검증과 번들 검증을 구분해 기록한다.
+- Rspack 설정·path alias·entry 변경은 생성물 쓰기가 허용된 경우 `npm run build:rspack`으로 확인하고, 소스 검증과 번들 검증을 구분해 기록한다.
