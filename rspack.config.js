@@ -1,8 +1,6 @@
 /* eslint-disable */
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const { EsbuildPlugin } = require('esbuild-loader');
+const { rspack } = require('@rspack/core');
 const path = require('path');
-const ESLintPlugin = require('eslint-webpack-plugin');
 const TsConfigJson = require('./tsconfig.json');
 /* eslint-enable */
 
@@ -18,14 +16,14 @@ if (TsConfigJson.compilerOptions.paths) {
 
 module.exports = {
   mode: isProduction ? 'production' : 'development',
-  target: 'node',
+  target: 'node24',
   stats: isProduction ? 'normal' : 'errors-warnings',
   resolve: {
     extensions: ['.js', '.ts'],
     alias,
   },
   entry: {
-    main: './src/app.ts',
+    main: isProduction ? './src/app.ts' : ['./scripts/hot.cjs', './src/app.ts'],
   },
   output: {
     path: path.join(__dirname, isProduction ? 'dist' : '@dev'),
@@ -41,16 +39,8 @@ module.exports = {
     // redis 에서 참조하는 모듈로 빌드 시 warning 발생하여 externals 처리
     '@node-rs/xxhash': 'commonjs @node-rs/xxhash',
   },
-  experiments: {
-    topLevelAwait: true,
-  },
   optimization: {
     minimize: isProduction,
-    minimizer: [
-      new EsbuildPlugin({
-        target: 'es2015',
-      }),
-    ],
   },
   module: {
     rules: [
@@ -58,19 +48,16 @@ module.exports = {
         test: /\.(ts)$/,
         include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
-        loader: 'esbuild-loader',
+        loader: 'builtin:swc-loader',
         options: {
-          target: 'es2015',
+          jsc: {
+            target: 'es2022',
+            parser: { syntax: 'typescript', decorators: true },
+            transform: { legacyDecorator: true, useDefineForClassFields: true },
+          },
         },
       },
     ],
   },
-  plugins: [
-    new ForkTsCheckerWebpackPlugin(),
-    new ESLintPlugin({
-      extensions: ['js', 'jsx', 'ts', 'tsx'],
-      failOnError: isProduction,
-      exclude: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'dist')],
-    }),
-  ].filter(Boolean),
+  plugins: isProduction ? [] : [new rspack.HotModuleReplacementPlugin()],
 };

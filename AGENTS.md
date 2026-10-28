@@ -11,7 +11,7 @@
 ## 검증과 안전
 
 - 기본 검증: `npm run verify`
-- 별칭·번들·진입점 변경: 추가로 `npm run build:webpack`
+- 별칭·번들·진입점 변경: 추가로 `npm run build:rspack`
 - `npm run build`는 `dist`와 Watchman 상태를 변경한다. `make:publish:*`, `publish:*`, `reset:gitignore`, PM2 명령은 명시적 요청 없이 실행하지 않는다.
 
 두 계층 이상을 함께 바꾸거나 트랜잭션·스케줄러를 다룰 때는 `.agents/skills/express-template-orchestrator/SKILL.md`를 사용한다.
