@@ -29,7 +29,7 @@ description: Express 관리자 API 템플릿에서 route, 인증·권한, contro
 4. 모든 builder가 같은 `req`를 받는지, 필요한 `db.trans.begin(req)`이 있는지, 명시적 commit 뒤 실패할 작업이 남지 않는지, controller 반환 전에 모든 비동기 작업이 `await`되는지 검토한다.
 5. 인증 없음/로그인/JWT, Read·Write·Export·Super role, 5초 1회성 API 호출 권한을 구분한다. wrapper 밖의 checker는 `Starter`와 transaction보다 먼저 실행된다는 점을 반영한다.
 6. 정상, 파라미터 오류, 인증·권한 실패, DB 실패를 확인한다. 업로드는 거부·오류 시 임시 파일 정리, 외부 호출은 `외부 성공 → DB 실패 → 재시도`, scheduler는 다중 프로세스 중복 조건을 별도로 검토한다.
-7. 가장 가까운 Jest 테스트를 먼저 실행하고 `npm run verify`로 마무리한다. 번들 계약을 바꿨고 생성물 쓰기가 허용된 경우에만 `npm run build:webpack`을 추가한다.
+7. 가장 가까운 Jest 테스트를 먼저 실행하고 `npm run verify`로 마무리한다. 번들 계약을 바꿨고 생성물 쓰기가 허용된 경우에만 `npm run build:rspack`을 추가한다.
 8. 변경 계약, 실행한 검증, 실제 DB·Redis·HTTP(S)·파일시스템·scheduler·PM2·외부 서비스에서 확인하지 못한 영역을 분리해 보고한다.
 
 이 저장소의 교차 계층 작업은 결합도가 높으므로 한 소유자가 단계별 산출물을 이어받는 Pipeline을 기본으로 한다. 읽기 전용 탐색이나 독립 리뷰만 병렬화하고, 같은 파일을 여러 작업자가 수정하거나 DB·포트·업로드 경로를 공유하는 테스트는 병렬 실행하지 않는다.

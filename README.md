@@ -1,5 +1,30 @@
 # express-admin-api-template
 
+## 개발 및 빌드
+
+Node.js 24를 사용한다. 번들러는 Rspack이며 `rspack.config.js`에서 설정한다.
+
+```shell
+npm install
+npm run dev
+```
+
+`dev:hot`은 Rspack으로 서버를 빌드하고 코드 변경을 HMR로 반영한다.
+HMR로 처리할 수 없는 변경은 서버를 재시작하며, `.env` 변경도 재시작한다.
+`dev:lint`는 별도 프로세스로 ESLint를 실행하고, `dev:types`는 TypeScript 타입 오류를 감시한다.
+`dev:hot`만 실행하면 타입·ESLint 검사는 수행하지 않으므로, 일반 개발에는 `npm run dev`를 사용한다.
+파일 감시가 제한된 환경에서는 `WATCHPACK_POLLING=500 npm run dev:hot`으로 polling 감시를 사용할 수 있다.
+
+```shell
+npm run verify
+npm run build:rspack
+node dist/app.js
+```
+
+`build:rspack`은 타입 검사와 ESLint 검사 후 프로덕션 번들을 `dist/app.js`에 생성한다.
+기존처럼 Express, Knex, MySQL은 외부 모듈로 유지하므로 실행 서버에도 프로덕션 의존성을 설치해야 한다.
+`npm run build`는 테스트와 Rspack 빌드에 더해 Watchman 상태와 `dist`를 초기화한다.
+
 ## 배포 준비
 - .gitignore 파일에서 /dist 주석 처리
 ```
@@ -32,7 +57,7 @@ npm run make:publish:development
 npm run make:publish:staging
 ```
 
-## 배포 서버 설정 (CentOS 7 기준)
+## 배포 서버 설정 (yum 기반 서버)
 ```shell
 # YUM 업데이트
 yum update
@@ -43,8 +68,8 @@ ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 # git 설치
 yum install -y git
 
-# NVM 설치 (16.* 사용)
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && source /root/.bashrc && nvm install 16.20.2 
+# NVM 설치 (Node.js 24를 지원하는 OS 필요)
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && source /root/.bashrc && nvm install 24
 
 # REDIS 설치 (선택)
 # AWS EC2 에 설치시에는 https://dangdangee.tistory.com/entry/Redis-ec2%EC%97%90-%EB%A0%88%EB%94%94%EC%8A%A4-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0 참고

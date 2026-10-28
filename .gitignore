@@ -22,7 +22,8 @@
 #PUB#README.md
 #PUB#tsconfig.json
 #PUB#tsconfig.test.json
-#PUB#webpack.config.js
+#PUB#rspack.config.js
+#PUB#/scripts
 
 # development
 /@dev

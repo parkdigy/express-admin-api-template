@@ -2,7 +2,7 @@
 
 ## 프로젝트와 핵심 경계
 
-- `.nvmrc`의 Node.js 24.12.0, Express 5, strict TypeScript, Knex 기반 관리자 API 템플릿이다. 일반 요청은 `src/app.ts → src/routes → src/controllers → src/db/query`로 흐르고, 관리자 인증·메뉴 권한·접근 로그·개인정보 조회·Excel export가 기본 기능에 포함된다.
+- `.nvmrc`의 Node.js 24.22.1, Express 5, strict TypeScript, Knex 기반 관리자 API 템플릿이다. 일반 요청은 `src/app.ts → src/routes → src/controllers → src/db/query`로 흐르고, 관리자 인증·메뉴 권한·접근 로그·개인정보 조회·Excel export가 기본 기능에 포함된다.
 - `src/app.ts`의 첫 `import './init'`은 `db`, `env`, `param`, `api`, `jwt`, `menu`, `util`, `ll` 등의 런타임 전역과 타입 선언을 연결한다. import 위치와 `src/init`의 할당/`declare global` 짝을 보존한다.
 - 활성 DB 구현은 `src/db/knex/knex.ts`와 `MySqlKnexUtil`이다. `MsSqlKnexUtil`과 `knex.mssql.template.ts`는 선택용 템플릿이며 현재 연결로 간주하지 않는다.
 - `src/routes/index.ts`의 상위 인증과 각 route의 `ApiController*Role`, `ApiSuperAdminChecker`, `ApiCallPermissionChecker` 순서를 함께 읽는다. `ApiController`의 두 번째 인자는 비밀번호 확인 뒤 5초 동안 한 번만 유효한 쓰기 권한 검사다.
@@ -21,6 +21,6 @@
 ## 검증과 운영 안전
 
 - 기본 검증은 `.nvmrc` 버전에서 `npm run verify`다. 이는 `src` TypeScript·ESLint와 `test/` Jest 단위 테스트를 검사하지만 실제 MySQL, Redis session, HTTP(S), 파일 업로드, scheduler, PM2 동작은 증명하지 않는다.
-- webpack entry·alias·번들 설정을 바꾸면 생성물 쓰기가 허용된 경우에만 `npm run build:webpack`을 추가하고, 정적 검증과 번들 검증을 구분해 보고한다.
+- Rspack entry·alias·번들 설정을 바꾸면 생성물 쓰기가 허용된 경우에만 `npm run build:rspack`을 추가하고, 정적 검증과 번들 검증을 구분해 보고한다.
 - `npm run build`는 Watchman과 `dist`를 변경한다. `make:publish:*`, `publish:*`, `reset:gitignore`, `reinstall*`, PM2 명령, `/deploy/github` 호출은 명시적 요청 없이 실행하지 않는다.
 - API/DB/권한 중 둘 이상을 바꾸거나 transaction·업로드·scheduler·서버 수명주기·배포를 다룰 때는 `.agents/skills/express-template-orchestrator/SKILL.md`를 사용한다.

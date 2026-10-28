@@ -13,7 +13,7 @@
 - 관리자 인증은 JWT cookie와 `AdminUser.infoForSession` DB 조회를 사용한다. cookie는 `httpOnly`, `path=/`이며 현재 `secure`/`sameSite` 옵션은 별도 설정하지 않는다. cookie 옵션을 바꾸면 HTTP/HTTPS 및 프런트 origin 계약을 라이브 검증한다.
 - Redis session middleware는 `SESSION_DRIVER=redis`와 `APP_KEY`, `PROJECT_NAME`, Redis host/port가 모두 있을 때만 등록된다. Write role의 5초 1회성 비밀번호 재확인은 `req.session`에 의존하므로 session 없는 환경의 실패 조건을 확인한다.
 - 환경변수를 추가·변경하면 실제 사용처, `src/@types/process.d.ts`, `.env.example`, 필요 시 `ecosystem.config.js`를 함께 맞춘다. `.env*`의 실제 비밀값은 읽거나 기록하지 않는다.
-- TypeScript path alias의 기준은 `tsconfig.json`이고 webpack이 이를 읽어 alias를 만든다. alias·entry 변경은 TypeScript 성공만으로 번들 동작이 증명되지 않는다.
+- TypeScript path alias의 기준은 `tsconfig.json`이고 Rspack이 이를 읽어 alias를 만든다. alias·entry 변경은 TypeScript 성공만으로 번들 동작이 증명되지 않는다.
 
 ## 스케줄러와 비동기 작업
 
@@ -32,10 +32,10 @@
 
 - `/deploy/github`는 `x-hub-signature-256`, raw body, `push` event, `DEPLOY_GITHUB_REF`, pull 뒤 commit hash를 검사한 후 Git/install/PM2 명령을 실행할 수 있다. raw body·서명·오류 비노출 테스트를 유지한다.
 - controller의 command 실행은 callback 기반이고 성공 응답 뒤 `npm run install:prod && npm run pm2:reload`를 시작할 수 있다. 일반 검증에서 endpoint를 호출하거나 해당 명령을 직접 실행하지 않는다.
-- `npm run build:webpack`은 production bundle을 `dist`에 쓴다. `npm run build`는 Watchman, `dist`, test/lint/build를 함께 실행하고, publish 스크립트는 checkout·merge·push·Git index를 바꿀 수 있으므로 명시적 요청 없이 실행하지 않는다.
+- `npm run build:rspack`은 production bundle을 `dist`에 쓴다. `npm run build`는 Watchman, `dist`, test/lint/build를 함께 실행하고, publish 스크립트는 checkout·merge·push·Git index를 바꿀 수 있으므로 명시적 요청 없이 실행하지 않는다.
 
 ## 검증 경계
 
 - `npm run verify`는 `npm run tsc && npm run lint && npm test -- --runInBand`이다. TypeScript와 lint의 기본 대상은 `src`, Jest는 `test/`와 `tsconfig.test.json`을 사용한다.
 - 현재 단위 테스트는 공통 유틸, 전역 확장, `Controller` 오류 응답, Multer 제한, deploy 서명/오류 경로 등을 다룬다. 실제 route 인증·권한, MySQL transaction, Redis session, HTTP(S), 파일 삭제, scheduler, PM2 reload는 별도 통합·라이브 검증이 필요하다.
-- webpack 설정·alias·entry를 바꿨으면 생성물 쓰기가 허용된 경우 `npm run build:webpack`을 추가하고, 소스 검증과 번들 검증을 구분해 기록한다.
+- Rspack 설정·alias·entry를 바꿨으면 생성물 쓰기가 허용된 경우 `npm run build:rspack`을 추가하고, 소스 검증과 번들 검증을 구분해 기록한다.
