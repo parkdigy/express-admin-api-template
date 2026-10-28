@@ -19,6 +19,6 @@
 ## 검증과 운영 안전
 
 - 기본 검증은 `npm run verify`다. 이는 `src` TypeScript·ESLint와 `test/`의 Jest 단위 테스트를 검사하지만 실제 DB, Redis, HTTP 서버, 스케줄러, 배포 동작까지 증명하지는 않는다.
-- webpack 진입점·alias·번들 설정 변경 시 `npm run build:webpack`도 필요하지만 이 명령은 `dist`를 쓴다. 생성물 변경이 허용된 작업에서만 실행하고 결과를 구분해 보고한다.
+- Rspack 진입점·alias·번들 설정 변경 시 `npm run build:rspack`도 필요하지만 이 명령은 `dist`를 쓴다. 생성물 변경이 허용된 작업에서만 실행하고 결과를 구분해 보고한다.
 - `npm run build`는 `dist`와 Watchman 상태를 변경한다. `make:publish:*`, `publish:*`, `reset:gitignore`, `reinstall*`, PM2 및 `/deploy/github` 흐름은 명시적 요청 없이 실행하지 않는다.
 - 두 계층 이상을 함께 바꾸거나 트랜잭션·스케줄러·서버 수명주기를 다룰 때는 `.agents/skills/express-template-orchestrator/SKILL.md`를 사용한다.
