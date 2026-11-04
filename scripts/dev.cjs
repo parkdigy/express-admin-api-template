@@ -37,7 +37,8 @@ watchFile(envFile, { interval: 500 }, (current, previous) => {
   restartTimeout.unref();
 });
 
-const watching = compiler.watch({}, (error, stats) => {
+// Coalesce the initial save and subsequent format-on-save write before applying HMR.
+const watching = compiler.watch({ aggregateTimeout: 1000 }, (error, stats) => {
   if (stopping) return;
   if (error) {
     console.error(error);
