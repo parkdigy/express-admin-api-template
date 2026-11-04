@@ -10,6 +10,8 @@ npm run dev
 ```
 
 `dev:hot`은 Rspack으로 서버를 빌드하고 코드 변경을 HMR로 반영한다.
+저장과 format-on-save의 연속 변경을 묶기 위해 마지막 변경 후 1초 동안 기다린 뒤 다시 빌드한다.
+변경 간격이 1초를 넘으면 별도 빌드로 처리하며, 이 대기 시간은 최초 빌드나 `.env` 재시작에는 적용하지 않는다.
 HMR로 처리할 수 없는 변경은 서버를 재시작하며, `.env` 변경도 재시작한다.
 `dev:lint`는 별도 프로세스로 ESLint를 실행한다.
 파일 감시가 제한된 환경에서는 `WATCHPACK_POLLING=500 npm run dev:hot`으로 polling 감시를 사용할 수 있다.
