@@ -328,11 +328,13 @@ export default {
     }
 
     const info = await db.AdminMenu.find(req, { id }).select('parent_id');
-    if (info && info.parent_id) {
+    if (info) {
       await db.AdminMenu.remove(req, { id });
 
-      if (await db.AdminMenu.notExists(req, { parent_id: info.parent_id })) {
-        await db.AdminMenu.edit(req, { uri: `/${info.parent_id}` }, { id: info.parent_id });
+      if (info.parent_id) {
+        if (await db.AdminMenu.notExists(req, { parent_id: info.parent_id })) {
+          await db.AdminMenu.edit(req, { uri: `/${info.parent_id}` }, { id: info.parent_id });
+        }
       }
     }
 
