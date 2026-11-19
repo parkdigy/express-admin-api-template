@@ -97,8 +97,8 @@ export default class MsSqlQuery<
   _find<
     SelectColumns extends Extract<keyof TRecord, string>[] | undefined = undefined,
     SelectColumnsKeys extends string | never = SelectColumns extends undefined
-    ? never
-    : UnwrapArrayMember<SelectColumns>,
+      ? never
+      : UnwrapArrayMember<SelectColumns>,
     TResult = Knex.QueryBuilder<
       TRecord,
       DeferredKeySelection<
@@ -127,8 +127,8 @@ export default class MsSqlQuery<
   findWithNoLock<
     SelectColumns extends Extract<keyof TRecord, string>[] | undefined = undefined,
     SelectColumnsKeys extends string | never = SelectColumns extends undefined
-    ? never
-    : UnwrapArrayMember<SelectColumns>,
+      ? never
+      : UnwrapArrayMember<SelectColumns>,
     TResult = Knex.QueryBuilder<
       TRecord,
       DeferredKeySelection<
@@ -251,7 +251,7 @@ export default class MsSqlQuery<
   ) {
     const finalData = Array.isArray(data)
       ? data.map((d) => ({ ...d, create_date: now(), update_date: now() }))
-      : { ...data, create_date: now() };
+      : { ...data, create_date: now(), update_date: now() };
     if (Array.isArray(returning)) {
       return this._getBuilder(req).insert(finalData as any, returning);
     } else if (returning) {
